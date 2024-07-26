@@ -9,6 +9,7 @@
       name="description"
       content="Web site created using create-react-app"
     />
+
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
@@ -24,10 +25,22 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
+    <script
+      type="text/javascript"
+      src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=68kb6cg5yz"
+    ></script>
     <title>React App</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+
+    <script>
+      document.addEventListener("message", function (event) {
+        if (typeof event.data === "string") {
+          // console.log("asd");
+        }
+      });
+    </script>
     <div id="root"></div>
     <!--
       This HTML file is a template.

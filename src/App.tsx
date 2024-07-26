@@ -1,6 +1,30 @@
+import React from "react";
+// import GlobalStyle from "./global-style";
+import Router from "./router";
+// import { getResponsiveMaxWidth } from "./utils/layout-util";
+// import { AuthProvider } from "./contexts/auth-provider";
+// import "react-toastify/dist/ReactToastify.css";
+// import { ToastContainer } from "react-toastify";
+
+window.addEventListener("message", (event) => {
+  if (
+    typeof event.data === "string" &&
+    event.data.startsWith("ExponentPushToken")
+  ) {
+    localStorage.setItem("expo_push_token", event.data);
+  }
+});
+
 function App() {
   return (
-    <h1 className="text-3xl font-bold underline bg-pink-100">Hello world!</h1>
+    <>
+      {/* <ToastContainer closeButton={false} /> */}
+      {/* <AuthProvider> */}
+      {/* <GlobalStyle /> */}
+      <Router />
+
+      {/* </AuthProvider> */}
+    </>
   );
 }
 
