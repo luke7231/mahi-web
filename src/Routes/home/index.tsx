@@ -42,20 +42,6 @@ const DATA: IData[] = [
   },
 ];
 
-window.addEventListener("message", (event) => {
-  // if (typeof event.data === "string") {
-  //   console.log("asd");
-  // }
-  console.log(event.data);
-  console.log("asd");
-});
-// document.addEventListener("message", (event) => {
-//   // if (typeof event.data === "string") {
-//   //   console.log("asd");
-//   // }
-//   console.log("ff");
-// });
-
 function Home() {
   const navigate = useNavigate();
   const mapElement = useRef<HTMLDivElement | null>(null);
