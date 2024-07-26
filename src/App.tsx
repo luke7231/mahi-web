@@ -1,6 +1,7 @@
 import React from "react";
 // import GlobalStyle from "./global-style";
 import Router from "./router";
+import { AuthProvider } from "./core/auth";
 // import { getResponsiveMaxWidth } from "./utils/layout-util";
 // import { AuthProvider } from "./contexts/auth-provider";
 // import "react-toastify/dist/ReactToastify.css";
@@ -19,11 +20,10 @@ function App() {
   return (
     <>
       {/* <ToastContainer closeButton={false} /> */}
-      {/* <AuthProvider> */}
-      {/* <GlobalStyle /> */}
-      <Router />
-
-      {/* </AuthProvider> */}
+      <AuthProvider>
+        {/* <GlobalStyle /> */}
+        <Router />
+      </AuthProvider>
     </>
   );
 }
