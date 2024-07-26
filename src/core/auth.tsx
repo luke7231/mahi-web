@@ -22,10 +22,6 @@ const processIsLoggedIn = () => {
 
 const processIsFirst = () => {
   const onboardingDone = localStorage.getItem("onboarding_done");
-  // if (onboardingDone === null) {
-  //   // 값이 없으니 isFirst는 true가 되어야 한다.
-  //   return true;
-  // }
   return !Boolean(onboardingDone);
 };
 
