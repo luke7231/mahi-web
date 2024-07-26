@@ -6,13 +6,13 @@ import Onboarding2 from "./Routes/onboarding/onboarding2";
 import { useAuth } from "./core/auth";
 
 const Router = () => {
-  const { isLoggedIn } = useAuth();
+  const { isFirst } = useAuth();
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path="/"
-          element={isLoggedIn ? <Home /> : <Navigate to="/onboarding1" />}
+          element={isFirst ? <Navigate to="/onboarding1" /> : <Home />}
         />
         {/* <Route path="/" element={<Home />} /> */}
         <Route path="/like" element={<Like />} />

@@ -5,6 +5,8 @@ interface AuthContextProps {
   isLoggedIn: boolean;
   login: () => void;
   logout: () => void;
+  isFirst: boolean;
+  doneOnboarding: () => void;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -18,8 +20,18 @@ const processIsLoggedIn = () => {
   return Boolean(token);
 };
 
+const processIsFirst = () => {
+  const onboardingDone = localStorage.getItem("onboarding_done");
+  // if (onboardingDone === null) {
+  //   // 값이 없으니 isFirst는 true가 되어야 한다.
+  //   return true;
+  // }
+  return !Boolean(onboardingDone);
+};
+
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(processIsLoggedIn);
+  const [isFirst, setIsFirst] = useState(processIsFirst);
 
   const login = () => {
     // 로그인 로직 구현 (예: 사용자 인증)
@@ -31,8 +43,15 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsLoggedIn(false);
   };
 
+  const doneOnboarding = () => {
+    localStorage.setItem("onboarding_done", "true");
+    setIsFirst(false);
+  };
+
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, login, logout, isFirst, doneOnboarding }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -15,6 +15,7 @@ window.addEventListener("message", (event) => {
     localStorage.setItem("expo_push_token", event.data);
   }
 });
+localStorage.removeItem("");
 
 function App() {
   return (
