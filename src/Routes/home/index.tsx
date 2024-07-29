@@ -2,7 +2,7 @@ import { useState } from "react";
 import { DATA } from "../../data";
 import Map from "../maps";
 import { useNavigate } from "react-router-dom";
-
+// localStorage.clear();
 const Home = () => {
   const [isList, setIsList] = useState(true);
   const navigate = useNavigate();

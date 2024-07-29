@@ -7,7 +7,7 @@ const Onboarding1 = () => {
 
   const onClickButton = () => {
     // app
-    // postMessage("req_location", "");
+    // postMessage("REQ_LOCATION", "");
     // web
     navigate("/onboarding2");
   };
