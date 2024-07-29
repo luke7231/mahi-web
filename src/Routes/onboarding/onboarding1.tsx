@@ -14,9 +14,9 @@ const Onboarding1 = () => {
 
   // rn에서 Webview로 보낸 값을 수신하는 함수
   const listener = (event: any) => {
-    const appData = JSON.parse(event.data);
+    const appData = JSON.parse(event?.data);
 
-    if (appData.type === "DONE") {
+    if (appData?.type === "DONE") {
       navigate("/onboarding2");
     }
   };

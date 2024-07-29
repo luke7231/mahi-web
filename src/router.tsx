@@ -4,6 +4,7 @@ import Like from "./Routes/like";
 import Onboarding1 from "./Routes/onboarding/onboarding1";
 import Onboarding2 from "./Routes/onboarding/onboarding2";
 import { useAuth } from "./core/auth";
+import Location from "./Routes/location";
 
 const Router = () => {
   const { isFirst } = useAuth();
@@ -16,6 +17,7 @@ const Router = () => {
         />
         {/* <Route path="/" element={<Home />} /> */}
         <Route path="/like" element={<Like />} />
+        <Route path="/location" element={<Location />} />
         <Route path="/onboarding1" element={<Onboarding1 />} />
         <Route path="/onboarding2" element={<Onboarding2 />} />
       </Routes>
