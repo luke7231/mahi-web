@@ -2,12 +2,16 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import CustomMapMarker from "../../components/custom-map-marker";
 import { useNavigate } from "react-router-dom";
 import { postMessage } from "../../core/message";
+import { useLocation } from "../../core/location-provider";
+
+const 판교주소_LAT = 37.3595704;
+const 판교주소_LNG = 127.105399;
 
 function Location() {
+  const { hasLastLo, getLocationFromStorage, setLocationToStorage } =
+    useLocation();
   const navigate = useNavigate();
   const mapElement = useRef<HTMLDivElement | null>(null);
-  const [AddressY, setAddressY] = useState<number>(37.3595704);
-  const [AddressX, setAddressX] = useState<number>(127.105399);
 
   const { naver } = window;
   let map: naver.maps.Map;
@@ -26,7 +30,12 @@ function Location() {
     // Map 클래스는 지도를 표현하는 클래스
     // new 연산자를 이용하여 새 인스턴스를 생성
     // 변환해놓은 좌표값을 이용하여 지도 중심 인스턴스 생성
-    const center = new naver.maps.LatLng(AddressY, AddressX);
+    const center = hasLastLo
+      ? new naver.maps.LatLng(
+          getLocationFromStorage().lat,
+          getLocationFromStorage().lng
+        )
+      : new naver.maps.LatLng(판교주소_LAT, 판교주소_LNG);
     // 지도 옵션 설정
     const mapOptions: naver.maps.MapOptions = {
       center,
@@ -47,7 +56,7 @@ function Location() {
     setNewMap(map);
     //마커 생성 함수 호출
     const marker = new naver.maps.Marker({
-      position: new naver.maps.LatLng(37.3595704, 127.105399), // 이거 조정 필요 내 위치로
+      position: center,
       map,
       clickable: true,
       // [마커 커스터마이징]
@@ -67,42 +76,60 @@ function Location() {
       const centerCoord = map.getCenter();
       marker.setPosition(centerCoord);
     });
-  }, [AddressX, AddressY]);
+  }, []);
 
   const clickButton = () => {
+    // APP
     // 메세지를 보낸다. 위치값 유저에게 요청하고 위치값 가져오라고.
-    postMessage("REQ_CURRENT_LOCATION", "");
-    const receiver = navigator.userAgent.includes("Android")
-      ? document
-      : window;
-    const listener = (event: any) => {
-      const appData = JSON.parse(event?.data);
+    // postMessage("REQ_CURRENT_LOCATION", "");
+    // const receiver = navigator.userAgent.includes("Android")
+    //   ? document
+    //   : window;
+    // const listener = (event: any) => {
+    //   const appData = JSON.parse(event?.data);
 
-      if (appData?.type === "RES_CURRENT_LOCATION") {
-        const coords = appData.data.coords;
-        setCurrentLat(coords.latitude);
-        setCurrentLng(coords.longitude);
+    //   if (appData?.type === "RES_CURRENT_LOCATION") {
+    //     const coords = appData.data.coords;
+    //     setCurrentLat(coords.latitude);
+    //     setCurrentLng(coords.longitude);
 
-        newMap?.panTo(
-          new naver.maps.LatLng(coords.latitude, coords.longitude),
-          {
-            duration: 0,
-          }
-        );
+    //     newMap?.panTo(
+    //       new naver.maps.LatLng(coords.latitude, coords.longitude),
+    //       {
+    //         duration: 0,
+    //       }
+    //     );
 
-        // TODO: 센터 마커도 같이 이동해야함.
-        newMarker?.setPosition(
-          new naver.maps.LatLng(coords.latitude, coords.longitude)
-        );
-        newMarker?.setMap(newMap);
-        // 로컬스토리지에 저장. (다음부터는 꺼내쓸 수 있도록)
-      }
-      receiver.removeEventListener("message", listener);
-    };
+    //     // TODO: 센터 마커도 같이 이동해야함.
+    //     newMarker?.setPosition(
+    //       new naver.maps.LatLng(coords.latitude, coords.longitude)
+    //     );
+    //     newMarker?.setMap(newMap);
+    //     // 로컬스토리지에 저장. (다음부터는 꺼내쓸 수 있도록)
+    //   }
+    //   receiver.removeEventListener("message", listener);
+    // };
 
-    receiver.addEventListener("message", listener);
+    // receiver.addEventListener("message", listener);
+
+    // WEB
+    newMap?.panTo(new naver.maps.LatLng(36.99502164866016, 127.1596148737739), {
+      duration: 0,
+    });
+
+    // TODO: 센터 마커도 같이 이동해야함.
+    newMarker?.setPosition(
+      new naver.maps.LatLng(36.99502164866016, 127.1596148737739)
+    );
+    newMarker?.setMap(newMap);
   };
 
+  function onComplete() {
+    if (!newMap) return;
+    const center = newMap.getCenter();
+    setLocationToStorage(center.y, center.x);
+    navigate("/");
+  }
   return (
     <div className="w-[100%]">
       <div ref={mapElement} id="map" style={{ width: "100%", height: "70vh" }}>
@@ -118,7 +145,7 @@ function Location() {
       <div className="pl-2 pr-2 mt-2">
         <div
           className="bg-sky-400 rounded-xl font-bold text-white p-3 text-lg text-center"
-          onClick={() => navigate("/")}
+          onClick={() => onComplete()}
         >
           선택한 위치로 설정
         </div>
