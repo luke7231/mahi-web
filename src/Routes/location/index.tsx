@@ -1,14 +1,11 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import CustomMapMarker from "../../components/custom-map-marker";
 import { useNavigate } from "react-router-dom";
-import { DATA, IData } from "../../data";
+import { postMessage } from "../../core/message";
 
 function Location() {
   const navigate = useNavigate();
   const mapElement = useRef<HTMLDivElement | null>(null);
-  // const [searchKeyword, setSearchKeyword] = useState(
-  //   "안성시 공도읍 서동대로 4060-5, 효성해링턴플레이스 202동 306호 "
-  // );
   const [AddressY, setAddressY] = useState<number>(37.3595704);
   const [AddressX, setAddressX] = useState<number>(127.105399);
 
@@ -17,10 +14,11 @@ function Location() {
   // 지도가 이동하였을 때 가려진 부분의 마커는 숨기고
   // 노출된 부분의 마커를 표시하는 작업을 하기 위해 map 인스턴스를 state로 관리
   const [newMap, setNewMap] = useState<naver.maps.Map | null>(null);
+  const [newMarker, setNewMarker] = useState<naver.maps.Marker | null>(null);
 
+  const [currentLat, setCurrentLat] = useState(0);
+  const [currentLng, setCurrentLng] = useState(0);
   // [지도를 그리는 effect]
-  // 중심이 될 위경도 값이 변경되면 지도를 새로 그려야하므로
-  // useEffect를 사용하고, 좌표값 +a (필요한 상태)를 의존성 배열에 추가합니다.
   useEffect(() => {
     if (!mapElement.current || !naver) {
       return;
@@ -31,7 +29,6 @@ function Location() {
     const center = new naver.maps.LatLng(AddressY, AddressX);
     // 지도 옵션 설정
     const mapOptions: naver.maps.MapOptions = {
-      //center 옵션에 생성한 지도 중심 인스턴스 넣기
       center,
       zoom: 15,
       minZoom: 7,
@@ -63,6 +60,8 @@ function Location() {
       //   anchor: new naver.maps.Point(19, 58),
       // },
     });
+    setNewMarker(marker);
+
     // [마커는 항상 맵 중앙에]
     naver.maps.Event.addListener(map, "drag", function (e) {
       const centerCoord = map.getCenter();
@@ -70,75 +69,40 @@ function Location() {
     });
   }, [AddressX, AddressY]);
 
-  //마커를 담을 배열
-  const createMarkerList: naver.maps.Marker[] = [];
-
-  // [반복문을 통해 데이터 배열 순회하면서 마커 생성 진행하는 함수]
-  const addMarkers = () => {
-    for (let i = 0; i < DATA.length; i++) {
-      let markerObj = DATA[i];
-      const { dom_id, title, lat, lng } = markerObj;
-      addMarker(dom_id, title, lat, lng);
-    }
-  };
-
-  // [마커를 배열에 추가하는 함수]
-  const addMarker = (id: string, name: string, lat: number, lng: number) => {
-    try {
-      let newMarker = new naver.maps.Marker({
-        position: new naver.maps.LatLng(lng, lat),
-        map,
-        title: name,
-        clickable: true,
-        // [마커 커스터마이징]
-        // icon: {
-        //   //html element를 반환하는 CustomMapMarker 컴포넌트 할당
-        //   content: CustomMapMarker({ title: name, windowWidth: viewportWidth }),
-        //   //마커의 크기 지정
-        //   size: new naver.maps.Size(38, 58),
-        //   //마커의 기준위치 지정
-        //   anchor: new naver.maps.Point(19, 58),
-        // },
-      });
-      newMarker.setTitle(name);
-      //마커리스트에 추가
-      createMarkerList.push(newMarker);
-      //마커에 이벤트 핸들러 등록
-      naver.maps.Event.addListener(newMarker, "click", () =>
-        markerClickHandler(id)
-      );
-    } catch (e) {}
-  };
-
-  // [마커객체 하나를 클릭했을 때 실행할 이벤트 핸들러]
-  const markerClickHandler = (id: string) => {
-    // navigate(`/ground/${id}`);
-    console.log("clicked: 🚀", id);
-  };
-
-  // [현재 뷰포트를 상태로 저장]
-  // const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
-
-  // [리사이즈 시 view port를 변경하는 이펙트]
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     setViewportWidth(window.innerWidth);
-  //   };
-
-  //   window.addEventListener("resize", handleResize);
-
-  //   return () => {
-  //     window.removeEventListener("resize", handleResize);
-  //   };
-  // }, []);
-
   const clickButton = () => {
-    // 원래 자리로 옮기는 것
-    newMap?.panTo(new naver.maps.LatLng(37.3595704, 127.105399), {
-      duration: 0,
-    });
-    console.log("내 현재 위치로 돌아오면서 재 정렬한다?");
+    // 메세지를 보낸다. 위치값 유저에게 요청하고 위치값 가져오라고.
+    postMessage("REQ_CURRENT_LOCATION", "");
+    const receiver = navigator.userAgent.includes("Android")
+      ? document
+      : window;
+    const listener = (event: any) => {
+      const appData = JSON.parse(event?.data);
+
+      if (appData?.type === "RES_CURRENT_LOCATION") {
+        const coords = appData.data.coords;
+        setCurrentLat(coords.latitude);
+        setCurrentLng(coords.longitude);
+
+        newMap?.panTo(
+          new naver.maps.LatLng(coords.latitude, coords.longitude),
+          {
+            duration: 0,
+          }
+        );
+
+        // TODO: 센터 마커도 같이 이동해야함.
+        newMarker?.setPosition(
+          new naver.maps.LatLng(coords.latitude, coords.longitude)
+        );
+        newMarker?.setMap(newMap);
+        // 로컬스토리지에 저장. (다음부터는 꺼내쓸 수 있도록)
+      }
+      receiver.removeEventListener("message", listener);
+    };
+
+    receiver.addEventListener("message", listener);
   };
+
   return (
     <div className="w-[100%]">
       <div ref={mapElement} id="map" style={{ width: "100%", height: "70vh" }}>
@@ -159,6 +123,8 @@ function Location() {
           선택한 위치로 설정
         </div>
       </div>
+      <div>{currentLng ? currentLat : null}</div>
+      <div>{currentLng ? currentLng : null}</div>
     </div>
   );
 }
