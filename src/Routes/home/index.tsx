@@ -2,9 +2,13 @@ import { useState } from "react";
 import { DATA } from "../../data";
 import Map from "../maps";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { useLocation } from "../../core/location-provider";
 import { gql } from "../../__generated__";
+import { gql as apolloGql } from "@apollo/client";
+import { useAuth } from "../../core/auth";
+import { client } from "../../App";
+import { Store } from "../../__generated__/graphql";
 // localStorage.clear();
 const GET_STORES = gql(`
   query Stores($lat: Float, $lng: Float, $userId: Int) {
@@ -17,7 +21,28 @@ const GET_STORES = gql(`
     }
   }
 `);
+const LIKE_STORE = apolloGql`
+  mutation LikeStore($userId: Int!, $storeId: Int!) {
+    likeStore(userId: $userId, storeId: $storeId) {
+      id
+      userId
+      storeId
+      createdAt
+    }
+  }
+`;
+const CANCEL_LIKE = apolloGql`
+  mutation CancelLike($userId: Int!, $storeId: Int!) {
+    cancelLike(userId: $userId, storeId: $storeId) {
+      id
+      userId
+      storeId
+      createdAt
+    }
+  }
+`;
 const Home = () => {
+  const { isLoggedIn } = useAuth();
   const [isList, setIsList] = useState(true);
   const { hasLastLo, getLocationFromStorage } = useLocation();
   const navigate = useNavigate();
@@ -28,7 +53,69 @@ const Home = () => {
       userId: 1,
     },
     onCompleted: (data) => console.log(data),
+    fetchPolicy: "network-only",
   });
+  const [likeStore] = useMutation(LIKE_STORE, {
+    onCompleted: (data) => {
+      console.log(data);
+    },
+    onError: (error) => console.error(error),
+    refetchQueries: [
+      {
+        query: GET_STORES,
+        variables: {
+          lat: hasLastLo ? getLocationFromStorage().lat : null,
+          lng: hasLastLo ? getLocationFromStorage().lng : null,
+          userId: 1,
+        },
+      },
+    ],
+  });
+  const [cancelLike] = useMutation(CANCEL_LIKE, {
+    onCompleted: (data) => {
+      console.log(data.cancelLike.storeId, "id..");
+    },
+    onError: (error) => console.error(error),
+    refetchQueries: [
+      {
+        query: GET_STORES,
+        variables: {
+          lat: hasLastLo ? getLocationFromStorage().lat : null,
+          lng: hasLastLo ? getLocationFromStorage().lng : null,
+          userId: 1,
+        },
+      },
+    ],
+  });
+  // const updateCacheAfterLikeOrCancelLike = (
+  //   storeId: number,
+  //   isLiked: boolean
+  // ) => {
+  //   client.cache.modify({
+  //     // id: String(storeId),
+  //     id: client.cache.identify()
+  //     fields: {
+  //       stores(existingStores = []) {
+  //         return existingStores.map((store: any) => {
+  //           if (store.__ref === `Store: ${storeId}`) {
+  //             return { ...store, isLiked };
+  //           }
+  //           return store;
+  //         });
+  //       },
+  //     },
+  //   });
+  //   const cachedStores = client.cache.readQuery({
+  //     query: GET_STORES,
+  //     variables: {
+  //       lat: hasLastLo ? getLocationFromStorage().lat : null,
+  //       lng: hasLastLo ? getLocationFromStorage().lng : null,
+  //       userId: 1,
+  //     },
+  //   });
+
+  //   console.log("Updated cache:", cachedStores);
+  // };
   function onClickLocation() {
     //
   }
@@ -37,6 +124,31 @@ const Home = () => {
       setIsList(true);
     } else {
       setIsList(false);
+    }
+  }
+  async function onClickLike(storeId: number, isLiked: boolean | null) {
+    // if (!isLoggedIn) {
+    //   //
+    //   return;
+    //   // TODO: 로그인 페이지로 보낸다.
+    // }
+    // 토글처리
+    if (isLiked) {
+      // deleteLike
+      cancelLike({
+        variables: {
+          userId: 1, //  내 아이디로 !!
+          storeId,
+        },
+      });
+    } else {
+      // createLike
+      likeStore({
+        variables: {
+          userId: 1, //  내  아이디로!!
+          storeId,
+        },
+      });
     }
   }
   return (
@@ -75,7 +187,16 @@ const Home = () => {
                 <div className="ml-2 font-semibold text-[18px]">
                   {store?.title}
                 </div>
-                <div>{store?.isLiked ? "❤️" : "🤍"}</div>
+                <div
+                  onClick={async () => {
+                    await onClickLike(
+                      store?.id as number,
+                      store?.isLiked as boolean | null // login 안했으면 null 일 수 있어서 일단 넣어놓음.
+                    );
+                  }}
+                >
+                  {store?.isLiked ? "❤️" : "🤍"}
+                </div>
               </div>
             );
           })}
