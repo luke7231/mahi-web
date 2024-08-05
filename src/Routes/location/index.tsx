@@ -114,12 +114,13 @@ function Location() {
 
     // WEB
     newMap?.panTo(new naver.maps.LatLng(36.99502164866016, 127.1596148737739), {
+      // 안성
       duration: 0,
     });
 
     // TODO: 센터 마커도 같이 이동해야함.
     newMarker?.setPosition(
-      new naver.maps.LatLng(36.99502164866016, 127.1596148737739)
+      new naver.maps.LatLng(36.99502164866016, 127.1596148737739) // 안성
     );
     newMarker?.setMap(newMap);
   };
