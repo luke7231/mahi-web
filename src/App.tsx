@@ -3,6 +3,12 @@ import React from "react";
 import Router from "./router";
 import { AuthProvider } from "./core/auth";
 import { LocationProvider } from "./core/location-provider";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  gql,
+} from "@apollo/client";
 // import { getResponsiveMaxWidth } from "./utils/layout-util";
 // import { AuthProvider } from "./contexts/auth-provider";
 // import "react-toastify/dist/ReactToastify.css";
@@ -17,16 +23,23 @@ window.addEventListener("message", (event) => {
   }
 });
 
+const client = new ApolloClient({
+  uri: "http://localhost:4000",
+  cache: new InMemoryCache(),
+});
+
 function App() {
   return (
     <>
       {/* <ToastContainer closeButton={false} /> */}
-      <AuthProvider>
-        <LocationProvider>
-          {/* <GlobalStyle /> */}
-          <Router />
-        </LocationProvider>
-      </AuthProvider>
+      <ApolloProvider client={client}>
+        <AuthProvider>
+          <LocationProvider>
+            {/* <GlobalStyle /> */}
+            <Router />
+          </LocationProvider>
+        </AuthProvider>
+      </ApolloProvider>
     </>
   );
 }
