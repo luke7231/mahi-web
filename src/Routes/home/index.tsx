@@ -77,6 +77,7 @@ const Home = () => {
     },
     onError: (error) => console.error(error),
     refetchQueries: [
+      // 흠... 이거 캐시로 수정해야해 ㅠㅠ 일단 이렇게 하긴하는데 불필요한 네트워크 요청이 넘 만을 것 같다. 이거부터 청산해야할 듯. 출시후에
       {
         query: GET_STORES,
         variables: {
@@ -87,35 +88,6 @@ const Home = () => {
       },
     ],
   });
-  // const updateCacheAfterLikeOrCancelLike = (
-  //   storeId: number,
-  //   isLiked: boolean
-  // ) => {
-  //   client.cache.modify({
-  //     // id: String(storeId),
-  //     id: client.cache.identify()
-  //     fields: {
-  //       stores(existingStores = []) {
-  //         return existingStores.map((store: any) => {
-  //           if (store.__ref === `Store: ${storeId}`) {
-  //             return { ...store, isLiked };
-  //           }
-  //           return store;
-  //         });
-  //       },
-  //     },
-  //   });
-  //   const cachedStores = client.cache.readQuery({
-  //     query: GET_STORES,
-  //     variables: {
-  //       lat: hasLastLo ? getLocationFromStorage().lat : null,
-  //       lng: hasLastLo ? getLocationFromStorage().lng : null,
-  //       userId: 1,
-  //     },
-  //   });
-
-  //   console.log("Updated cache:", cachedStores);
-  // };
   function onClickLocation() {
     //
   }
