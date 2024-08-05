@@ -2,10 +2,32 @@ import { useState } from "react";
 import { DATA } from "../../data";
 import Map from "../maps";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@apollo/client";
+import { useLocation } from "../../core/location-provider";
+import { gql } from "../../__generated__";
 // localStorage.clear();
+const GET_STORES = gql(`
+  query Stores($lat: Float, $lng: Float) {
+    stores(lat: $lat, lng: $lng) {
+      id
+      lat
+      lng
+      title
+    }
+  }
+`);
+
 const Home = () => {
   const [isList, setIsList] = useState(true);
+  const { hasLastLo, getLocationFromStorage } = useLocation();
   const navigate = useNavigate();
+  const { data, loading, error } = useQuery(GET_STORES, {
+    variables: {
+      lat: hasLastLo ? getLocationFromStorage().lat : null,
+      lng: hasLastLo ? getLocationFromStorage().lng : null,
+    },
+    onCompleted: (data) => console.log(data),
+  });
   function onClickLocation() {
     //
   }
@@ -45,8 +67,9 @@ const Home = () => {
       {/* LIST */}
       {isList ? (
         <div className="mt-8">
-          {DATA.map((data) => {
-            return <div>{data.title}</div>;
+          {loading ? <div>loading...</div> : null}
+          {data?.stores?.map((store) => {
+            return <div>{store?.title}</div>;
           })}
         </div>
       ) : (
