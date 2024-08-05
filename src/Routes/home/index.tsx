@@ -7,16 +7,16 @@ import { useLocation } from "../../core/location-provider";
 import { gql } from "../../__generated__";
 // localStorage.clear();
 const GET_STORES = gql(`
-  query Stores($lat: Float, $lng: Float) {
-    stores(lat: $lat, lng: $lng) {
+  query Stores($lat: Float, $lng: Float, $userId: Int) {
+    stores(lat: $lat, lng: $lng, userId: $userId) {
       id
       lat
       lng
       title
+      isLiked
     }
   }
 `);
-
 const Home = () => {
   const [isList, setIsList] = useState(true);
   const { hasLastLo, getLocationFromStorage } = useLocation();
@@ -25,6 +25,7 @@ const Home = () => {
     variables: {
       lat: hasLastLo ? getLocationFromStorage().lat : null,
       lng: hasLastLo ? getLocationFromStorage().lng : null,
+      userId: 1,
     },
     onCompleted: (data) => console.log(data),
   });
@@ -66,10 +67,17 @@ const Home = () => {
       </div>
       {/* LIST */}
       {isList ? (
-        <div className="mt-8">
+        <div className="mt-8 pl-4 pr-4">
           {loading ? <div>loading...</div> : null}
           {data?.stores?.map((store) => {
-            return <div>{store?.title}</div>;
+            return (
+              <div className="h-[120px] shadow-md mb-4 flex items-center rounded-md">
+                <div className="ml-2 font-semibold text-[18px]">
+                  {store?.title}
+                </div>
+                <div>{store?.isLiked ? "❤️" : "🤍"}</div>
+              </div>
+            );
           })}
         </div>
       ) : (
