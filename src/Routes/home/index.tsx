@@ -9,6 +9,7 @@ import { gql as apolloGql } from "@apollo/client";
 import { useAuth } from "../../core/auth";
 import { client } from "../../App";
 import { Store } from "../../__generated__/graphql";
+import BottomTab from "../../components/bottom-tab";
 // localStorage.clear();
 const GET_STORES = gql(`
   query Stores($lat: Float, $lng: Float, $userId: Int) {
@@ -176,6 +177,7 @@ const Home = () => {
       ) : (
         <Map />
       )}
+      <BottomTab />
     </div>
   );
 };

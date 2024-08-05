@@ -30,7 +30,12 @@ const Like = () => {
     };
   }, []);
 
-  return <div>{msg?.data}</div>;
+  return (
+    <div>
+      <>{msg?.data}</>
+      <div>like</div>
+    </div>
+  );
 };
 
 export default Like;
