@@ -51,7 +51,7 @@ const Home = () => {
     variables: {
       lat: hasLastLo ? getLocationFromStorage().lat : null,
       lng: hasLastLo ? getLocationFromStorage().lng : null,
-      userId: 1,
+      userId: 1, //썌얘
     },
     onCompleted: (data) => console.log(data),
     fetchPolicy: "network-only",
@@ -132,6 +132,10 @@ const Home = () => {
         onClick={() => navigate("/location")}
       >
         📍 내 위치를 설정해주세요.
+      </div>
+      <div>
+        <span>token: </span>
+        {localStorage.getItem("expo_push_token")}
       </div>
       {/* TAB */}
       <div className="pl-6 pr-6 mt-8">
