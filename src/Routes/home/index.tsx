@@ -175,7 +175,7 @@ const Home = () => {
           })}
         </div>
       ) : (
-        <Map />
+        <Map stores={data?.stores as Store[]} />
       )}
       <BottomTab />
     </div>

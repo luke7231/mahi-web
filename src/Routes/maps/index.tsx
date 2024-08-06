@@ -2,8 +2,9 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import CustomMapMarker from "../../components/custom-map-marker";
 import { useNavigate } from "react-router-dom";
 import { DATA, IData } from "../../data";
+import { Store } from "../../__generated__/graphql";
 
-function Map() {
+function Map({ stores }: { stores: Store[] }) {
   const navigate = useNavigate();
   const mapElement = useRef<HTMLDivElement | null>(null);
   // const [searchKeyword, setSearchKeyword] = useState(
@@ -76,25 +77,25 @@ function Map() {
     //검색 결과 거리순으로 재정렬하는 함수 호출
     resetListHandler();
     // }, [AddressX, AddressY, totalDomData, viewportWidth]);
-  }, [AddressX, AddressY]);
+  }, [stores, AddressX, AddressY]);
 
   //마커를 담을 배열
   const createMarkerList: naver.maps.Marker[] = [];
 
   // [반복문을 통해 데이터 배열 순회하면서 마커 생성 진행하는 함수]
   const addMarkers = () => {
-    for (let i = 0; i < DATA.length; i++) {
-      let markerObj = DATA[i];
-      const { dom_id, title, lat, lng } = markerObj;
-      addMarker(dom_id, title, lat, lng);
+    for (let i = 0; i < stores.length; i++) {
+      let markerObj = stores[i];
+      const { id, title, lat, lng } = markerObj;
+      addMarker(id, title, lat as number, lng as number);
     }
   };
 
   // [마커를 배열에 추가하는 함수]
-  const addMarker = (id: string, name: string, lat: number, lng: number) => {
+  const addMarker = (id: number, name: string, lat: number, lng: number) => {
     try {
       let newMarker = new naver.maps.Marker({
-        position: new naver.maps.LatLng(lng, lat),
+        position: new naver.maps.LatLng(lat, lng),
         map,
         title: name,
         clickable: true,
@@ -119,7 +120,7 @@ function Map() {
   };
 
   // [마커객체 하나를 클릭했을 때 실행할 이벤트 핸들러]
-  const markerClickHandler = (id: string) => {
+  const markerClickHandler = (id: number) => {
     // navigate(`/ground/${id}`);
     console.log("clicked: 🚀", id);
   };
