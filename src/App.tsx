@@ -14,6 +14,7 @@ import {
 // import "react-toastify/dist/ReactToastify.css";
 // import { ToastContainer } from "react-toastify";
 
+// app일 경우 푸시토큰을 웹 저장소에 저장.
 window.addEventListener("message", (event) => {
   if (
     typeof event.data === "string" &&
@@ -23,8 +24,9 @@ window.addEventListener("message", (event) => {
   }
 });
 
-const client = new ApolloClient({
+export const client = new ApolloClient({
   uri: "http://localhost:4000",
+  // uri: "http://172.25.81.144:4000",
   cache: new InMemoryCache(),
 });
 
