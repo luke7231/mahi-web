@@ -3,6 +3,7 @@ import { postMessage } from "../../core/message";
 import { useMutation, useQuery } from "@apollo/client";
 import { gql } from "../../__generated__";
 import { useLocation } from "../../core/location-provider";
+import BottomTab from "../../components/bottom-tab";
 const GET_LIKED_STORES = gql(`
   query LikedStores($userId: Int!) {
     likedStores(userId: $userId) {
@@ -128,6 +129,7 @@ const Like = () => {
           );
         })}
       </div>
+      <BottomTab />
     </div>
   );
 };
