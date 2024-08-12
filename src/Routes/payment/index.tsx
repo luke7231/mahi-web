@@ -48,7 +48,7 @@ function Payment() {
         // ------  결제 UI 렌더링 ------
         paymentWidget.renderPaymentMethods({
           selector: "#payment-method",
-          variantKey: "DEFAULT",
+          variantKey: "DEFAULT", // 생성해놓은 ui 위젯이 여러개라면 구별할 때 쓰임.
         }),
         // ------  이용약관 UI 렌더링 ------
         paymentWidget.renderAgreement({
@@ -57,12 +57,12 @@ function Payment() {
         }),
       ]);
 
-      paymentWidgetRef.current = paymentWidget;
+      paymentWidgetRef.current = paymentWidget; // Ref에 저장.
     })();
   }, []);
 
   const onClickPaymentButton = async () => {
-    const orderId = nanoid();
+    const orderId = nanoid(); // 난수 생성 토스페이먼츠에서 권하는 방식.
     const { data } = await createOrder({
       variables: {
         input: {
@@ -71,19 +71,19 @@ function Payment() {
           productId: 8, // 이전 페이지에서 받아오기 or productID만 받아서 query 치기
         },
       },
-      onCompleted: (data) => console.log(data),
+      onCompleted: (data) => console.log(data), // TODO: 여러번 클릭되지 않도록? 조치해야할듯 디바운스
     });
     if (data?.createOrder.id) {
       // request.
       paymentWidgetRef.current?.requestPayment({
         orderId,
-        orderName: "마감 A팩",
+        orderName: "마감 A팩", // TODO: 이름 변경
         successUrl: window.location.origin + "/success",
         failUrl: window.location.origin + "/fail",
       });
     } else {
       // 문제가 발생했습니다.
-      // toast ui
+      // TODO: toast ui 띄우기
       console.log("문제 발생했습니다.");
     }
   };
