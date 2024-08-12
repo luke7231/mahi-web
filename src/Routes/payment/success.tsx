@@ -42,6 +42,7 @@ export function SuccessPage() {
 
   // 서버로 승인 요청
   const onClick = () => {
+    // TODO: 원래 진행하고 있던 결제 상세페이지로 !
     if (에러발생) {
       navigate(`/payment`);
     }
