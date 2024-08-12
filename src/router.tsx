@@ -11,6 +11,8 @@ import CustomerService from "./Routes/my/customer-service";
 import Notice from "./Routes/my/notice";
 import ProfileEdit from "./Routes/my/profile-edit";
 import Payment from "./Routes/payment";
+import { SuccessPage } from "./Routes/payment/success";
+import { FailPage } from "./Routes/payment/fail";
 
 const Router = () => {
   const { isFirst } = useAuth();
@@ -32,6 +34,8 @@ const Router = () => {
         <Route path="/notice" element={<Notice />} />
         <Route path="/profile-edit" element={<ProfileEdit />} />
         <Route path="/payment" element={<Payment />} />
+        <Route path="/success" element={<SuccessPage />} />
+        <Route path="/fail" element={<FailPage />} />
       </Routes>
     </BrowserRouter>
   );
