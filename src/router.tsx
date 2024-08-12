@@ -10,6 +10,7 @@ import PurchaseHistory from "./Routes/my/purchase-history";
 import CustomerService from "./Routes/my/customer-service";
 import Notice from "./Routes/my/notice";
 import ProfileEdit from "./Routes/my/profile-edit";
+import Payment from "./Routes/payment";
 
 const Router = () => {
   const { isFirst } = useAuth();
@@ -30,6 +31,7 @@ const Router = () => {
         <Route path="/customer-service" element={<CustomerService />} />
         <Route path="/notice" element={<Notice />} />
         <Route path="/profile-edit" element={<ProfileEdit />} />
+        <Route path="/payment" element={<Payment />} />
       </Routes>
     </BrowserRouter>
   );
