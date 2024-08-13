@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 
 // 상품 데이터 타입 정의
 interface Product {
-  id: string;
+  id: number;
   name: string;
   price: number;
   discountPrice?: number;
@@ -23,7 +23,7 @@ interface CartItem {
 interface CartContextType {
   cart: CartItem[];
   addToCart: (product: Product, quantity: number) => void;
-  removeFromCart: (productId: string) => void;
+  removeFromCart: (productId: number) => void;
 }
 
 // CartContext 생성
@@ -58,7 +58,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   // 장바구니에서 상품 제거
-  const removeFromCart = (productId: string) => {
+  const removeFromCart = (productId: number) => {
     setCart((prevCart) =>
       prevCart.filter((item) => item.product.id !== productId)
     );
