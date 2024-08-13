@@ -9,6 +9,7 @@ import {
   ApolloProvider,
   gql,
 } from "@apollo/client";
+import { CartProvider } from "./core/cart";
 // import { getResponsiveMaxWidth } from "./utils/layout-util";
 // import { AuthProvider } from "./contexts/auth-provider";
 // import "react-toastify/dist/ReactToastify.css";
@@ -37,8 +38,10 @@ function App() {
       <ApolloProvider client={client}>
         <AuthProvider>
           <LocationProvider>
-            {/* <GlobalStyle /> */}
-            <Router />
+            <CartProvider>
+              {/* <GlobalStyle /> */}
+              <Router />
+            </CartProvider>
           </LocationProvider>
         </AuthProvider>
       </ApolloProvider>
