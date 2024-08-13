@@ -124,6 +124,9 @@ const Home = () => {
       });
     }
   }
+  function onClickStore(id: number) {
+    navigate(`store/${id}`);
+  }
   return (
     <div className="w-full h-[100vh] flex flex-col">
       {/* LOCATION */}
@@ -160,7 +163,10 @@ const Home = () => {
           {loading ? <div>loading...</div> : null}
           {data?.stores?.map((store) => {
             return (
-              <div className="h-[120px] shadow-md mb-4 flex items-center rounded-md">
+              <div
+                className="h-[120px] shadow-md mb-4 flex items-center rounded-md"
+                onClick={() => onClickStore(store?.id as number)}
+              >
                 <div className="ml-2 font-semibold text-[18px]">
                   {store?.title}
                 </div>
