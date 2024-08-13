@@ -13,6 +13,8 @@ import ProfileEdit from "./Routes/my/profile-edit";
 import Payment from "./Routes/payment";
 import { SuccessPage } from "./Routes/payment/success";
 import { FailPage } from "./Routes/payment/fail";
+import Store from "./Routes/store";
+import Product from "./Routes/product";
 
 const Router = () => {
   const { isFirst } = useAuth();
@@ -26,6 +28,8 @@ const Router = () => {
         {/* <Route path="/" element={<Home />} /> */}
         <Route path="/like" element={<Like />} />
         <Route path="/location" element={<Location />} />
+        <Route path="/store" element={<Store />} />
+        <Route path="/product" element={<Product />} />
         <Route path="/onboarding1" element={<Onboarding1 />} />
         <Route path="/onboarding2" element={<Onboarding2 />} />
         <Route path="my" element={<My />} />
