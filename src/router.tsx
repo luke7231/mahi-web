@@ -15,6 +15,7 @@ import { SuccessPage } from "./Routes/payment/success";
 import { FailPage } from "./Routes/payment/fail";
 import Store from "./Routes/store";
 import Product from "./Routes/product";
+import CheckoutPage from "./Routes/checkout";
 
 const Router = () => {
   const { isFirst } = useAuth();
@@ -30,6 +31,8 @@ const Router = () => {
         <Route path="/location" element={<Location />} />
         <Route path="/store/:id" element={<Store />} />
         <Route path="/product/:id" element={<Product />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
+
         <Route path="/onboarding1" element={<Onboarding1 />} />
         <Route path="/onboarding2" element={<Onboarding2 />} />
         <Route path="my" element={<My />} />

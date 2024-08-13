@@ -140,7 +140,7 @@ const Store = () => {
               <p className="text-lg font-semibold">
                 Total: ${getTotalAmount().toFixed(2)}
               </p>
-              <Link to="/payment">
+              <Link to="/checkout">
                 <button className="bg-green-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-600 transition">
                   Proceed to Checkout
                 </button>
