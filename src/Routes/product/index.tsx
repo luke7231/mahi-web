@@ -1,6 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useCart } from "../../core/cart";
 
 const GET_PRODUCT = gql`
   query Product($productId: Int!) {
@@ -22,6 +23,7 @@ const GET_PRODUCT = gql`
 `;
 
 const Product = () => {
+  const { addToCart } = useCart();
   const navigate = useNavigate();
   const { id } = useParams();
   const { data } = useQuery(GET_PRODUCT, {
@@ -44,6 +46,10 @@ const Product = () => {
     }
   };
   const product = data?.product;
+  function onClickButton() {
+    addToCart(product, quantity); // 전역변수에 추가
+    navigate(`/store/${product.store.id}`);
+  }
   return (
     <div className="container mx-auto p-4">
       {product ? (
@@ -125,7 +131,10 @@ const Product = () => {
 
           {/* 구매 버튼 */}
           <div className="flex justify-center mt-6">
-            <button className="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-600 transition">
+            <button
+              className="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-600 transition"
+              onClick={() => onClickButton()}
+            >
               1개 담기
             </button>
           </div>
