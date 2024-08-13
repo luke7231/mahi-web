@@ -7,30 +7,38 @@ import {
 import { useMutation } from "@apollo/client";
 import { gql } from "../../__generated__";
 import { nanoid } from "nanoid";
+import { useCart } from "../../core/cart";
 // import { ANONYMOUS } from "@tosspayments/payment-widget-sdk"
 
 // test 키
 const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
 const customerKey = "FF5zmAd8yIoiJ5fj4d5e2";
 const CREATE_ORDER = gql(`
-  mutation CreateOrder($input: CreateOrderInput!) {
-    createOrder(input: $input) {
+mutation CreateOrder($input: CreateOrderInput!) {
+  createOrder(input: $input) {
+    id
+    orderId
+    amount
+    coupon
+    products {
       id
-      orderId
-      amount
-      coupon
-      product {
-        id
-      }
-      createdAt
-      updatedAt
+      name
     }
+    createdAt
+    updatedAt
   }
+}
 `);
 function Payment() {
   const [createOrder] = useMutation(CREATE_ORDER);
   const paymentWidgetRef = useRef<TossPaymentsWidgets | null>(null);
-  const price = 50_000;
+  const { cart } = useCart();
+  const getTotalAmount = () => {
+    return cart.reduce((total, item) => {
+      const price = item.product.discountPrice || item.product.price;
+      return total + price * item.quantity;
+    }, 0);
+  };
 
   useEffect(() => {
     (async () => {
@@ -41,7 +49,7 @@ function Payment() {
       // 가격 설정을 미리 해야하네?
       await paymentWidget.setAmount({
         currency: "KRW",
-        value: price,
+        value: getTotalAmount(),
       });
 
       await Promise.all([
@@ -67,8 +75,8 @@ function Payment() {
       variables: {
         input: {
           orderId,
-          amount: price, // 이전 페이지에서 받아오기
-          productId: 8, // 이전 페이지에서 받아오기 or productID만 받아서 query 치기
+          amount: getTotalAmount(), // 이전 페이지에서 받아오기
+          productIds: cart.map((item) => item.product.id), // 이전 페이지에서 받아오기 or productID만 받아서 query 치기
         },
       },
       onCompleted: (data) => console.log(data), // TODO: 여러번 클릭되지 않도록? 조치해야할듯 디바운스
