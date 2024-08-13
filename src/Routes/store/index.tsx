@@ -1,5 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Product } from "../../__generated__/graphql";
 
 const GET_STORE = gql`
@@ -27,6 +27,7 @@ const GET_STORE = gql`
 `;
 
 const Store = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const { data } = useQuery(GET_STORE, {
     variables: {
@@ -34,6 +35,10 @@ const Store = () => {
     },
   });
   const store = data.store;
+
+  function onClickProduct(id: number) {
+    navigate(`/product/${id}`);
+  }
   return (
     <div className="container mx-auto p-4">
       {/* 헤더 */}
@@ -86,7 +91,10 @@ const Store = () => {
                   Discount Price: ${product.discountPrice}
                 </p>
               </div>
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg">
+              <button
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+                onClick={() => onClickProduct(product.id)}
+              >
                 View Details
               </button>
             </li>
