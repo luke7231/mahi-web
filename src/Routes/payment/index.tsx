@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   TossPaymentsSDK,
   TossPaymentsWidgets,
@@ -8,7 +8,6 @@ import { useMutation } from "@apollo/client";
 import { gql } from "../../__generated__";
 import { nanoid } from "nanoid";
 import { useCart } from "../../core/cart";
-// import { ANONYMOUS } from "@tosspayments/payment-widget-sdk"
 
 // test 키
 const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
@@ -30,6 +29,7 @@ mutation CreateOrder($input: CreateOrderInput!) {
 }
 `);
 function Payment() {
+  const [clicked, setClicked] = useState(false);
   const [createOrder] = useMutation(CREATE_ORDER);
   const paymentWidgetRef = useRef<TossPaymentsWidgets | null>(null);
   const { cart } = useCart();
@@ -70,6 +70,7 @@ function Payment() {
   }, []);
 
   const onClickPaymentButton = async () => {
+    setClicked(true); // 다시 못 누르게
     const orderId = nanoid(); // 난수 생성 토스페이먼츠에서 권하는 방식.
     const { data } = await createOrder({
       variables: {
@@ -97,20 +98,48 @@ function Payment() {
   };
 
   return (
-    <div className="App">
-      <h1>주문서</h1>
-      {/* <!-- 결제 UI --> */}
-      <div id="payment-method"></div>
-      {/* <!-- 이용약관 UI --> */}
-      <div id="agreement"></div>
-      {/* <!-- 결제하기 버튼 --> */}
-      <button
-        id="payment-button"
-        className="mt-[30px]"
-        onClick={() => onClickPaymentButton()}
+    <div className="container mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-4">주문서</h1>
+
+      {/* 총액 표시 */}
+      <div className="bg-white p-4 rounded-lg shadow-md mb-6">
+        <h2 className="text-xl font-semibold mb-2">총 금액</h2>
+        <p className="text-2xl font-bold">${getTotalAmount()}</p>
+      </div>
+
+      {/* 결제 UI */}
+      <div
+        id="payment-method"
+        className="bg-white p-4 rounded-lg shadow-md mb-6 border border-gray-300"
       >
-        결제하기
-      </button>
+        <h2 className="text-xl font-semibold mb-2">결제 방법</h2>
+        {/* 실제 결제 UI 컴포넌트를 여기에 추가 */}
+      </div>
+
+      {/* 이용약관 UI */}
+      <div
+        id="agreement"
+        className="bg-white p-4 rounded-lg shadow-md mb-6 border border-gray-300"
+      >
+        <h2 className="text-xl font-semibold mb-2">이용약관</h2>
+        {/* 실제 이용약관 컴포넌트를 여기에 추가 */}
+      </div>
+
+      {/* 결제하기 버튼 */}
+      <div className="flex justify-center">
+        <button
+          id="payment-button"
+          className={`px-6 py-3 rounded-lg shadow-md transition ${
+            clicked
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-green-500 hover:bg-green-600"
+          }`}
+          disabled={clicked}
+          onClick={onClickPaymentButton}
+        >
+          결제하기
+        </button>
+      </div>
     </div>
   );
 }
