@@ -1,4 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const GET_PRODUCT = gql`
@@ -28,6 +29,20 @@ const Product = () => {
       productId: Number(id),
     },
   });
+  const [quantity, setQuantity] = useState(1);
+  // 수량 증가 함수
+  const increaseQuantity = () => {
+    if (quantity < product.quantity) {
+      setQuantity(quantity + 1);
+    }
+  };
+
+  // 수량 감소 함수
+  const decreaseQuantity = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
   const product = data?.product;
   return (
     <div className="container mx-auto p-4">
@@ -76,15 +91,42 @@ const Product = () => {
           </section>
 
           {/* 상품 설명 */}
-          <section className="bg-white p-4 rounded-lg shadow-md">
+          <section className="bg-white p-4 rounded-lg shadow-md mb-6">
             <h2 className="text-xl font-semibold mb-4">Description</h2>
             <p className="text-gray-700">{product.description}</p>
+          </section>
+
+          {/* 수량 선택 */}
+          <section className="bg-white p-4 rounded-lg shadow-md mb-6">
+            <h2 className="text-xl font-semibold mb-4">Quantity</h2>
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={decreaseQuantity}
+                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg shadow-md hover:bg-gray-400"
+              >
+                -
+              </button>
+              <input
+                type="number"
+                value={quantity}
+                min="1"
+                max={product.quantity}
+                readOnly
+                className="w-16 text-center border border-gray-300 rounded-lg py-2"
+              />
+              <button
+                onClick={increaseQuantity}
+                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg shadow-md hover:bg-gray-400"
+              >
+                +
+              </button>
+            </div>
           </section>
 
           {/* 구매 버튼 */}
           <div className="flex justify-center mt-6">
             <button className="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-600 transition">
-              카트에 담기
+              1개 담기
             </button>
           </div>
         </>
