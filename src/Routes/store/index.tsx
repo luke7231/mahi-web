@@ -1,6 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Product } from "../../__generated__/graphql";
+import { useCart } from "../../core/cart";
 
 const GET_STORE = gql`
   query Store($storeId: Int!) {
@@ -39,6 +40,15 @@ const Store = () => {
   function onClickProduct(id: number) {
     navigate(`/product/${id}`);
   }
+  const { cart } = useCart(); // useCart 훅을 사용하여 cart 가져오기
+
+  // 카트의 총액 계산
+  const getTotalAmount = () => {
+    return cart.reduce((total, item) => {
+      const price = item.product.discountPrice || item.product.price;
+      return total + price * item.quantity;
+    }, 0);
+  };
   return (
     <div className="container mx-auto p-4">
       {store ? (
@@ -102,6 +112,40 @@ const Store = () => {
                 </li>
               ))}
             </ul>
+          </section>
+
+          <section className="bg-gray-100 p-4 rounded-lg shadow-md mt-6">
+            <h2 className="text-xl font-semibold mb-4">Cart Summary</h2>
+            <div className="mb-4">
+              {cart.length === 0 ? (
+                <p className="text-gray-600">Your cart is empty.</p>
+              ) : (
+                <ul className="space-y-4">
+                  {cart.map((item) => (
+                    <li
+                      key={item.product.id}
+                      className="flex justify-between items-center p-2 border border-gray-300 rounded-lg"
+                    >
+                      <span>{item.product.name}</span>
+                      <span>
+                        ${item.product.discountPrice || item.product.price} x{" "}
+                        {item.quantity}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            <div className="flex justify-between items-center">
+              <p className="text-lg font-semibold">
+                Total: ${getTotalAmount().toFixed(2)}
+              </p>
+              <Link to="/payment">
+                <button className="bg-green-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-600 transition">
+                  Proceed to Checkout
+                </button>
+              </Link>
+            </div>
           </section>
         </>
       ) : null}
