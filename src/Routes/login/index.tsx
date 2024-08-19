@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+const WEB_URL = process.env.REACT_APP_URL;
+
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,6 +23,7 @@ const Login: React.FC = () => {
   };
   const handleKakaoButtonClick = () => {
     kakao.Auth.authorize({
+      redirectUri: `${WEB_URL}/auth`,
       scope: "account_email",
     });
   };
