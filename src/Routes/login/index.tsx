@@ -4,8 +4,9 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [kakaoIsSubmitting, setKakaoIsSubmitting] = useState(false);
+
   const kakao = window.Kakao;
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     setIsSubmitting(true);
@@ -19,8 +20,9 @@ const Login: React.FC = () => {
     }, 2000);
   };
   const handleKakaoButtonClick = () => {
-    setKakaoIsSubmitting(true);
-    kakao.Auth.authorize();
+    kakao.Auth.authorize({
+      scope: "account_email",
+    });
   };
 
   return (
@@ -75,15 +77,10 @@ const Login: React.FC = () => {
           </button>
 
           <button
-            className={`mt-4 w-full py-3 rounded-lg text-white font-semibold ${
-              kakaoIsSubmitting
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-yellow-400 hover:bg-blue-600 transition"
-            }`}
-            disabled={kakaoIsSubmitting}
+            className={`mt-4 w-full py-3 rounded-lg text-white font-semibold bg-yellow-400`}
             onClick={handleKakaoButtonClick}
           >
-            {kakaoIsSubmitting ? "로그인 중..." : "카카오로 계속하기"}
+            카카오로 계속하기
           </button>
         </form>
       </div>
