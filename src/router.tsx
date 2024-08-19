@@ -17,6 +17,7 @@ import Store from "./Routes/store";
 import Product from "./Routes/product";
 import CheckoutPage from "./Routes/checkout";
 import Login from "./Routes/login";
+import KakaoRedirectHandler from "./Routes/login/auth";
 
 const Router = () => {
   const { isFirst } = useAuth();
@@ -45,6 +46,7 @@ const Router = () => {
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/fail" element={<FailPage />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/auth" element={<KakaoRedirectHandler />} />
       </Routes>
     </BrowserRouter>
   );
