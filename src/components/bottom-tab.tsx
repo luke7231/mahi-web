@@ -5,10 +5,11 @@ import CameraImgActive from "../images/icons/camera_icon_active.png";
 import GalaryImg from "../images/icons/galary_icon.png";
 import GalaryImgActive from "../images/icons/galary_icon_active.png";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../core/auth";
 
 const BottomTab = () => {
   const navigate = useNavigate();
-
+  const { isLoggedIn } = useAuth();
   const pathName = useLocation().pathname;
   return (
     <div className="fixed bottom-0 w-full h-[56px] grid grid-cols-3 gap-1 items-center p-1 bg-white">
@@ -39,7 +40,11 @@ const BottomTab = () => {
           src={pathName === "/posts" ? GalaryImgActive : GalaryImg}
           onClick={() => navigate("/posts")}
         /> */}
-        <div onClick={() => navigate("/my")}>MY</div>
+        <div
+          onClick={() => (isLoggedIn ? navigate("/my") : navigate("/login"))}
+        >
+          MY
+        </div>
       </div>
     </div>
   );
