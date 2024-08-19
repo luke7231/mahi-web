@@ -26,8 +26,9 @@ window.addEventListener("message", (event) => {
 });
 
 export const client = new ApolloClient({
-  uri: "http://localhost:4000",
+  // uri: "http://localhost:4000",
   // uri: "http://172.25.81.144:4000",
+  uri: "http://192.168.200.181:4000",
   cache: new InMemoryCache(),
 });
 
