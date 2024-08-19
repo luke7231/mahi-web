@@ -22,6 +22,7 @@ const Login: React.FC = () => {
     }, 2000);
   };
   const handleKakaoButtonClick = () => {
+    // 카카오 간편 로그인
     kakao.Auth.authorize({
       redirectUri: `${WEB_URL}/auth`,
       scope: "account_email",
