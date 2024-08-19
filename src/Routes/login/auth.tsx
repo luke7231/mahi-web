@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { gql, useLazyQuery, useQuery } from "@apollo/client";
+import { gql, useLazyQuery } from "@apollo/client";
 
 const LOGIN = gql`
   query Login($code: String!, $client_id: String!, $redirect_url: String!) {
@@ -20,25 +20,62 @@ const LOGIN = gql`
 `;
 
 const KakaoRedirectHandler = () => {
-  //   const [res, setRes] = useState("nothing");
-  const [login] = useLazyQuery(LOGIN);
-  const [params, setParams] = useState("");
+  const [login, { loading, error, data }] = useLazyQuery(LOGIN);
+
   useEffect(() => {
-    const params = new URL(document.location.toString()).searchParams;
-    setParams(params.toString());
-    const code = params.get("code");
+    const searchParams = new URL(document.location.toString()).searchParams;
+    const code = searchParams.get("code");
     const client_id = process.env.REACT_APP_KAKAO_CLIENT_ID;
     const redirect_url = `${process.env.REACT_APP_URL}/auth`;
-    login({
-      variables: { code, client_id, redirect_url },
-    });
-  }, []);
+
+    if (code && client_id && redirect_url) {
+      login({
+        variables: { code, client_id, redirect_url },
+      });
+    }
+  }, [login]);
 
   return (
-    <div>
-      {/* <div>{res}</div> */}
-      kakao login
-      <div>{params}</div>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+        {loading ? (
+          <div className="flex flex-col items-center">
+            <svg
+              className="animate-spin h-8 w-8 text-blue-600 mb-4"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            <p className="text-lg font-semibold text-gray-700">
+              카카오 로그인을 진행 중입니다...
+            </p>
+          </div>
+        ) : error ? (
+          <>
+            <p className="text-red-500">로그인 중 오류가 발생했습니다.</p>
+            {error.message}
+          </>
+        ) : (
+          <p className="text-lg font-semibold text-gray-700">
+            로그인이 완료되었습니다. <br />
+            잠시만 기다려 주세요...
+          </p>
+        )}
+      </div>
     </div>
   );
 };
