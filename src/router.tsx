@@ -16,6 +16,7 @@ import { FailPage } from "./Routes/payment/fail";
 import Store from "./Routes/store";
 import Product from "./Routes/product";
 import CheckoutPage from "./Routes/checkout";
+import Login from "./Routes/login";
 
 const Router = () => {
   const { isFirst } = useAuth();
@@ -43,6 +44,7 @@ const Router = () => {
         <Route path="/payment" element={<Payment />} />
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/fail" element={<FailPage />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );
