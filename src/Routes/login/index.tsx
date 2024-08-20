@@ -86,6 +86,13 @@ const Login: React.FC = () => {
           >
             카카오로 계속하기
           </button>
+
+          <button
+            className={`mt-4 w-full py-3 rounded-lg text-white font-semibold bg-black`}
+            // onClick={handleKakaoButtonClick}
+          >
+            Apple Id로 계속하기
+          </button>
         </form>
       </div>
     </div>
