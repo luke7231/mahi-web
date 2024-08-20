@@ -8,7 +8,9 @@ import {
   InMemoryCache,
   ApolloProvider,
   gql,
+  createHttpLink,
 } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 import { CartProvider } from "./core/cart";
 // import { getResponsiveMaxWidth } from "./utils/layout-util";
 // import { AuthProvider } from "./contexts/auth-provider";
@@ -25,12 +27,31 @@ window.addEventListener("message", (event) => {
   }
 });
 
-export const client = new ApolloClient({
-  // uri: "http://localhost:4000",
-  // uri: "http://172.25.81.144:4000",
+const httpLink = createHttpLink({
   uri: "http://192.168.200.181:4000",
+});
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = localStorage.getItem("jwt");
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    },
+  };
+});
+
+export const client = new ApolloClient({
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
+// export const client = new ApolloClient({
+//   // uri: "http://localhost:4000",
+//   // uri: "http://172.25.81.144:4000",
+//   uri: "http://192.168.200.181:4000",
+//   cache: new InMemoryCache(),
+// });
 
 function App() {
   return (

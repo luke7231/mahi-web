@@ -1,26 +1,41 @@
 import React, { useEffect, useState } from "react";
-import { gql, useLazyQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
+import { gql } from "../../__generated__";
+import { useNavigate } from "react-router-dom";
 
-const LOGIN = gql`
+const LOGIN = gql(`
   query Login($code: String!, $client_id: String!, $redirect_url: String!) {
     login(code: $code, client_id: $client_id, redirect_url: $redirect_url) {
-      id
-      name
-      email
-      password
-      phone
-      dateOfBirth
-      gender
-      address
-      createdAt
-      updatedAt
-      push_token
+      user {
+        id
+        name
+        email
+        password
+        phone
+        dateOfBirth
+        gender
+        address
+        createdAt
+        updatedAt
+        push_token
+      }
+      token
     }
   }
-`;
+`);
 
 const KakaoRedirectHandler = () => {
-  const [login, { loading, error, data }] = useLazyQuery(LOGIN);
+  const navigate = useNavigate();
+  const [login, { loading, error, data }] = useLazyQuery(LOGIN, {
+    onCompleted: (data) => {
+      const jwt = data.login.token;
+      if (jwt) {
+        localStorage.setItem("jwt", jwt);
+        // TODO: 원래 있던 곳으로 보낸다.
+        navigate("/");
+      }
+    },
+  });
 
   useEffect(() => {
     const searchParams = new URL(document.location.toString()).searchParams;
