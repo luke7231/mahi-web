@@ -8,23 +8,24 @@ const Onboarding2 = () => {
   const { doneOnboarding } = useAuth();
   const onClickButton = () => {
     // app
-    // postMessage("REQ_NOTIFICATION", "");
+    postMessage("REQ_NOTIFICATION", "");
     // web
-    doneOnboarding(); // useAuth에서 전역변수 수정 & 로컬스토리지에 온보딩 끝났음을 저장.
-    navigate("/");
-  };
-
-  // rn에서 Webview로 보낸 값을 수신하는 함수
-  const listener = (event: any) => {
-    const appData = JSON.parse(event.data);
-
-    if (appData.type === "DONE") {
-      doneOnboarding();
-      navigate("/");
-    }
+    // doneOnboarding(); // useAuth에서 전역변수 수정 & 로컬스토리지에 온보딩 끝났음을 저장.
+    // navigate("/");
   };
 
   useEffect(() => {
+    // rn에서 Webview로 보낸 값을 수신하는 함수
+    const listener = (event: any) => {
+      if (typeof event.data === "string" && event.data.startsWith(`{"type"`)) {
+        const appData = JSON.parse(event?.data);
+        if (appData.type === "DONE") {
+          doneOnboarding();
+          navigate("/");
+        }
+      }
+    };
+
     // android, ios 구분하는 코드
     const receiver = navigator.userAgent.includes("Android")
       ? document

@@ -1,28 +1,26 @@
 import { useNavigate } from "react-router-dom";
 import { postMessage } from "../../core/message";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Onboarding1 = () => {
   const navigate = useNavigate();
-
   const onClickButton = () => {
     // app
-    // postMessage("REQ_LOCATION", "");
+    postMessage("REQ_LOCATION", "");
     // web
-    navigate("/onboarding2");
-  };
-
-  // rn에서 Webview로 보낸 값을 수신하는 함수
-  const listener = (event: any) => {
-    if (typeof event.data === "string") {
-      const appData = JSON.parse(event?.data);
-      if (appData?.type === "DONE") {
-        navigate("/onboarding2");
-      }
-    }
+    // navigate("/onboarding2");
   };
 
   useEffect(() => {
+    // rn에서 Webview로 보낸 값을 수신하는 함수
+    const listener = (event: any) => {
+      if (typeof event.data === "string" && event.data.startsWith(`{"type"`)) {
+        const appData = JSON.parse(event?.data);
+        if (appData?.type === "DONE") {
+          navigate("/onboarding2");
+        }
+      }
+    };
     // android, ios 구분하는 코드
     const receiver = navigator.userAgent.includes("Android")
       ? document
