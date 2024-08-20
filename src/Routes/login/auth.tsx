@@ -3,9 +3,9 @@ import { useLazyQuery } from "@apollo/client";
 import { gql } from "../../__generated__";
 import { useNavigate } from "react-router-dom";
 
-const LOGIN = gql(`
+const KAKAO_LOGIN = gql(`
   query Login($code: String!, $client_id: String!, $redirect_url: String!) {
-    login(code: $code, client_id: $client_id, redirect_url: $redirect_url) {
+    kakaoLogin(code: $code, client_id: $client_id, redirect_url: $redirect_url) {
       user {
         id
         name
@@ -26,9 +26,9 @@ const LOGIN = gql(`
 
 const KakaoRedirectHandler = () => {
   const navigate = useNavigate();
-  const [login, { loading, error, data }] = useLazyQuery(LOGIN, {
+  const [login, { loading, error, data }] = useLazyQuery(KAKAO_LOGIN, {
     onCompleted: (data) => {
-      const jwt = data.login.token;
+      const jwt = data.kakaoLogin.token;
       if (jwt) {
         localStorage.setItem("jwt", jwt);
         // TODO: 원래 있던 곳으로 보낸다.
