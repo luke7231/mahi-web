@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLazyQuery } from "@apollo/client";
 import { gql } from "../../__generated__";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../core/auth";
 
 const KAKAO_LOGIN = gql(`
   query Login($code: String!, $client_id: String!, $redirect_url: String!) {
@@ -25,12 +26,14 @@ const KAKAO_LOGIN = gql(`
 `);
 
 const KakaoRedirectHandler = () => {
+  const { login: authLogin } = useAuth();
   const navigate = useNavigate();
-  const [login, { loading, error, data }] = useLazyQuery(KAKAO_LOGIN, {
+  const [kakaoLogin, { loading, error, data }] = useLazyQuery(KAKAO_LOGIN, {
     onCompleted: (data) => {
       const jwt = data.kakaoLogin.token;
       if (jwt) {
         localStorage.setItem("jwt", jwt);
+        authLogin();
         // TODO: 원래 있던 곳으로 보낸다.
         navigate("/");
       }
@@ -44,11 +47,11 @@ const KakaoRedirectHandler = () => {
     const redirect_url = `${process.env.REACT_APP_URL}/auth`;
 
     if (code && client_id && redirect_url) {
-      login({
+      kakaoLogin({
         variables: { code, client_id, redirect_url },
       });
     }
-  }, [login]);
+  }, [kakaoLogin]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
