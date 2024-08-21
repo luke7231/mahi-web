@@ -28,7 +28,26 @@ const Login: React.FC = () => {
       scope: "account_email",
     });
   };
+  const loginWithApple = async (e: any) => {
+    e.preventDefault();
 
+    console.log("sign in with apple");
+
+    window.AppleID.auth.init({
+      clientId: "com.luke7299.mahi-sign-in",
+      scope: "email",
+      redirectURI: `${process.env.REACT_APP_URL}/apple-auth`,
+      state: "hey",
+      usePopup: true,
+    });
+
+    try {
+      const res = await window.AppleID.auth.signIn();
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
@@ -89,7 +108,7 @@ const Login: React.FC = () => {
 
           <button
             className={`mt-4 w-full py-3 rounded-lg text-white font-semibold bg-black`}
-            // onClick={handleKakaoButtonClick}
+            onClick={loginWithApple}
           >
             Apple Id로 계속하기
           </button>
