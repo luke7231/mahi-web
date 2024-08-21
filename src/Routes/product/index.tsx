@@ -58,28 +58,25 @@ const Product = () => {
           {/* 헤더 */}
           <header className="bg-gray-200 p-4 rounded-lg shadow-md mb-6">
             <h1 className="text-2xl font-bold">{product.name}</h1>
-            <p className="text-sm text-gray-600">Product ID: {product.id}</p>
           </header>
 
           {/* 상품 정보 */}
           <section className="bg-white p-4 rounded-lg shadow-md mb-6">
             <div className="flex items-center mb-4">
               <div className="flex-1">
-                <p className="text-xl font-semibold">Price: ${product.price}</p>
+                <p className="text-lg font-semibold">가격: {product.price}원</p>
                 {product.discountPrice < product.price && (
-                  <p className="text-lg text-red-500 font-semibold">
-                    Discount Price: ${product.discountPrice}
+                  <p className="text-xl text-red-500 font-semibold">
+                    현재 할인가: {product.discountPrice}원
                   </p>
                 )}
-                <p className="text-gray-600">
-                  Quantity Available: {product.quantity}
-                </p>
-                <p className="text-gray-500 text-sm">
+                <p className="text-gray-600">수량: {product.quantity}개 남음</p>
+                {/* <p className="text-gray-500 text-sm">
                   Created on {new Date(product.createdAt).toLocaleDateString()}
                 </p>
                 <p className="text-gray-500 text-sm">
                   Updated on {new Date(product.updatedAt).toLocaleDateString()}
-                </p>
+                </p> */}
               </div>
               <div className="flex-shrink-0">
                 {/* Placeholder for product image */}
@@ -97,22 +94,21 @@ const Product = () => {
             </div>
 
             <div className="mt-4">
-              <p className="text-sm text-gray-600">
-                Sale ends on:{" "}
-                {new Date(product.saleEndTime).toLocaleDateString()}
+              <p className="text-sm text-gray-600 font-bold">
+                마감시간: {new Date(product.saleEndTime).toLocaleDateString()}
               </p>
             </div>
           </section>
 
           {/* 상품 설명 */}
           <section className="bg-white p-4 rounded-lg shadow-md mb-6">
-            <h2 className="text-xl font-semibold mb-4">Description</h2>
+            <h2 className="text-xl font-semibold mb-4">설명</h2>
             <p className="text-gray-700">{product.description}</p>
           </section>
 
           {/* 수량 선택 */}
           <section className="bg-white p-4 rounded-lg shadow-md mb-6">
-            <h2 className="text-xl font-semibold mb-4">Quantity</h2>
+            <h2 className="text-xl font-semibold mb-4">수량</h2>
             <div className="flex items-center space-x-4">
               <button
                 onClick={decreaseQuantity}
