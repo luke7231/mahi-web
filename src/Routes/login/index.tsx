@@ -1,8 +1,35 @@
+import { gql, useLazyQuery } from "@apollo/client";
 import React, { useState } from "react";
+import { useAuth } from "../../core/auth";
+import { useNavigate } from "react-router-dom";
 
 const WEB_URL = process.env.REACT_APP_URL;
 
+const APPLE_LOGIN = gql`
+  query User($idToken: String!) {
+    appleLogin(id_token: $idToken) {
+      user {
+        id
+        name
+        email
+        password
+        phone
+        dateOfBirth
+        gender
+        address
+        createdAt
+        updatedAt
+        push_token
+      }
+      token
+    }
+  }
+`;
+
 const Login: React.FC = () => {
+  const { login: authLogin } = useAuth();
+  const navigate = useNavigate();
+  const [appleLogin, { data, error }] = useLazyQuery(APPLE_LOGIN);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -44,6 +71,22 @@ const Login: React.FC = () => {
     try {
       const res = await window.AppleID.auth.signIn();
       console.log(res);
+      const id_token = res.authorization.id_token;
+      await appleLogin({
+        variables: {
+          idToken: id_token,
+        },
+        onCompleted: (data) => {
+          const jwt = data.appleLogin.token;
+          if (jwt) {
+            localStorage.setItem("jwt", jwt);
+            authLogin();
+            // TODO: 원래 있던 곳으로 보낸다.
+            navigate("/");
+          }
+        },
+        onError: (e) => alert(e),
+      });
     } catch (error) {
       console.log(error);
     }
