@@ -53,7 +53,7 @@ const Onboarding2 = () => {
             </p>
           </div>
           <button
-            className="text-white font-bold p-3 bg-sky-500 w-full"
+            className="text-white font-bold p-3 bg-gray-800 w-full"
             onClick={onClickButton}
           >
             알람 설정

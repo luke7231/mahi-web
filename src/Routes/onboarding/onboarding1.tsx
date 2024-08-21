@@ -41,7 +41,7 @@ const Onboarding1 = () => {
           <p>내 근처 마감 상품을 볼 수 있어요!</p>
         </div>
         <button
-          className="text-white font-bold p-3 bg-sky-500 w-full"
+          className="text-white font-bold p-3 bg-gray-800 w-full"
           onClick={onClickButton}
         >
           위치 설정
