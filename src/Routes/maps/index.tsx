@@ -186,15 +186,15 @@ function Map({ stores }: { stores: Store[] }) {
     console.log("내 현재 위치로 돌아오면서 재 정렬한다?");
   };
   return (
-    <div className="w-[100%]">
+    <div className="w-[100%] mt-4">
       <div
         ref={mapElement}
         id="map"
-        style={{ width: "100%", height: "400px" }}
+        style={{ width: "100%", height: "800px" }}
       ></div>
       <div className="flex items-center justify-center">
         <div>
-          <div
+          {/* <div
             className="bg-orange-400 p-2 rounded-md mt-4"
             // onClick={() => clickButton()}
             onClick={() => window.location.reload()}
@@ -207,7 +207,7 @@ function Map({ stores }: { stores: Store[] }) {
             onClick={() => navigate("/like")}
           >
             go to like
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
