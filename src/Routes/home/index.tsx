@@ -128,65 +128,84 @@ const Home = () => {
     navigate(`store/${id}`);
   }
   return (
-    <div className="w-full h-[100vh] flex flex-col">
+    <div className="w-full h-[100vh] flex flex-col bg-white">
       {/* LOCATION */}
       <div
-        className="p-2 flex border underline font-bold"
+        className="p-2 bg-gray-100 flex justify-center items-center cursor-pointer border-b border-gray-300"
         onClick={() => navigate("/location")}
       >
-        📍 내 위치를 설정해주세요.
+        <span className="text-blue-500 font-bold underline">
+          📍 내 위치를 설정해주세요.
+        </span>
       </div>
-      <div>
-        <span>token: </span>
+
+      {/* <div className="p-2 text-sm text-gray-600">
+        <span className="cursor-pointer" onClick={() => localStorage.clear()}>
+          token:
+        </span>{" "}
         {localStorage.getItem("expo_push_token")}
-      </div>
+      </div> */}
+
       {/* TAB */}
-      <div className="pl-6 pr-6 mt-8">
-        <div className="flex justify-center  ">
+      <div className="px-6 mt-8 ">
+        <div className="flex justify-center rounded-lg shadow-md">
           <div
-            className="w-[50%] text-center text-white bg-sky-400 p-4 font-bold rounded-l-xl"
+            className={`w-[50%] text-center p-4 text-xl font-bold cursor-pointer ${
+              isList ? "bg-gray-800 text-white" : "bg-gray-200"
+            } rounded-l-xl`}
             onClick={() => onClickTab("LIST")}
           >
             리스트
           </div>
           <div
-            className="w-[50%] text-center bg-gray-200 p-4 font-bold rounded-r-xl"
+            className={`w-[50%] text-center p-4 text-xl font-bold cursor-pointer ${
+              !isList ? "bg-gray-800 text-white" : "bg-gray-200"
+            } rounded-r-xl`}
             onClick={() => onClickTab("MAP")}
           >
             지도
           </div>
         </div>
       </div>
+
       {/* LIST */}
       {isList ? (
-        <div className="mt-8 pl-4 pr-4">
-          {loading ? <div>loading...</div> : null}
-          {data?.stores?.map((store) => {
-            return (
+        <div className="mt-8 px-4 flex-1 overflow-y-auto">
+          {loading ? (
+            <div className="text-center text-gray-500">Loading...</div>
+          ) : (
+            data?.stores?.map((store) => (
               <div
-                className="h-[120px] shadow-md mb-4 flex items-center rounded-md"
+                key={store?.id}
+                className="h-[120px] shadow-md mb-4 flex items-center p-4 bg-gray-50 rounded-md cursor-pointer hover:shadow-lg transition-shadow"
                 onClick={() => onClickStore(store?.id as number)}
               >
-                <div className="ml-2 font-semibold text-[18px]">
-                  {store?.title}
+                <div className="flex-1">
+                  <div className="text-lg font-semibold text-gray-800">
+                    {store?.title}
+                  </div>
                 </div>
                 <div
-                  onClick={async () => {
+                  className="text-2xl"
+                  onClick={async (e) => {
+                    e.stopPropagation(); // Prevents triggering the store click
                     await onClickLike(
                       store?.id as number,
-                      store?.isLiked as boolean | null // login 안했으면 null 일 수 있어서 일단 넣어놓음.
+                      store?.isLiked as boolean
                     );
                   }}
                 >
                   {store?.isLiked ? "❤️" : "🤍"}
                 </div>
               </div>
-            );
-          })}
+            ))
+          )}
         </div>
       ) : (
         <Map stores={data?.stores as Store[]} />
       )}
+
+      {/* BOTTOM TAB */}
       <BottomTab />
     </div>
   );
