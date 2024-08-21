@@ -56,8 +56,8 @@ const Product = () => {
       {product ? (
         <>
           {/* 헤더 */}
-          <header className="bg-gray-200 p-4 rounded-lg shadow-md mb-6">
-            <h1 className="text-2xl font-bold">{product.name}</h1>
+          <header className="bg-gray-800 p-4 rounded-lg shadow-md mb-6">
+            <h1 className="text-2xl font-bold text-white">{product.name}</h1>
           </header>
 
           {/* 상품 정보 */}
@@ -68,7 +68,7 @@ const Product = () => {
                   가격: {product.price.toLocaleString()}원
                 </p>
                 {product.discountPrice < product.price && (
-                  <p className="text-xl text-red-500 font-semibold">
+                  <p className="text-xl text-green-600 font-semibold">
                     현재 할인가: {product.discountPrice.toLocaleString()}원
                   </p>
                 )}
