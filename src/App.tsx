@@ -28,7 +28,7 @@ window.addEventListener("message", (event) => {
 });
 
 const httpLink = createHttpLink({
-  uri: "http://192.168.200.181:4000",
+  uri: process.env.REACT_APP_API_URL,
 });
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
