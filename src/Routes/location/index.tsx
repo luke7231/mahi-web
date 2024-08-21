@@ -145,7 +145,7 @@ function Location() {
       {/* 완료 버튼 */}
       <div className="pl-2 pr-2 mt-2">
         <div
-          className="bg-sky-400 rounded-xl font-bold text-white p-3 text-lg text-center"
+          className="bg-gray-800 rounded-xl font-bold text-white p-3 text-lg text-center shadow-md"
           onClick={() => onComplete()}
         >
           선택한 위치로 설정
