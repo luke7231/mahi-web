@@ -64,10 +64,12 @@ const Product = () => {
           <section className="bg-white p-4 rounded-lg shadow-md mb-6">
             <div className="flex items-center mb-4">
               <div className="flex-1">
-                <p className="text-lg font-semibold">가격: {product.price}원</p>
+                <p className="text-lg font-semibold">
+                  가격: {product.price.toLocaleString()}원
+                </p>
                 {product.discountPrice < product.price && (
                   <p className="text-xl text-red-500 font-semibold">
-                    현재 할인가: {product.discountPrice}원
+                    현재 할인가: {product.discountPrice.toLocaleString()}원
                   </p>
                 )}
                 <p className="text-gray-600">수량: {product.quantity}개 남음</p>
@@ -139,7 +141,7 @@ const Product = () => {
               className="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-600 transition"
               onClick={() => onClickButton()}
             >
-              1개 담기
+              {quantity}개 담기
             </button>
           </div>
         </>
