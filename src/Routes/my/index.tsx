@@ -4,9 +4,17 @@ import BottomTab from "../../components/bottom-tab";
 import { gql, useMutation } from "@apollo/client";
 import { useAuth } from "../../core/auth";
 
-const DELETE_USER = gql`
+const KAKAO_DELETE_USER = gql`
   mutation KakaoDeleteUser {
     kakaoDeleteUser {
+      ok
+      error
+    }
+  }
+`;
+const APPLE_DELETE_USER = gql`
+  mutation AppleDeleteUser($code: String!) {
+    appleDeleteUser(code: $code) {
       ok
       error
     }
@@ -15,17 +23,59 @@ const DELETE_USER = gql`
 const My = () => {
   const navigate = useNavigate();
   const { logout } = useAuth();
-  const [deleteUser, { error }] = useMutation(DELETE_USER);
-  function onClickDelete() {
-    deleteUser({
-      onCompleted: (data) => {
-        if (data.kakaoDeleteUser.ok) {
-          localStorage.removeItem("jwt");
-          logout();
-          navigate("/");
+  const [kakaoDeleteUser, { error }] = useMutation(KAKAO_DELETE_USER);
+  const [appleDeleteUser, { error: appleError }] =
+    useMutation(APPLE_DELETE_USER);
+  function onClickLogout() {
+    localStorage.removeItem("jwt");
+    logout();
+    navigate("/");
+  }
+  async function onClickDelete() {
+    const isKakao = localStorage.getItem("isKakao");
+    if (isKakao) {
+      kakaoDeleteUser({
+        onCompleted: (data) => {
+          if (data.kakaoDeleteUser.ok) {
+            localStorage.removeItem("jwt");
+            localStorage.removeItem("isKakao");
+            logout();
+            navigate("/");
+          }
+        },
+      });
+    } else {
+      console.log("sign in with apple");
+
+      window.AppleID.auth.init({
+        clientId: "com.luke7299.mahi-sign-in",
+        scope: "email",
+        redirectURI: `${process.env.REACT_APP_URL}/apple-auth`,
+        state: "hey",
+        usePopup: true,
+      });
+
+      try {
+        const res = await window.AppleID.auth.signIn();
+        if (res) {
+          const code = res.authorization.code;
+          appleDeleteUser({
+            variables: {
+              code,
+            },
+            onCompleted: (data) => {
+              if (data.appleDeleteUser.ok) {
+                localStorage.removeItem("jwt");
+                logout();
+                navigate("/");
+              }
+            },
+          });
         }
-      },
-    });
+      } catch (e) {
+        console.log(error);
+      }
+    }
   }
   return (
     <div className="p-4">
@@ -60,6 +110,14 @@ const My = () => {
         <li>
           <div
             className="text-blue-500 hover:underline"
+            onClick={() => onClickLogout()}
+          >
+            Logout
+          </div>
+        </li>
+        <li>
+          <div
+            className="text-red-500 hover:underline"
             onClick={() => onClickDelete()}
           >
             Delete Account
