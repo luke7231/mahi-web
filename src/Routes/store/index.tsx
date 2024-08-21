@@ -22,6 +22,7 @@ const GET_STORE = gql`
         id
         name
         discountPrice
+        img
       }
     }
   }
@@ -95,20 +96,34 @@ const Store = () => {
               {store.products.map((product: Product) => (
                 <li
                   key={product.id}
+                  onClick={() => onClickProduct(product.id)}
                   className="border border-gray-300 rounded-lg p-4 flex justify-between items-center"
                 >
-                  <div>
-                    <p className="text-lg font-semibold">{product.name}</p>
-                    <p className="text-gray-600">
-                      Discount Price: ${product.discountPrice}
-                    </p>
+                  <div className="flex">
+                    {product.img ? (
+                      <img
+                        src={product.img}
+                        alt={product.name}
+                        className="w-[72px] h-[72px] object-cover rounded-lg"
+                      />
+                    ) : null}
+
+                    {/* 상품 정보 섹션 */}
+                    <div className="flex flex-col justify-center ml-2">
+                      <h2 className="text-xl font-semibold mb-1">
+                        {product.name}
+                      </h2>
+                    </div>
                   </div>
-                  <button
-                    className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+                  {/* <button
+                    className="bg-blue-500 text-white px-2 py-2 rounded-lg text-sm"
                     onClick={() => onClickProduct(product.id)}
                   >
-                    View Details
-                  </button>
+                    
+                  </button> */}
+                  <p className="text-md font-bold text-green-600">
+                    {product?.discountPrice?.toFixed(0)}원
+                  </p>
                 </li>
               ))}
             </ul>

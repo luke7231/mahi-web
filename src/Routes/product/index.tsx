@@ -18,6 +18,7 @@ const GET_PRODUCT = gql`
       saleEndTime
       createdAt
       updatedAt
+      img
     }
   }
 `;
@@ -83,7 +84,14 @@ const Product = () => {
               <div className="flex-shrink-0">
                 {/* Placeholder for product image */}
                 <div className="w-32 h-32 bg-gray-300 rounded-lg flex items-center justify-center">
-                  <span className="text-gray-500 text-xl">Image</span>
+                  {product.img ? (
+                    <img
+                      src={product.img}
+                      className="object-cover w-32 h-32 rounded-lg"
+                    />
+                  ) : (
+                    <span className="text-gray-500 text-xl">Image</span>
+                  )}
                 </div>
               </div>
             </div>
