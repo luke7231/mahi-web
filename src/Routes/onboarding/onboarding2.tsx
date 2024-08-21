@@ -8,10 +8,10 @@ const Onboarding2 = () => {
   const { doneOnboarding } = useAuth();
   const onClickButton = () => {
     // app
-    postMessage("REQ_NOTIFICATION", "");
+    // postMessage("REQ_NOTIFICATION", "");
     // web
-    // doneOnboarding(); // useAuth에서 전역변수 수정 & 로컬스토리지에 온보딩 끝났음을 저장.
-    // navigate("/");
+    doneOnboarding(); // useAuth에서 전역변수 수정 & 로컬스토리지에 온보딩 끝났음을 저장.
+    navigate("/");
   };
 
   useEffect(() => {

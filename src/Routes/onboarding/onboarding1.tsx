@@ -6,9 +6,9 @@ const Onboarding1 = () => {
   const navigate = useNavigate();
   const onClickButton = () => {
     // app
-    postMessage("REQ_LOCATION", "");
+    // postMessage("REQ_LOCATION", "");
     // web
-    // navigate("/onboarding2");
+    navigate("/onboarding2");
   };
 
   useEffect(() => {
