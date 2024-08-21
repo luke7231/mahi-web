@@ -33,6 +33,8 @@ const KakaoRedirectHandler = () => {
       const jwt = data.kakaoLogin.token;
       if (jwt) {
         localStorage.setItem("jwt", jwt);
+        localStorage.setItem("isKakao", "1");
+
         authLogin();
         // TODO: 원래 있던 곳으로 보낸다.
         navigate("/");
