@@ -12,8 +12,8 @@ import { Store } from "../../__generated__/graphql";
 import BottomTab from "../../components/bottom-tab";
 // localStorage.clear();
 const GET_STORES = gql(`
-  query Stores($lat: Float, $lng: Float, $userId: Int) {
-    stores(lat: $lat, lng: $lng, userId: $userId) {
+  query Stores($lat: Float, $lng: Float) {
+    stores(lat: $lat, lng: $lng) {
       id
       lat
       lng
@@ -51,7 +51,6 @@ const Home = () => {
     variables: {
       lat: hasLastLo ? getLocationFromStorage().lat : null,
       lng: hasLastLo ? getLocationFromStorage().lng : null,
-      userId: 1, //썌얘
     },
     onCompleted: (data) => console.log(data),
     fetchPolicy: "network-only",
@@ -67,7 +66,6 @@ const Home = () => {
         variables: {
           lat: hasLastLo ? getLocationFromStorage().lat : null,
           lng: hasLastLo ? getLocationFromStorage().lng : null,
-          userId: 1,
         },
       },
     ],
