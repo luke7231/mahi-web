@@ -1,6 +1,12 @@
 // AuthContext.tsx
 import { gql, useMutation } from "@apollo/client";
-import { createContext, useContext, ReactNode, useState } from "react";
+import {
+  createContext,
+  useContext,
+  ReactNode,
+  useState,
+  useEffect,
+} from "react";
 
 interface AuthContextProps {
   isLoggedIn: boolean;
@@ -34,10 +40,16 @@ const CREATE_PUSH_TOKEN = gql`
     }
   }
 `;
+const SET_TOKEN_TO_USER = gql`
+  mutation SetTokenToUser($push_token: String!) {
+    setTokenToUser(push_token: $push_token)
+  }
+`;
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(processIsLoggedIn);
   const [isFirst, setIsFirst] = useState(processIsFirst);
   const [createToken] = useMutation(CREATE_PUSH_TOKEN);
+  const [setTokenToUser] = useMutation(SET_TOKEN_TO_USER);
 
   const login = () => {
     // 로그인 로직 구현 (예: 사용자 인증)
@@ -66,6 +78,19 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsFirst(false);
   };
 
+  useEffect(() => {
+    const push_token = localStorage.getItem("expo_push_token");
+    const jwt = localStorage.getItem("jwt");
+    // const isServerSet = localStorage.getItem("isServerSet");
+    if (push_token && jwt) {
+      //  로그인하고 푸시토큰 했으면 무조건 보내는 건?
+      setTokenToUser({
+        variables: {
+          push_token,
+        },
+      });
+    }
+  }, []);
   return (
     <AuthContext.Provider
       value={{ isLoggedIn, login, logout, isFirst, doneOnboarding }}
