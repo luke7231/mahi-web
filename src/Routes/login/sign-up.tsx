@@ -1,20 +1,60 @@
+import { gql, useMutation } from "@apollo/client";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../core/auth";
+
+const PURE_SIGNUP = gql`
+  mutation PureSignup($email: String!, $password: String!) {
+    pureSignup(email: $email, password: $password) {
+      user {
+        id
+        email
+        createdAt
+        updatedAt
+      }
+      token
+    }
+  }
+`;
 
 const SignUp: React.FC = () => {
+  const { login: authLogin } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [pureSignup] = useMutation(PURE_SIGNUP, {
+    onCompleted: (data) => {
+      setIsSubmitting(false);
+      const jwt = data.pureSignup.token;
+      if (jwt) {
+        localStorage.setItem("jwt", jwt);
+        authLogin();
+        // TODO: 원래 있던 곳으로 보낸다.
+        navigate("/");
+      }
+    },
+    onError: (e) => {
+      setIsSubmitting(false);
+      alert(e);
+    },
+  });
 
   const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
     // 여기서 회원가입 로직을 처리하세요.
     if (password !== passwordCheck) {
-      alert("Passwords do not match!");
+      alert("비밀번호가 일치하지 않습니다.");
       return;
     }
-    alert("Sign up successful!");
+    pureSignup({
+      variables: {
+        email,
+        password,
+      },
+    });
   };
 
   return (
@@ -80,9 +120,14 @@ const SignUp: React.FC = () => {
 
           <button
             type="submit"
-            className="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+            className={`w-full py-3 rounded-lg text-white font-semibold ${
+              isSubmitting
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-500 hover:bg-blue-600 transition"
+            }`}
+            disabled={isSubmitting}
           >
-            가입하기
+            {isSubmitting ? "가입 중..." : "가입하기"}
           </button>
         </form>
         <div className="text-center mt-4">
