@@ -97,11 +97,11 @@ const Home = () => {
     }
   }
   async function onClickLike(storeId: number, isLiked: boolean | null) {
-    // if (!isLoggedIn) {
-    //   //
-    //   return;
-    //   // TODO: 로그인 페이지로 보낸다.
-    // }
+    if (!isLoggedIn) {
+      navigate("/login");
+      return;
+      // TODO: 로그인 페이지로 보낸다.
+    }
     // 토글처리
     if (isLiked) {
       // deleteLike
