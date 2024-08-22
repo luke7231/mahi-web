@@ -50,6 +50,7 @@ const Login: React.FC = () => {
       const jwt = data.appleLogin.token;
       if (jwt) {
         localStorage.setItem("jwt", jwt);
+        localStorage.setItem("isApple", "1");
         authLogin();
         // TODO: 원래 있던 곳으로 보낸다.
         navigate("/");
@@ -167,12 +168,12 @@ const Login: React.FC = () => {
             />
           </div>
           <div className="text-center mb-4">
-            <button
+            <div
               onClick={() => navigate("/sign-up")}
               className="text-sm text-blue-500 underline"
             >
               이메일로 회원가입
-            </button>
+            </div>
           </div>
           <button
             type="submit"

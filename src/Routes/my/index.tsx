@@ -20,12 +20,21 @@ const APPLE_DELETE_USER = gql`
     }
   }
 `;
+const PURE_DELETE_USER = gql`
+  mutation PureDeleteUser {
+    pureDeleteUser {
+      ok
+      error
+    }
+  }
+`;
 const My = () => {
   const navigate = useNavigate();
   const { logout } = useAuth();
   const [kakaoDeleteUser, { error }] = useMutation(KAKAO_DELETE_USER);
   const [appleDeleteUser, { error: appleError }] =
     useMutation(APPLE_DELETE_USER);
+  const [pureDeleteUser] = useMutation(PURE_DELETE_USER);
   function onClickLogout() {
     localStorage.removeItem("jwt");
     logout();
@@ -33,6 +42,8 @@ const My = () => {
   }
   async function onClickDelete() {
     const isKakao = localStorage.getItem("isKakao");
+    const isApple = localStorage.getItem("isApple");
+    console.log(isApple);
     if (isKakao) {
       kakaoDeleteUser({
         onCompleted: (data) => {
@@ -44,7 +55,7 @@ const My = () => {
           }
         },
       });
-    } else {
+    } else if (isApple) {
       console.log("sign in with apple");
 
       window.AppleID.auth.init({
@@ -75,6 +86,16 @@ const My = () => {
       } catch (e) {
         console.log(error);
       }
+    } else {
+      pureDeleteUser({
+        onCompleted: (data) => {
+          if (data.pureDeleteUser.ok) {
+            localStorage.removeItem("jwt");
+            logout();
+            navigate("/");
+          }
+        },
+      });
     }
   }
   return (
