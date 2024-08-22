@@ -23,8 +23,8 @@ const GET_STORES = gql(`
   }
 `);
 const LIKE_STORE = apolloGql`
-  mutation LikeStore($userId: Int!, $storeId: Int!) {
-    likeStore(userId: $userId, storeId: $storeId) {
+  mutation LikeStore($storeId: Int!) {
+    likeStore(storeId: $storeId) {
       id
       userId
       storeId
@@ -33,8 +33,8 @@ const LIKE_STORE = apolloGql`
   }
 `;
 const CANCEL_LIKE = apolloGql`
-  mutation CancelLike($userId: Int!, $storeId: Int!) {
-    cancelLike(userId: $userId, storeId: $storeId) {
+  mutation CancelLike($storeId: Int!) {
+    cancelLike(storeId: $storeId) {
       id
       userId
       storeId
@@ -107,7 +107,6 @@ const Home = () => {
       // deleteLike
       cancelLike({
         variables: {
-          userId: 1, //  내 아이디로 !!
           storeId,
         },
       });
@@ -115,7 +114,6 @@ const Home = () => {
       // createLike
       likeStore({
         variables: {
-          userId: 1, //  내  아이디로!!
           storeId,
         },
       });
