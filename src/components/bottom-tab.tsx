@@ -24,7 +24,7 @@ const BottomTab = () => {
       {/* LIKE Tab */}
       <div
         className={getTabClassName("/like")}
-        onClick={() => navigate("/like")}
+        onClick={() => (isLoggedIn ? navigate("/like") : navigate("/login"))}
       >
         <span>LIKE</span>
       </div>
