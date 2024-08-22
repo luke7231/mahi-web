@@ -101,14 +101,14 @@ const My = () => {
   return (
     <div>
       <div className="p-4">
-        <h1 className="text-2xl font-bold mb-4">My Page</h1>
+        <h1 className="text-2xl font-bold mb-4">마이페이지</h1>
         <ul className="space-y-2">
           <li>
             <Link
               to="/purchase-history"
               className="text-blue-500 hover:underline"
             >
-              Purchase History
+              이용 내역
             </Link>
           </li>
           <li>
@@ -116,17 +116,12 @@ const My = () => {
               to="/customer-service"
               className="text-blue-500 hover:underline"
             >
-              Customer Service
+              문의하기
             </Link>
           </li>
           <li>
-            <Link to="/notice" className="text-blue-500 hover:underline">
-              Notice
-            </Link>
-          </li>
-          <li>
-            <Link to="/profile-edit" className="text-blue-500 hover:underline">
-              Profile Edit
+            <Link to="/policy" className="text-blue-500 hover:underline">
+              약관 및 정책
             </Link>
           </li>
           <li>
@@ -134,7 +129,7 @@ const My = () => {
               className="text-blue-500 hover:underline"
               onClick={() => onClickLogout()}
             >
-              Logout
+              로그아웃
             </div>
           </li>
           <li>
@@ -142,7 +137,7 @@ const My = () => {
               className="text-red-500 hover:underline"
               onClick={() => onClickDelete()}
             >
-              Delete Account
+              계정 탈퇴
             </div>
           </li>
         </ul>

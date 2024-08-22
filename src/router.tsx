@@ -19,6 +19,7 @@ import CheckoutPage from "./Routes/checkout";
 import Login from "./Routes/login";
 import KakaoRedirectHandler from "./Routes/login/auth";
 import SignUp from "./Routes/login/sign-up";
+import Policy from "./Routes/my/policy";
 
 const Router = () => {
   const { isFirst } = useAuth();
@@ -41,8 +42,10 @@ const Router = () => {
         <Route path="my" element={<My />} />
         <Route path="/purchase-history" element={<PurchaseHistory />} />
         <Route path="/customer-service" element={<CustomerService />} />
-        <Route path="/notice" element={<Notice />} />
-        <Route path="/profile-edit" element={<ProfileEdit />} />
+        <Route path="/policy" element={<Policy />} />
+
+        {/* <Route path="/notice" element={<Notice />} /> */}
+        {/* <Route path="/profile-edit" element={<ProfileEdit />} /> */}
         <Route path="/payment" element={<Payment />} />
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/fail" element={<FailPage />} />
