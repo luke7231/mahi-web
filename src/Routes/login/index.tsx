@@ -161,6 +161,14 @@ const Login: React.FC = () => {
               placeholder="비밀번호를 입력하세요"
             />
           </div>
+          <div className="text-center mb-4">
+            <button
+              onClick={() => navigate("/sign-up")}
+              className="text-sm text-blue-500 underline"
+            >
+              이메일로 회원가입
+            </button>
+          </div>
           <button
             type="submit"
             className={`w-full py-3 rounded-lg text-white font-semibold ${
