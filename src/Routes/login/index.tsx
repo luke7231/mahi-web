@@ -1,10 +1,23 @@
-import { gql, useLazyQuery } from "@apollo/client";
+import { gql, useLazyQuery, useMutation } from "@apollo/client";
 import React, { useState } from "react";
 import { useAuth } from "../../core/auth";
 import { useNavigate } from "react-router-dom";
 
 const WEB_URL = process.env.REACT_APP_URL;
 
+const PURE_LOGIN = gql`
+  mutation PureLogin($email: String!, $password: String!) {
+    pureLogin(email: $email, password: $password) {
+      user {
+        id
+        email
+        createdAt
+        updatedAt
+      }
+      token
+    }
+  }
+`;
 const APPLE_LOGIN = gql`
   query User($idToken: String!) {
     appleLogin(id_token: $idToken) {
@@ -29,24 +42,51 @@ const APPLE_LOGIN = gql`
 const Login: React.FC = () => {
   const { login: authLogin } = useAuth();
   const navigate = useNavigate();
-  const [appleLogin, { data, error }] = useLazyQuery(APPLE_LOGIN);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [appleLogin, { data, error }] = useLazyQuery(APPLE_LOGIN, {
+    onCompleted: (data) => {
+      const jwt = data.appleLogin.token;
+      if (jwt) {
+        localStorage.setItem("jwt", jwt);
+        authLogin();
+        // TODO: 원래 있던 곳으로 보낸다.
+        navigate("/");
+      }
+    },
+    onError: (e) => alert(e),
+  });
+  const [pureLogin, { data: pureLoginData, error: pureLoginError }] =
+    useMutation(PURE_LOGIN, {
+      onCompleted: (data) => {
+        setIsSubmitting(false);
+        const jwt = data.pureLogin.token;
+        if (jwt) {
+          localStorage.setItem("jwt", jwt);
+          authLogin();
+          // TODO: 원래 있던 곳으로 보낸다.
+          navigate("/");
+        }
+      },
+      onError: (e) => {
+        setIsSubmitting(false);
+        alert(e);
+      },
+    });
 
   const kakao = window.Kakao;
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     setIsSubmitting(true);
-
-    // 여기에 로그인 처리 로직을 추가합니다.
-    console.log("Logging in with:", { email, password });
-
-    // 예시로 로그인 후 상태 초기화
-    setTimeout(() => {
-      setIsSubmitting(false);
-    }, 2000);
+    // mutation 호출
+    pureLogin({
+      variables: {
+        email,
+        password,
+      },
+    });
   };
   const handleKakaoButtonClick = () => {
     // 카카오 간편 로그인
@@ -72,20 +112,11 @@ const Login: React.FC = () => {
       const res = await window.AppleID.auth.signIn();
       console.log(res);
       const id_token = res.authorization.id_token;
+      // mutation 호출
       await appleLogin({
         variables: {
           idToken: id_token,
         },
-        onCompleted: (data) => {
-          const jwt = data.appleLogin.token;
-          if (jwt) {
-            localStorage.setItem("jwt", jwt);
-            authLogin();
-            // TODO: 원래 있던 곳으로 보낸다.
-            navigate("/");
-          }
-        },
-        onError: (e) => alert(e),
       });
     } catch (error) {
       console.log(error);
