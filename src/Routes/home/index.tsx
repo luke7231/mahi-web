@@ -82,7 +82,6 @@ const Home = () => {
         variables: {
           lat: hasLastLo ? getLocationFromStorage().lat : null,
           lng: hasLastLo ? getLocationFromStorage().lng : null,
-          userId: 1,
         },
       },
     ],
