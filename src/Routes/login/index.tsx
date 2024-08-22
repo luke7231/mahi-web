@@ -19,8 +19,8 @@ const PURE_LOGIN = gql`
   }
 `;
 const APPLE_LOGIN = gql`
-  query User($idToken: String!) {
-    appleLogin(id_token: $idToken) {
+  query User($idToken: String!, $push_token: String) {
+    appleLogin(id_token: $idToken, push_token: $push_token) {
       user {
         id
         name
@@ -112,10 +112,15 @@ const Login: React.FC = () => {
       const res = await window.AppleID.auth.signIn();
       console.log(res);
       const id_token = res.authorization.id_token;
+
+      const push_token = localStorage.getItem("expo_push_token") as
+        | string
+        | null;
       // mutation 호출
       await appleLogin({
         variables: {
           idToken: id_token,
+          push_token,
         },
       });
     } catch (error) {

@@ -4,8 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../core/auth";
 
 const PURE_SIGNUP = gql`
-  mutation PureSignup($email: String!, $password: String!) {
-    pureSignup(email: $email, password: $password) {
+  mutation PureSignup(
+    $email: String!
+    $password: String!
+    $push_token: String
+  ) {
+    pureSignup(email: $email, password: $password, push_token: $push_token) {
       user {
         id
         email
@@ -49,10 +53,14 @@ const SignUp: React.FC = () => {
       alert("비밀번호가 일치하지 않습니다.");
       return;
     }
+
+    const push_token = localStorage.getItem("expo_push_token") as string | null;
+
     pureSignup({
       variables: {
         email,
         password,
+        push_token,
       },
     });
   };

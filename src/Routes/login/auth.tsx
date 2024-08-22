@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../core/auth";
 
 const KAKAO_LOGIN = gql(`
-  query Login($code: String!, $client_id: String!, $redirect_url: String!) {
-    kakaoLogin(code: $code, client_id: $client_id, redirect_url: $redirect_url) {
+  query Login($code: String!, $client_id: String!, $redirect_url: String!, $push_token: String) {
+    kakaoLogin(code: $code, client_id: $client_id, redirect_url: $redirect_url, push_token: $push_token) {
       user {
         id
         name
@@ -48,9 +48,10 @@ const KakaoRedirectHandler = () => {
     const client_id = process.env.REACT_APP_KAKAO_CLIENT_ID;
     const redirect_url = `${process.env.REACT_APP_URL}/auth`;
 
+    const push_token = localStorage.getItem("expo_push_token") as string | null;
     if (code && client_id && redirect_url) {
       kakaoLogin({
-        variables: { code, client_id, redirect_url },
+        variables: { code, client_id, redirect_url, push_token },
       });
     }
   }, [kakaoLogin]);
