@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { postMessage } from "../../core/message";
 import { useEffect, useState } from "react";
+import { useAuth } from "../../core/auth";
 
 const Onboarding1 = () => {
   const navigate = useNavigate();
+  const { doneOnboarding } = useAuth();
   const onClickButton = () => {
     // app
     // postMessage("REQ_LOCATION", "");
@@ -17,7 +19,8 @@ const Onboarding1 = () => {
       if (typeof event.data === "string" && event.data.startsWith(`{"type"`)) {
         const appData = JSON.parse(event?.data);
         if (appData?.type === "DONE") {
-          navigate("/onboarding2");
+          doneOnboarding();
+          navigate("/");
         }
       }
     };
