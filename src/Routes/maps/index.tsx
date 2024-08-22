@@ -12,7 +12,7 @@ function Map({ stores }: { stores: Store[] }) {
   // );
   const [AddressY, setAddressY] = useState<number>(37.3595704);
   const [AddressX, setAddressX] = useState<number>(127.105399);
-
+  const [clickedStore, setClickedStore] = useState<Store | null>(null);
   // useEffect(() => {
   //   if (searchKeyword) {
   //     naver.maps.Service?.geocode(
@@ -86,18 +86,18 @@ function Map({ stores }: { stores: Store[] }) {
   const addMarkers = () => {
     for (let i = 0; i < stores.length; i++) {
       let markerObj = stores[i];
-      const { id, title, lat, lng } = markerObj;
-      addMarker(id, title, lat as number, lng as number);
+      addMarker(markerObj);
     }
   };
 
   // [마커를 배열에 추가하는 함수]
-  const addMarker = (id: number, name: string, lat: number, lng: number) => {
+  const addMarker = (store: Store) => {
+    const { id, title, lat, lng } = store;
     try {
       let newMarker = new naver.maps.Marker({
-        position: new naver.maps.LatLng(lat, lng),
+        position: new naver.maps.LatLng(lat as number, lng as number),
         map,
-        title: name,
+        title,
         clickable: true,
         // [마커 커스터마이징]
         // icon: {
@@ -109,20 +109,13 @@ function Map({ stores }: { stores: Store[] }) {
         //   anchor: new naver.maps.Point(19, 58),
         // },
       });
-      newMarker.setTitle(name);
+      newMarker.setTitle(title);
+      newMarker.addListener("click", () => {
+        setClickedStore(store);
+      });
       //마커리스트에 추가
       createMarkerList.push(newMarker);
-      //마커에 이벤트 핸들러 등록
-      naver.maps.Event.addListener(newMarker, "click", () =>
-        markerClickHandler(id)
-      );
     } catch (e) {}
-  };
-
-  // [마커객체 하나를 클릭했을 때 실행할 이벤트 핸들러]
-  const markerClickHandler = (id: number) => {
-    // navigate(`/ground/${id}`);
-    console.log("clicked: 🚀", id);
   };
 
   // [현재 뷰포트를 상태로 저장]

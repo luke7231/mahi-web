@@ -18,7 +18,19 @@ const GET_STORES = gql(`
       lat
       lng
       title
+      createdAt
+      updatedAt
       isLiked
+      products {
+        id
+        price
+        discountPrice
+        saleEndTime
+        quantity
+        createdAt
+        updatedAt
+      }
+      img
     }
   }
 `);
