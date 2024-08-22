@@ -40,6 +40,23 @@ function Payment() {
     }, 0);
   };
 
+  const getTotalQuantity = () => {
+    return cart.reduce((total, item) => {
+      const q = item.quantity;
+      return total + q;
+    }, 0);
+  };
+
+  const getTotalDisount = () => {
+    return cart.reduce((total, item) => {
+      const discount = item.product?.discountPrice
+        ? item.product.price - item?.product?.discountPrice
+        : 0;
+      return total + discount * item.quantity;
+    }, 0);
+  };
+  console.log(getTotalQuantity(), getTotalDisount());
+
   useEffect(() => {
     (async () => {
       const paymentWidget = await (
@@ -75,6 +92,8 @@ function Payment() {
     const { data } = await createOrder({
       variables: {
         input: {
+          totalQuantity: getTotalQuantity(),
+          totalDiscount: getTotalDisount(),
           orderId,
           amount: getTotalAmount(), // 이전 페이지에서 받아오기
           productIds: cart.map((item) => item.product.id), // 이전 페이지에서 받아오기 or productID만 받아서 query 치기
