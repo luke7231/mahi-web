@@ -133,7 +133,7 @@ const SignUp: React.FC = () => {
         <div className="text-center mt-4">
           <button
             onClick={() => navigate("/login")}
-            className="text-sm text-blue-500 hover:underline"
+            className="text-sm text-blue-500 underline"
           >
             로그인하기
           </button>
