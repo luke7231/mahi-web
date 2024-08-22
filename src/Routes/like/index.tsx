@@ -5,8 +5,8 @@ import { gql } from "../../__generated__";
 import { useLocation } from "../../core/location-provider";
 import BottomTab from "../../components/bottom-tab";
 const GET_LIKED_STORES = gql(`
-  query LikedStores($userId: Int!) {
-    likedStores(userId: $userId) {
+  query LikedStores {
+    likedStores {
       id
       lat
       lng
@@ -40,7 +40,6 @@ const CANCEL_LIKE = gql(`
 const Like = () => {
   const { hasLastLo, getLocationFromStorage } = useLocation();
   const { data, loading, error } = useQuery(GET_LIKED_STORES, {
-    variables: { userId: 1 },
     fetchPolicy: "network-only",
   });
   const [likeStore] = useMutation(LIKE_STORE, {
@@ -54,7 +53,6 @@ const Like = () => {
         variables: {
           lat: hasLastLo ? getLocationFromStorage().lat : null,
           lng: hasLastLo ? getLocationFromStorage().lng : null,
-          userId: 1,
         },
       },
     ],
@@ -71,7 +69,6 @@ const Like = () => {
         variables: {
           lat: hasLastLo ? getLocationFromStorage().lat : null,
           lng: hasLastLo ? getLocationFromStorage().lng : null,
-          userId: 1,
         },
       },
     ],
