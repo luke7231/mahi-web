@@ -9,14 +9,14 @@ export function FailPage() {
   // 서버로 승인 요청
   const onClick = () => {
     // TODO: 원래 진행하고 있던 결제 상세페이지로 !
-    navigate("/payment");
+    navigate("/");
   };
   return (
     <div>
       <h1>결제 실패</h1>
       <div>{`사유: ${searchParams.get("message")}`}</div>
       <div className="p-8" onClick={() => onClick()}>
-        돌아가기
+        처음부터 다시 진행하기
       </div>
     </div>
   );
