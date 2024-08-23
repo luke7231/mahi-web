@@ -4,12 +4,14 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { gql } from "../../__generated__";
 import { useQuery } from "@apollo/client";
 import { useState } from "react";
+import { CartItem } from "../../__generated__/graphql";
 const CHECK_AMOUNT = gql(`
-  query Query($orderId: String!, $amount: Float!, $paymentKey: String!) {
+  query Query($orderId: String!, $amount: Float!, $paymentKey: String!, $cartItems: [CartItem!]!) {
     compareOrderAmount(
       orderId: $orderId
       amount: $amount
       paymentKey: $paymentKey
+      cartItems: $cartItems
     ) {
       ok
       error
@@ -26,8 +28,22 @@ export function SuccessPage() {
   const orderId = searchParams.get("orderId") as string;
   const amount = searchParams.get("amount") as string;
   const paymentKey = searchParams.get("paymentKey") as string;
+  // 로컬스토리지 에서 꺼낸 후 파싱
+  const cart = JSON.parse(localStorage.getItem("cart") as string) as CartItem[];
+  const inputCart = cart.map((item) => {
+    // typename왜 넣냐고 시비걸어서 그냥 필터링함
+    return {
+      product: { id: item?.product?.id as number },
+      quantity: item.quantity,
+    };
+  });
   const { data } = useQuery(CHECK_AMOUNT, {
-    variables: { orderId, amount: Number(amount), paymentKey },
+    variables: {
+      orderId,
+      amount: Number(amount),
+      paymentKey,
+      cartItems: inputCart,
+    },
     onCompleted: (data) => {
       console.log(data);
       if (data.compareOrderAmount.ok) {

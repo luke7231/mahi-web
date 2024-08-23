@@ -48,7 +48,9 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
 
       if (confirmReset) {
         // 카트를 초기화하고 새 상품을 추가
-        setCart([{ product, quantity }]);
+        const newCart = [{ product, quantity }];
+        localStorage.setItem("cart", JSON.stringify(newCart));
+        setCart(newCart);
         return;
       } else {
         // 사용자가 취소한 경우 아무 작업도 하지 않음
@@ -63,14 +65,18 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
 
       if (existingProduct) {
         // 이미 장바구니에 있는 경우, 수량 업데이트
-        return prevCart.map((item) =>
+        const resultCart = prevCart.map((item) =>
           item.product.id === product.id
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
+        localStorage.setItem("cart", JSON.stringify(resultCart));
+        return resultCart;
       } else {
         // 새로운 상품을 장바구니에 추가
-        return [...prevCart, { product, quantity }];
+        const resultCart = [...prevCart, { product, quantity }];
+        localStorage.setItem("cart", JSON.stringify(resultCart));
+        return resultCart;
       }
     });
   };
