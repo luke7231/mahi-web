@@ -11,6 +11,9 @@ interface Product {
   saleEndTime: string;
   createdAt: string;
   updatedAt: string;
+  store: {
+    id: number;
+  };
 }
 
 // 장바구니 항목 타입 정의
@@ -37,6 +40,21 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
 
   // 장바구니에 상품 추가
   const addToCart = (product: Product, quantity: number) => {
+    if (cart.length > 0 && cart[0].product.store.id !== product.store.id) {
+      // 사용자에게 다른 매장의 제품을 추가할지 확인
+      const confirmReset = window.confirm(
+        "다른 매장의 상품은 함께 담을 수 없습니다. 카트를 초기화하고 새 상품을 담으시겠습니까?"
+      );
+
+      if (confirmReset) {
+        // 카트를 초기화하고 새 상품을 추가
+        setCart([{ product, quantity }]);
+        return;
+      } else {
+        // 사용자가 취소한 경우 아무 작업도 하지 않음
+        return;
+      }
+    }
     setCart((prevCart) => {
       // 기존 장바구니에서 상품 찾기
       const existingProduct = prevCart.find(
