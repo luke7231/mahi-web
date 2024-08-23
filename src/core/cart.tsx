@@ -61,7 +61,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
     const existingProduct = cart.find((item) => item.product.id === product.id);
     const total = (existingProduct?.quantity as number) + quantity;
 
-    if (total >= product.quantity) {
+    if (total > product.quantity) {
       alert("이미 최대 수량을 담으셨네요!");
       return;
     }
