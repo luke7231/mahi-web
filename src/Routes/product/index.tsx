@@ -2,6 +2,7 @@ import { gql, useQuery } from "@apollo/client";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCart } from "../../core/cart";
+import { useAuth } from "../../core/auth";
 
 const GET_PRODUCT = gql`
   query Product($productId: Int!) {
@@ -24,6 +25,7 @@ const GET_PRODUCT = gql`
 `;
 
 const Product = () => {
+  const { isLoggedIn } = useAuth();
   const { addToCart } = useCart();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -48,6 +50,11 @@ const Product = () => {
   };
   const product = data?.product;
   function onClickButton() {
+    if (!isLoggedIn) {
+      navigate("/login");
+      return;
+    }
+
     addToCart(product, quantity); // 전역변수에 추가
     navigate(`/store/${product.store.id}`);
   }

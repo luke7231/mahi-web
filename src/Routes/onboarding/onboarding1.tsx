@@ -10,7 +10,8 @@ const Onboarding1 = () => {
     // app
     // postMessage("REQ_LOCATION", "");
     // web
-    navigate("/onboarding2");
+    doneOnboarding();
+    navigate("/");
   };
 
   useEffect(() => {
