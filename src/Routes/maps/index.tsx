@@ -180,11 +180,14 @@ function Map({ stores }: { stores: Store[] }) {
   };
   return (
     <div className="w-[100%] mt-4">
-      <div
-        ref={mapElement}
-        id="map"
-        style={{ width: "100%", height: "800px" }}
-      ></div>
+      <div ref={mapElement} id="map" style={{ width: "100%", height: "600px" }}>
+        <div
+          className="bg-sky-400 rounded-md w-8 h-8 absolute bottom-6 right-6 z-50 text-center text-white"
+          // onClick={() => clickButton()}
+        >
+          L
+        </div>
+      </div>
       <div className="flex items-center justify-center">
         <div>
           {/* <div
