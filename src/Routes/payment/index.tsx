@@ -8,6 +8,7 @@ import { useMutation } from "@apollo/client";
 import { gql } from "../../__generated__";
 import { nanoid } from "nanoid";
 import { useCart } from "../../core/cart";
+import { useNavigate } from "react-router-dom";
 
 // test 키
 const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
@@ -29,6 +30,7 @@ mutation CreateOrder($input: CreateOrderInput!) {
 }
 `);
 function Payment() {
+  const navi = useNavigate();
   const [clicked, setClicked] = useState(false);
   const [createOrder] = useMutation(CREATE_ORDER);
   const paymentWidgetRef = useRef<TossPaymentsWidgets | null>(null);
@@ -56,7 +58,11 @@ function Payment() {
     }, 0);
   };
   console.log(getTotalQuantity(), getTotalDisount());
-
+  useEffect(() => {
+    if (cart.length === 0) {
+      navi("/");
+    }
+  }, [cart]);
   useEffect(() => {
     (async () => {
       const paymentWidget = await (
