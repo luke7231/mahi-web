@@ -57,12 +57,19 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
         return;
       }
     }
+    // 기존 장바구니에서 상품 찾기
+    const existingProduct = cart.find((item) => item.product.id === product.id);
+    const total = (existingProduct?.quantity as number) + quantity;
+
+    if (total >= product.quantity) {
+      alert("이미 최대 수량을 담으셨네요!");
+      return;
+    }
+
     setCart((prevCart) => {
-      // 기존 장바구니에서 상품 찾기
       const existingProduct = prevCart.find(
         (item) => item.product.id === product.id
       );
-
       if (existingProduct) {
         // 이미 장바구니에 있는 경우, 수량 업데이트
         const resultCart = prevCart.map((item) =>
