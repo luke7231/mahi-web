@@ -4,6 +4,9 @@ import { useMutation, useQuery } from "@apollo/client";
 import { gql } from "../../__generated__";
 import { useLocation } from "../../core/location-provider";
 import BottomTab from "../../components/bottom-tab";
+import { StoreCard } from "../../components/store_card";
+import { Product } from "../../__generated__/graphql";
+import { useNavigate } from "react-router-dom";
 const GET_LIKED_STORES = gql(`
   query LikedStores {
     likedStores {
@@ -14,6 +17,16 @@ const GET_LIKED_STORES = gql(`
       createdAt
       updatedAt
       isLiked
+      products {
+        id
+        price
+        discountPrice
+        saleEndTime
+        quantity
+        createdAt
+        updatedAt
+      }
+      img
     }
   }
 `);
@@ -38,6 +51,7 @@ const CANCEL_LIKE = gql(`
   }
 `);
 const Like = () => {
+  const navigate = useNavigate();
   const { hasLastLo, getLocationFromStorage } = useLocation();
   const { data, loading, error } = useQuery(GET_LIKED_STORES, {
     fetchPolicy: "network-only",
@@ -73,6 +87,9 @@ const Like = () => {
       },
     ],
   });
+  function onClickStore(id: number) {
+    navigate(`/store/${id}`);
+  }
   async function onClickLike(storeId: number, isLiked: boolean | null) {
     // if (!isLoggedIn) {
     //   //
@@ -106,21 +123,25 @@ const Like = () => {
         ) : null}
         {data?.likedStores?.map((store) => {
           return (
-            <div className="h-[120px] shadow-md mb-4 flex items-center rounded-md">
-              <div className="ml-2 font-semibold text-[18px]">
-                {store?.title}
-              </div>
-              <div
-                onClick={async () => {
-                  await onClickLike(
-                    store?.id as number,
-                    store?.isLiked as boolean | null // login 안했으면 null 일 수 있어서 일단 넣어놓음.
-                  );
-                }}
-              >
-                {store?.isLiked ? "❤️" : "🤍"}
-              </div>
-            </div>
+            <StoreCard
+              title={store?.title as string}
+              quantity={(store?.products as Product[])[0].quantity}
+              saleEndTime={(store?.products as Product[])[0].saleEndTime}
+              discountPrice={
+                (store?.products as Product[])[0].discountPrice as number
+              }
+              price={(store?.products as Product[])[0].price}
+              isLiked={store?.isLiked}
+              img={store?.img as string}
+              onClick={() => onClickStore(store?.id as number)}
+              onClickHeart={async (e) => {
+                e.stopPropagation(); // Prevents triggering the store click
+                await onClickLike(
+                  store?.id as number,
+                  store?.isLiked as boolean
+                );
+              }}
+            />
           );
         })}
       </div>
