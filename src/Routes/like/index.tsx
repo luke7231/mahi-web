@@ -7,6 +7,7 @@ import BottomTab from "../../components/bottom-tab";
 import { StoreCard } from "../../components/store_card";
 import { Product } from "../../__generated__/graphql";
 import { useNavigate } from "react-router-dom";
+import NoLikedStore from "../../components/home/no-liked-store";
 const GET_LIKED_STORES = gql(`
   query LikedStores {
     likedStores {
@@ -115,11 +116,10 @@ const Like = () => {
         관심매장
       </div>
       <div className="h-[0.0625rem] w-full bg-[#eaeaea]" />
+      {data?.likedStores?.length === 0 ? <NoLikedStore /> : null}
       <div className="mt-8 pl-4 pr-4">
         {loading ? <div>loading...</div> : null}
-        {data?.likedStores?.length === 0 ? (
-          <div>좋아요한 매장이 빵 개 입니다.</div>
-        ) : null}
+
         {data?.likedStores?.map((store) => {
           return (
             <StoreCard
