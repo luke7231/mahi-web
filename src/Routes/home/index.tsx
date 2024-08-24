@@ -139,7 +139,7 @@ const Home = () => {
     <div className="w-full h-[100vh] flex flex-col bg-white">
       {/* LOCATION */}
       <div
-        className="p-2 bg-gray-100 flex justify-center items-center cursor-pointer border-b border-gray-300"
+        className="p-2 bg-gray-100 flex justify-center items-center cursor-pointer "
         onClick={() => navigate("/location")}
       >
         <span className="text-blue-500 font-bold underline">
@@ -153,29 +153,33 @@ const Home = () => {
         </span>{" "}
         {localStorage.getItem("expo_push_token")}
       </div> */}
-
+      <div className="h-[0.0625rem] w-full bg-[#7a7a7a]" />
       {/* TAB */}
-      <div className="px-6 mt-8 ">
-        <div className="flex justify-center rounded-lg shadow-md">
+      <div className="">
+        <div className="flex justify-center">
           <div
-            className={`w-[50%] text-center p-4 text-xl font-bold cursor-pointer ${
-              isList ? "bg-gray-800 text-white" : "bg-gray-200"
-            } rounded-l-xl`}
+            className={`w-[50%] text-center py-4 text-lg font-bold cursor-pointer ${
+              isList
+                ? "bg-[#fff] text-[#000]"
+                : "bg-[#F4F5F7] text-[#BBBDC0] font-normal"
+            } `}
             onClick={() => onClickTab("LIST")}
           >
-            리스트
+            리스트 둘러보기
           </div>
           <div
-            className={`w-[50%] text-center p-4 text-xl font-bold cursor-pointer ${
-              !isList ? "bg-gray-800 text-white" : "bg-gray-200"
-            } rounded-r-xl`}
+            className={`w-[50%] text-center py-4 text-lg font-bold cursor-pointer ${
+              !isList
+                ? "bg-[#fff] text-[#000]"
+                : "bg-[#F4F5F7] text-[#BBBDC0] font-normal"
+            } `}
             onClick={() => onClickTab("MAP")}
           >
-            지도
+            지도로 찾아보기
           </div>
         </div>
       </div>
-
+      <div className="h-[0.0625rem] w-full bg-[#F4F5F7]" />
       {/* LIST */}
       {isList ? (
         <div className="mt-8 p-4 flex-1 overflow-y-auto">
