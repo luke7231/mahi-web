@@ -106,7 +106,7 @@ const BottomTab = (): JSX.Element => {
   const { isLoggedIn } = useAuth();
 
   return (
-    <div className="fixed bottom-0 w-[380px] h-[64px] bg-white shadow-[0px_-2px_26px_#00000026]">
+    <div className="fixed bottom-0 w-full max-w-[380px] h-[64px] bg-white shadow-[0px_-2px_26px_#00000026]">
       <div className="flex justify-evenly items-center h-full">
         {/* Home Tab */}
         <div
