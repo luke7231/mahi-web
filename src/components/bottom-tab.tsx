@@ -155,7 +155,7 @@ const BottomTab = (): JSX.Element => {
               strokeLinejoin="round"
             />
           </svg>
-          <p className="w-12 text-center text-sm font-semibold">찜</p>
+          <p className="w-12 text-center text-sm font-semibold">관심매장</p>
         </div>
 
         {/* Order History Tab */}
