@@ -8,7 +8,7 @@ import { gql } from "../../__generated__";
 import { gql as apolloGql } from "@apollo/client";
 import { useAuth } from "../../core/auth";
 import { client } from "../../App";
-import { Store } from "../../__generated__/graphql";
+import { Product, Store } from "../../__generated__/graphql";
 import BottomTab from "../../components/bottom-tab";
 import { StoreCard } from "../../components/store_card";
 import { NoStore } from "../../components/home/no-store";
@@ -209,31 +209,26 @@ const Home = () => {
         data?.stores?.length !== 0 ? (
           <div className="mt-8 p-4 flex-1 overflow-y-auto">
             {data?.stores?.map((store) => (
-              <div
-                key={store?.id}
-                className="h-[120px] shadow-md mb-4 flex items-center p-4 bg-gray-50 rounded-md cursor-pointer hover:shadow-lg transition-shadow"
+              <StoreCard
+                title={store?.title as string}
+                quantity={(store?.products as Product[])[0].quantity}
+                saleEndTime={(store?.products as Product[])[0].saleEndTime}
+                discountPrice={
+                  (store?.products as Product[])[0].discountPrice as number
+                }
+                price={(store?.products as Product[])[0].price}
+                isLiked={store?.isLiked}
+                img={store?.img as string}
                 onClick={() => onClickStore(store?.id as number)}
-              >
-                <div className="flex-1">
-                  <div className="text-lg font-semibold text-gray-800">
-                    {store?.title}
-                  </div>
-                </div>
-                <div
-                  className="text-2xl"
-                  onClick={async (e) => {
-                    e.stopPropagation(); // Prevents triggering the store click
-                    await onClickLike(
-                      store?.id as number,
-                      store?.isLiked as boolean
-                    );
-                  }}
-                >
-                  {store?.isLiked ? "❤️" : "🤍"}
-                </div>
-              </div>
+                onClickHeart={async (e) => {
+                  e.stopPropagation(); // Prevents triggering the store click
+                  await onClickLike(
+                    store?.id as number,
+                    store?.isLiked as boolean
+                  );
+                }}
+              />
             ))}
-            <StoreCard />
           </div>
         ) : (
           <NoStore />
