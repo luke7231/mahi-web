@@ -91,11 +91,6 @@ const Like = () => {
     navigate(`/store/${id}`);
   }
   async function onClickLike(storeId: number, isLiked: boolean | null) {
-    // if (!isLoggedIn) {
-    //   //
-    //   return;
-    //   // TODO: 로그인 페이지로 보낸다.
-    // }
     // 토글처리
     if (isLiked) {
       // deleteLike
@@ -116,6 +111,10 @@ const Like = () => {
 
   return (
     <div className="w-full h-[100vh] flex flex-col">
+      <div className="flex justify-center py-4 text-lg font-semibold">
+        관심매장
+      </div>
+      <div className="h-[0.0625rem] w-full bg-[#eaeaea]" />
       <div className="mt-8 pl-4 pr-4">
         {loading ? <div>loading...</div> : null}
         {data?.likedStores?.length === 0 ? (
