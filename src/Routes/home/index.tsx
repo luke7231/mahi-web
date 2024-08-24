@@ -10,6 +10,7 @@ import { useAuth } from "../../core/auth";
 import { client } from "../../App";
 import { Store } from "../../__generated__/graphql";
 import BottomTab from "../../components/bottom-tab";
+import { StoreCard } from "../../components/store_card";
 // localStorage.clear();
 const GET_STORES = gql(`
   query Stores($lat: Float, $lng: Float) {
@@ -177,7 +178,7 @@ const Home = () => {
 
       {/* LIST */}
       {isList ? (
-        <div className="mt-8 px-4 flex-1 overflow-y-auto">
+        <div className="mt-8 p-4 flex-1 overflow-y-auto">
           {loading ? (
             <div className="text-center text-gray-500">Loading...</div>
           ) : (
@@ -207,6 +208,7 @@ const Home = () => {
               </div>
             ))
           )}
+          <StoreCard />
         </div>
       ) : (
         <Map stores={data?.stores as Store[]} />
