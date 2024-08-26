@@ -5,6 +5,7 @@ import { useCart } from "../../core/cart";
 import { useEffect, useState } from "react";
 import Partition from "../../components/common/partition";
 import { gql } from "../../__generated__";
+import NoProduct from "../../components/store/no-product";
 
 const GET_STORE = gql(`
   query Store($storeId: Int!) {
@@ -85,10 +86,6 @@ const Store = () => {
     <div className="container mx-auto">
       {store ? (
         <>
-          {/* 헤더 */}
-          {/* <header className="bg-gray-800 text-white p-4 rounded-lg shadow-md mb-6">
-            <h1 className="text-2xl font-bold">{store.title}</h1>
-          </header> */}
           <div className="relative w-full max-w-sm mx-auto bg-white overflow-hidden">
             {/* Image Container */}
             <div className="relative w-full">
@@ -183,48 +180,52 @@ const Store = () => {
           <Partition color="light" height="thick" />
 
           {/* 상품 목록 */}
-          <div className="w-full p-5 h-auto gap-y-5 relative flex flex-col">
-            {store?.products?.map((product) => {
-              return (
-                <div className="w-full h-full flex rounded-[0.625rem] border border-[#F9F9F9] bg-white shadow-[0_3px_8px_0_rgba(0,0,0,0.05)]">
-                  <img
-                    className="w-1/3 aspect-square rounded-l-lg object-cover"
-                    src={product.img as string}
-                    alt="Product"
-                  />
+          {store.products?.length !== 0 ? (
+            <NoProduct />
+          ) : (
+            <div className="w-full p-5 h-auto gap-y-5 relative flex flex-col">
+              {store?.products?.map((product) => {
+                return (
+                  <div className="w-full h-full flex rounded-[0.625rem] border border-[#F9F9F9] bg-white shadow-[0_3px_8px_0_rgba(0,0,0,0.05)]">
+                    <img
+                      className="w-1/3 aspect-square rounded-l-lg object-cover"
+                      src={product.img as string}
+                      alt="Product"
+                    />
 
-                  {/* Product Info */}
-                  <div className="w-2/3 p-4 flex flex-col justify-between">
-                    {/* Product Name */}
-                    <div className="text-black text-lg font-semibold">
-                      {product.name}
-                    </div>
-
-                    {/* Stock Info */}
-                    <div className="bg-[#f3f3f3] px-2 pb-1 rounded-md w-fit mt-2">
-                      <span className="text-black text-xs font-bold">
-                        {product.quantity}개
-                      </span>
-                      <span className="text-black text-xs font-normal">
-                        {" "}
-                        남았어요!
-                      </span>
-                    </div>
-
-                    {/* Price Info */}
-                    <div className="flex flex-col items-end mt-2">
-                      <div className="text-xl text-black font-bold">
-                        {product.discountPrice?.toLocaleString()}원
+                    {/* Product Info */}
+                    <div className="w-2/3 p-4 flex flex-col justify-between">
+                      {/* Product Name */}
+                      <div className="text-black text-lg font-semibold">
+                        {product.name}
                       </div>
-                      <div className="text-xs text-[#b6b6b6] line-through">
-                        {product.price.toLocaleString()}원
+
+                      {/* Stock Info */}
+                      <div className="bg-[#f3f3f3] px-2 pb-1 rounded-md w-fit mt-2">
+                        <span className="text-black text-xs font-bold">
+                          {product.quantity}개
+                        </span>
+                        <span className="text-black text-xs font-normal">
+                          {" "}
+                          남았어요!
+                        </span>
+                      </div>
+
+                      {/* Price Info */}
+                      <div className="flex flex-col items-end mt-2">
+                        <div className="text-xl text-black font-bold">
+                          {product.discountPrice?.toLocaleString()}원
+                        </div>
+                        <div className="text-xs text-[#b6b6b6] line-through">
+                          {product.price.toLocaleString()}원
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </>
       ) : null}
     </div>
