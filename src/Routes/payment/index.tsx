@@ -129,7 +129,9 @@ function Payment() {
       {/* 총액 표시 */}
       <div className="bg-white p-4 rounded-lg shadow-md mb-6">
         <h2 className="text-xl font-semibold mb-2">총 금액</h2>
-        <p className="text-2xl font-bold">${getTotalAmount()}</p>
+        <p className="text-2xl font-bold">
+          {getTotalAmount().toLocaleString()}원
+        </p>
       </div>
 
       {/* 결제 UI */}
@@ -157,7 +159,7 @@ function Payment() {
           className={`px-6 py-3 rounded-lg shadow-md transition ${
             clicked
               ? "bg-gray-400 cursor-not-allowed"
-              : "bg-green-500 hover:bg-green-600"
+              : "bg-[#1562FC] hover:bg-[#1562FC]"
           }`}
           disabled={clicked}
           onClick={onClickPaymentButton}

@@ -184,7 +184,7 @@ const Store = () => {
               {/* Row for 매장 번호 */}
               <div className="flex">
                 <span className="text-gray-600">매장 번호</span>
-                <span className="text-black ml-2">010-1234-5678</span>
+                <span className="text-black ml-2">비공개</span>
               </div>
             </div>
           </div>
