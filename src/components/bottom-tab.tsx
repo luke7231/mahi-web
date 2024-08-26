@@ -161,13 +161,9 @@ const BottomTab = (): JSX.Element => {
         {/* Order History Tab */}
         <div
           className={`flex flex-col items-center ${
-            location.pathname === "/order-history"
-              ? "opacity-100"
-              : "opacity-40"
+            location.pathname === "/order" ? "opacity-100" : "opacity-40"
           }`}
-          onClick={() =>
-            isLoggedIn ? navigate("/order-history") : navigate("/login")
-          }
+          onClick={() => (isLoggedIn ? navigate("/order") : navigate("/login"))}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

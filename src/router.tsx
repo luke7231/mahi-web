@@ -21,6 +21,7 @@ import KakaoRedirectHandler from "./Routes/login/auth";
 import SignUp from "./Routes/login/sign-up";
 import Policy from "./Routes/my/policy";
 import SignOut from "./Routes/my/sign-out";
+import Order from "./Routes/order";
 
 const Router = () => {
   const { isFirst } = useAuth();
@@ -33,6 +34,7 @@ const Router = () => {
         />
         {/* <Route path="/" element={<Home />} /> */}
         <Route path="/like" element={<Like />} />
+        <Route path="/order" element={<Order />} />
         <Route path="/location" element={<Location />} />
         <Route path="/store/:id" element={<Store />} />
         <Route path="/product/:id" element={<Product />} />
