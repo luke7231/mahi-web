@@ -98,7 +98,7 @@ const Product = () => {
             <div className="flex items-center space-x-2">
               {/* Original Price */}
               <div className="text-[#dadada] text-lg line-through">
-                {product.price.toLocaleString()}원
+                {product?.price.toLocaleString()}원
               </div>
 
               {/* Discounted Price */}
@@ -178,7 +178,7 @@ const Product = () => {
         className="px-5 py-4 w-full sticky bottom-0 bg-white"
       >
         <div className="absolute left-0 top-[-2.7rem] w-full h-[43px] bg-[#282828] rounded-tl-[10px] rounded-tr-[10px] text-white text-sm font-semibold flex justify-center items-center">
-          {(product.price - product?.discountPrice).toLocaleString()}원{" "}
+          {(product?.price - product?.discountPrice).toLocaleString()}원{" "}
           할인받았어요!
         </div>
         <div className=" w-full max-w-md h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border">
