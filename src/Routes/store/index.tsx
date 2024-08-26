@@ -83,7 +83,7 @@ const Store = () => {
   }, [store]);
 
   return (
-    <div className="container mx-auto">
+    <div className="container h-[120vh] mx-auto mb-20">
       {store ? (
         <>
           <div className="relative w-full max-w-sm mx-auto bg-white overflow-hidden">
@@ -186,7 +186,10 @@ const Store = () => {
             <div className="w-full p-5 h-auto gap-y-5 relative flex flex-col">
               {store?.products?.map((product) => {
                 return (
-                  <div className="w-full h-full flex rounded-[0.625rem] border border-[#F9F9F9] bg-white shadow-[0_3px_8px_0_rgba(0,0,0,0.05)]">
+                  <div
+                    onClick={() => onClickProduct(product.id)}
+                    className="w-full h-full flex rounded-[0.625rem] border border-[#F9F9F9] bg-white shadow-[0_3px_8px_0_rgba(0,0,0,0.05)]"
+                  >
                     <img
                       className="w-1/3 aspect-square rounded-l-lg object-cover"
                       src={product.img as string}
