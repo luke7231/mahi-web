@@ -1,6 +1,6 @@
 interface PartitionProps {
   color?: "bold" | "semibold" | "light";
-  height?: "thick" | "thin";
+  height?: "thick" | "thin" | "md";
 }
 
 const Partition = ({ color = "light", height = "thin" }: PartitionProps) => {
@@ -12,6 +12,7 @@ const Partition = ({ color = "light", height = "thin" }: PartitionProps) => {
 
   const heightStyles = {
     thick: "h-[0.5rem]",
+    md: "h-[0.3rem]",
     thin: "h-[0.0625rem]",
   };
 

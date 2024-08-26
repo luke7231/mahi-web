@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCart } from "../../core/cart";
 import { useAuth } from "../../core/auth";
+import Partition from "../../components/common/partition";
 
 const GET_PRODUCT = gql`
   query Product($productId: Int!) {
@@ -59,128 +60,143 @@ const Product = () => {
     navigate(`/store/${product.store.id}`);
   }
   return (
-    <div className="container mx-auto p-4">
+    <div className="container h-[100vh] mx-auto bg-[#F4F5F7]">
       {product ? (
         <>
-          {/* 헤더 */}
-          <header className="bg-gray-800 p-4 rounded-lg shadow-md mb-6">
-            <h1 className="text-2xl font-bold text-white">{product.name}</h1>
-          </header>
-
-          {/* 상품 정보 */}
-          <section className="bg-white p-4 rounded-lg shadow-md mb-6">
-            <div className="flex items-center mb-4">
-              <div className="flex-1">
-                <p className="text-lg font-semibold">
-                  가격: {product.price.toLocaleString()}원
-                </p>
-                {product.discountPrice < product.price && (
-                  <p className="text-xl text-green-600 font-semibold">
-                    현재 할인가: {product.discountPrice.toLocaleString()}원
-                  </p>
-                )}
-                <p className="text-gray-600">수량: {product.quantity}개 남음</p>
-                {/* <p className="text-gray-500 text-sm">
-                  Created on {new Date(product.createdAt).toLocaleDateString()}
-                </p>
-                <p className="text-gray-500 text-sm">
-                  Updated on {new Date(product.updatedAt).toLocaleDateString()}
-                </p> */}
-              </div>
-              <div className="flex-shrink-0">
-                {/* Placeholder for product image */}
-                <div className="w-32 h-32 bg-gray-300 rounded-lg flex items-center justify-center">
-                  {product.img ? (
-                    <img
-                      src={product.img}
-                      className="object-cover w-32 h-32 rounded-lg"
-                    />
-                  ) : (
-                    <span className="text-gray-500 text-xl">Image</span>
-                  )}
-                </div>
-              </div>
+          <div className="relative w-full max-w-sm mx-auto bg-white overflow-hidden">
+            {/* Image Container */}
+            <div className="relative w-full">
+              <img
+                className="object-cover "
+                alt="Store"
+                src={product.img as string}
+              />
             </div>
 
-            <div className="mt-4">
-              <p className="text-sm text-gray-600 font-bold">
-                마감시간: {new Date(product.saleEndTime).toLocaleDateString()}
+            {/* Store Name */}
+            <div className="px-4 py-3">
+              <div className="flex justify-between mb-3 ">
+                <h2 className="text-3xl font-semibold text-black">
+                  {product.name}
+                </h2>
+                {/* Favorite Icon */}
+                <div className="flex items-center"></div>
+              </div>
+
+              {/* Pickup and Walk Time Info */}
+              <div className="flex items-center text-md">
+                {product.description}
+              </div>
+            </div>
+          </div>
+          <Partition color="light" height="thick" />
+          <div className="w-full p-5 h-auto flex justify-between items-center bg-white">
+            {/* Price Label */}
+            <div className="text-black text-lg font-semibold">가격</div>
+
+            {/* Prices */}
+            <div className="flex items-center space-x-2">
+              {/* Original Price */}
+              <div className="text-[#dadada] text-lg line-through">
+                {product.price.toLocaleString()}원
+              </div>
+
+              {/* Discounted Price */}
+              <div className="text-black text-lg font-bold">
+                {product.discountPrice.toLocaleString()}원
+              </div>
+            </div>
+          </div>
+          <Partition color="light" height="md" />
+          <div className="w-full h-auto max-w-md flex items-center justify-between px-5 py-3 bg-white">
+            {/* Label */}
+            <div className="flex items-center">
+              <div className="text-black text-lg font-semibold">수량</div>
+              <span className="text-xs text-[#1562fc] ml-2">
+                {product.quantity}개 남음
+              </span>
+            </div>
+            {/* Quantity Controls */}
+            <div className="flex items-center">
+              {/* Minus Button */}
+              <div
+                onClick={decreaseQuantity}
+                className="w-[43px] h-[43px] flex items-center justify-center border border-[#e1e1e1] rounded-tl-[3px] rounded-bl-[3px]"
+              >
+                <span className="text-black text-xl">-</span>
+              </div>
+
+              {/* Quantity Display with Only Top and Bottom Borders */}
+              <div className="w-[43px] h-[43px] flex items-center justify-center border-t border-b border-[#e1e1e1]">
+                <span className="text-black text-base font-semibold">
+                  {quantity}
+                </span>
+              </div>
+
+              {/* Plus Button */}
+              <div
+                onClick={increaseQuantity}
+                className="w-[43px] h-[43px] flex items-center justify-center border border-[#e1e1e1] rounded-tr-[3px] rounded-br-[3px]"
+              >
+                <span className="text-black text-xl">+</span>
+              </div>
+            </div>
+          </div>
+          <Partition color="light" height="md" />
+          <div className={`w-full h-80 bg-[#F4F5F7]`} />
+          <div className="bg-[#F4F5F7] p-6 mt-8 pb-20">
+            <h2 className="text-md font-semibold text-gray-800 mb-4">
+              사업자 정보
+            </h2>
+            <div className="text-gray-700 text-xs">
+              <p className="mb-2">
+                <span className="font-bold">상호명: </span>
+                육각형
+              </p>
+              <p className="mb-2">
+                <span className="font-bold">대표자명: </span>
+                원요한
+              </p>
+              <p className="mb-2">
+                <span className="font-bold">사업자등록번호: </span>
+                329-49-00934
+              </p>
+              <p className="mb-2">
+                <span className="font-bold">사업장 주소: </span>
+                경기도 성남시 수정구 성남대로 1342, 6층 617호 (복정동)
+              </p>
+              <p className="mb-2">
+                <span className="font-bold">유선번호: </span>
+                010-9073-0701
               </p>
             </div>
-          </section>
-
-          {/* 상품 설명 */}
-          <section className="bg-white p-4 rounded-lg shadow-md mb-6">
-            <h2 className="text-xl font-semibold mb-4">설명</h2>
-            <p className="text-gray-700">{product.description}</p>
-          </section>
-
-          {/* 수량 선택 */}
-          <section className="bg-white p-4 rounded-lg shadow-md mb-6">
-            <h2 className="text-xl font-semibold mb-4">수량</h2>
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={decreaseQuantity}
-                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg shadow-md hover:bg-gray-400"
-              >
-                -
-              </button>
-              <input
-                type="number"
-                value={quantity}
-                min="1"
-                max={product.quantity}
-                readOnly
-                className="w-16 text-center border border-gray-300 rounded-lg py-2"
-              />
-              <button
-                onClick={increaseQuantity}
-                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg shadow-md hover:bg-gray-400"
-              >
-                +
-              </button>
-            </div>
-          </section>
-
-          {/* 구매 버튼 */}
-          <div className="flex justify-center mt-6">
-            <button
-              className="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-600 transition"
-              onClick={() => onClickButton()}
-            >
-              {quantity}개 담기
-            </button>
           </div>
         </>
       ) : null}
-      {/* Business Information */}
-      <div className="bg-gray-100 p-6 mt-8">
-        <h2 className="text-md font-semibold text-gray-800 mb-4">
-          사업자 정보
-        </h2>
-        <div className="text-gray-700 text-xs">
-          <p className="mb-2">
-            <span className="font-bold">상호명: </span>
-            육각형
-          </p>
-          <p className="mb-2">
-            <span className="font-bold">대표자명: </span>
-            원요한
-          </p>
-          <p className="mb-2">
-            <span className="font-bold">사업자등록번호: </span>
-            329-49-00934
-          </p>
-          <p className="mb-2">
-            <span className="font-bold">사업장 주소: </span>
-            경기도 성남시 수정구 성남대로 1342, 6층 617호 (복정동)
-          </p>
-          <p className="mb-2">
-            <span className="font-bold">유선번호: </span>
-            010-9073-0701
-          </p>
+      <div
+        onClick={() => onClickButton()}
+        className="px-5 py-4 w-full sticky bottom-0 bg-white"
+      >
+        <div className="absolute left-0 top-[-2.7rem] w-full h-[43px] bg-[#282828] rounded-tl-[10px] rounded-tr-[10px] text-white text-sm font-semibold flex justify-center items-center">
+          {(product.price - product?.discountPrice).toLocaleString()}원{" "}
+          할인받았어요!
+        </div>
+        <div className=" w-full max-w-md h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border">
+          {/* Button Content */}
+          <div className="text-center flex items-center space-x-1">
+            <span className="text-white text-base font-semibold leading-snug">
+              {quantity}개
+            </span>
+            <span className="text-white text-base font-bold leading-snug">
+              {(quantity * product?.discountPrice).toLocaleString()}원
+            </span>
+            <span className="text-white text-base font-semibold leading-snug">
+              담기
+            </span>
+          </div>
         </div>
       </div>
+      {/* Business Information */}
     </div>
   );
 };
