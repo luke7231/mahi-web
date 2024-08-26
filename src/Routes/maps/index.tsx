@@ -2,14 +2,18 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import CustomMapMarker from "../../components/custom-map-marker";
 import { useNavigate } from "react-router-dom";
 import { DATA, IData } from "../../data";
-import { Store } from "../../__generated__/graphql";
+import { Product, Store } from "../../__generated__/graphql";
+import { StoreCard } from "../../components/store_card";
+import { useAuth } from "../../core/auth";
 
 function Map({ stores }: { stores: Store[] }) {
+  const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const mapElement = useRef<HTMLDivElement | null>(null);
   // const [searchKeyword, setSearchKeyword] = useState(
   //   "안성시 공도읍 서동대로 4060-5, 효성해링턴플레이스 202동 306호 "
   // );
+
   const [AddressY, setAddressY] = useState<number>(37.3595704);
   const [AddressX, setAddressX] = useState<number>(127.105399);
   const [clickedStore, setClickedStore] = useState<Store | null>(null);
@@ -170,6 +174,32 @@ function Map({ stores }: { stores: Store[] }) {
     resetListHandler();
   }, [newMap]);
 
+  async function onClickLike(storeId: number, isLiked: boolean | null) {
+    if (!isLoggedIn) {
+      navigate("/login");
+      return;
+      // TODO: 로그인 페이지로 보낸다.
+    }
+    // 토글처리
+    if (isLiked) {
+      // deleteLike
+      // cancelLike({
+      //   variables: {
+      //     storeId,
+      //   },
+      // });
+    } else {
+      // createLike
+      // likeStore({
+      //   variables: {
+      //     storeId,
+      //   },
+      // });
+    }
+  }
+  function onClickStore(id: number) {
+    navigate(`/store/${id}`);
+  }
   const clickButton = () => {
     // 원래 자리로 옮기는 것
     // newMap?.panTo(new naver.maps.LatLng(37.3595704, 127.105399), {
@@ -181,10 +211,34 @@ function Map({ stores }: { stores: Store[] }) {
   return (
     <div className="w-[100%] mt-4">
       <div ref={mapElement} id="map" style={{ width: "100%", height: "600px" }}>
-        <div
-          className="bg-sky-400 rounded-md w-8 h-8 absolute bottom-6 right-6 z-50 text-center text-white"
-          // onClick={() => clickButton()}
-        ></div>
+        {clickedStore ? (
+          <div className="p-4 absolute bottom-1 z-50 w-full ">
+            <div className="shadow-[0px_0px_144px_0px_rgba(21,98,252,0.40)]">
+              <StoreCard
+                title={clickedStore?.title as string}
+                quantity={(clickedStore?.products as Product[])[0].quantity}
+                saleEndTime={
+                  (clickedStore?.products as Product[])[0].saleEndTime
+                }
+                discountPrice={
+                  (clickedStore?.products as Product[])[0]
+                    .discountPrice as number
+                }
+                price={(clickedStore?.products as Product[])[0].price}
+                isLiked={clickedStore?.isLiked}
+                img={clickedStore?.img as string}
+                onClick={() => onClickStore(clickedStore?.id as number)}
+                onClickHeart={async (e) => {
+                  e.stopPropagation(); // Prevents triggering the clickedStore click
+                  await onClickLike(
+                    clickedStore?.id as number,
+                    clickedStore?.isLiked as boolean
+                  );
+                }}
+              />
+            </div>
+          </div>
+        ) : null}
       </div>
       <div className="flex items-center justify-center">
         <div>
