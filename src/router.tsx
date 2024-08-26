@@ -22,6 +22,7 @@ import SignUp from "./Routes/login/sign-up";
 import Policy from "./Routes/my/policy";
 import SignOut from "./Routes/my/sign-out";
 import Order from "./Routes/order";
+import Welcome from "./Routes/onboarding/welcome";
 
 const Router = () => {
   const { isFirst } = useAuth();
@@ -41,6 +42,7 @@ const Router = () => {
         <Route path="/checkout" element={<CheckoutPage />} />
 
         <Route path="/onboarding1" element={<Onboarding1 />} />
+        <Route path="/welcome" element={<Welcome />} />
         {/* <Route path="/onboarding2" element={<Onboarding2 />} />  */}
         <Route path="my" element={<My />} />
         <Route path="/purchase-history" element={<PurchaseHistory />} />
