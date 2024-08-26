@@ -143,6 +143,8 @@ const Product = () => {
             </div>
           </div>
           <Partition color="light" height="md" />
+
+          {/* Business Information */}
           <div className={`w-full h-80 bg-[#F4F5F7]`} />
           <div className="bg-[#F4F5F7] p-6 mt-8 pb-20">
             <h2 className="text-md font-semibold text-gray-800 mb-4">
@@ -196,7 +198,6 @@ const Product = () => {
           </div>
         </div>
       </div>
-      {/* Business Information */}
     </div>
   );
 };
