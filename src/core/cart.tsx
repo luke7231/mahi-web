@@ -5,7 +5,7 @@ interface Product {
   id: number;
   name: string;
   price: number;
-  discountPrice?: number;
+  discountPrice: number;
   quantity: number;
   description: string;
   saleEndTime: string;
@@ -14,6 +14,7 @@ interface Product {
   store: {
     id: number;
   };
+  img: string;
 }
 
 // 장바구니 항목 타입 정의
