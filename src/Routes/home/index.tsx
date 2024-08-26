@@ -205,6 +205,9 @@ const Home = () => {
       {isList && loading ? (
         <div className="text-center text-gray-500">Loading...</div>
       ) : null}
+      {!isList && data && data.stores ? (
+        <Map stores={data.stores as Store[]} />
+      ) : null}
       {isList ? (
         data?.stores?.length !== 0 ? (
           <div className="mt-8 p-4 flex-1 overflow-y-auto">
@@ -234,7 +237,6 @@ const Home = () => {
           <NoStore />
         )
       ) : null}
-      {/* {data?.stores?.length !== 0 ? <NoStore /> : null} */}
       {/* BOTTOM TAB */}
       <BottomTab />
     </div>
