@@ -51,6 +51,9 @@ const Store = () => {
   function onClickProduct(id: number) {
     navigate(`/product/${id}`);
   }
+  function onClickPurchage() {
+    navigate("/checkout");
+  }
   const { cart } = useCart(); // useCart 훅을 사용하여 cart 가져오기
 
   // 카트의 총액 계산
@@ -61,6 +64,14 @@ const Store = () => {
     }, 0);
   };
 
+  const getTotalDisount = () => {
+    return cart.reduce((total, item) => {
+      const discount = item.product?.discountPrice
+        ? item.product.price - item?.product?.discountPrice
+        : 0;
+      return total + discount * item.quantity;
+    }, 0);
+  };
   useEffect(() => {
     // saleEndTime을 Date 객체로 변환
     if (store) {
@@ -230,6 +241,30 @@ const Store = () => {
             </div>
           )}
         </>
+      ) : null}
+      {cart.length > 0 ? (
+        <div
+          onClick={() => onClickPurchage()}
+          className="px-5 py-4 w-full sticky bottom-0 bg-white"
+        >
+          <div className="absolute left-0 top-[-2.7rem] w-full h-[43px] bg-[#282828] rounded-tl-[10px] rounded-tr-[10px] text-white text-sm font-semibold flex justify-center items-center">
+            <span className="text-[#fd4242] mr-1">
+              {getTotalDisount().toLocaleString()}원
+            </span>{" "}
+            할인받았어요!
+          </div>
+          <div className=" w-full max-w-md h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border">
+            {/* Button Content */}
+            <div className="text-center flex items-center space-x-1">
+              <span className="text-white text- font-bold leading-snug">
+                {getTotalAmount().toLocaleString()}원
+              </span>
+              <span className="text-white text-base font-semibold leading-snug">
+                구매하기
+              </span>
+            </div>
+          </div>
+        </div>
       ) : null}
     </div>
   );
