@@ -180,7 +180,7 @@ const Store = () => {
           <Partition color="light" height="thick" />
 
           {/* 상품 목록 */}
-          {store.products?.length !== 0 ? (
+          {store.products?.length === 0 ? (
             <NoProduct />
           ) : (
             <div className="w-full p-5 h-auto gap-y-5 relative flex flex-col">
