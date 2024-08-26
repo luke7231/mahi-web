@@ -100,14 +100,14 @@ function Map({ stores }: { stores: Store[] }) {
         title,
         clickable: true,
         // [마커 커스터마이징]
-        // icon: {
-        //   //html element를 반환하는 CustomMapMarker 컴포넌트 할당
-        //   content: CustomMapMarker({ title: name, windowWidth: viewportWidth }),
-        //   //마커의 크기 지정
-        //   size: new naver.maps.Size(38, 58),
-        //   //마커의 기준위치 지정
-        //   anchor: new naver.maps.Point(19, 58),
-        // },
+        icon: {
+          //html element를 반환하는 CustomMapMarker 컴포넌트 할당
+          content: CustomMapMarker(),
+          //마커의 크기 지정
+          size: new naver.maps.Size(38, 58),
+          //마커의 기준위치 지정
+          anchor: new naver.maps.Point(10, 30),
+        },
       });
       newMarker.setTitle(title);
       newMarker.addListener("click", () => {
@@ -184,9 +184,7 @@ function Map({ stores }: { stores: Store[] }) {
         <div
           className="bg-sky-400 rounded-md w-8 h-8 absolute bottom-6 right-6 z-50 text-center text-white"
           // onClick={() => clickButton()}
-        >
-          L
-        </div>
+        ></div>
       </div>
       <div className="flex items-center justify-center">
         <div>
