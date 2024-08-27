@@ -23,6 +23,8 @@ import Policy from "./Routes/my/policy";
 import SignOut from "./Routes/my/sign-out";
 import Order from "./Routes/order";
 import Welcome from "./Routes/onboarding/welcome";
+import Hey from "./Routes/hey";
+import PasswordResetPage from "./Routes/hey/password-reset";
 
 const Router = () => {
   const { isFirst } = useAuth();
@@ -43,6 +45,7 @@ const Router = () => {
 
         <Route path="/onboarding1" element={<Onboarding1 />} />
         <Route path="/welcome" element={<Welcome />} />
+        <Route path="/hey" element={<Hey />} />
         {/* <Route path="/onboarding2" element={<Onboarding2 />} />  */}
         <Route path="my" element={<My />} />
         <Route path="/purchase-history" element={<PurchaseHistory />} />
@@ -56,6 +59,7 @@ const Router = () => {
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/fail" element={<FailPage />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/password-reset" element={<PasswordResetPage />} />
         <Route path="/auth" element={<KakaoRedirectHandler />} />
         <Route path="/sign-up" element={<SignUp />} />
       </Routes>
