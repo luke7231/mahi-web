@@ -1,7 +1,9 @@
 import React from "react";
 import NoLikedStoreImg from "./no-liked-store.png";
+import { useNavigate } from "react-router-dom";
 
 export const NoLikedStore = (): JSX.Element => {
+  const navigate = useNavigate();
   return (
     <div className="w-full h-full flex justify-center bg-[#f6f6f6]">
       <div className="relative w-full max-w-sm p-4 text-center bg-[#f6f6f6]">
@@ -24,7 +26,12 @@ export const NoLikedStore = (): JSX.Element => {
 
         {/* Recommendation Button */}
         <div className="mx-auto w-32 h-10 mt-8 bg-white rounded-md border border-solid border-[#dddddd] flex justify-center items-center cursor-pointer">
-          <span className="text-[#5b5b5b] text-sm font-semibold">
+          <span
+            className="text-[#5b5b5b] text-sm font-semibold"
+            onClick={() => {
+              navigate("/");
+            }}
+          >
             구경하러 가기
           </span>
         </div>
