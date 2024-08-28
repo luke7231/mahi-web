@@ -34,7 +34,7 @@ export const NoProduct = ({
             className="text-[#5b5b5b] text-sm font-semibold"
             onClick={onClickButton}
           >
-            {isLiked ? "알림 완료" : "이 매장 찜하기"}
+            {isLiked ? "알림 완료 ❤️" : "이 매장 찜하기 🤍"}
           </span>
         </div>
       </div>
