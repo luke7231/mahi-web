@@ -33,6 +33,8 @@ const GET_STORES = gql(`
         updatedAt
       }
       img
+      contactNumber
+      closingHours
     }
   }
 `);
