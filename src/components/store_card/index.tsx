@@ -1,4 +1,5 @@
 import React from "react";
+import HeartIcon from "../common/heart";
 
 interface IProp {
   onClick: () => void;
@@ -52,12 +53,7 @@ export const StoreCard = ({
               <p className="text-base ">{quantity}개 남았어요!</p>
             </div>
             {/* Heart Icon */}
-            <img
-              className="absolute top-2 right-2 w-8 h-8"
-              alt="Favorite Icon"
-              src="https://c.animaapp.com/hA9buAad/img/vector.svg"
-              onClick={onClickHeart}
-            />
+            <HeartIcon onClick={onClickHeart} isLiked={isLiked} />
           </div>
 
           {/* Lower Box */}
