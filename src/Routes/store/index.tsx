@@ -299,11 +299,29 @@ const Store = () => {
                     onClick={() => onClickProduct(product.id)}
                     className="w-full h-full flex rounded-[0.625rem] border border-[#F9F9F9] bg-white shadow-[0_3px_8px_0_rgba(0,0,0,0.05)]"
                   >
-                    <img
-                      className="w-1/3 aspect-square rounded-l-lg object-cover"
-                      src={product.img as string}
-                      alt="Product"
-                    />
+                    {product.quantity === 0 ? (
+                      <div className="relative w-1/3 aspect-square">
+                        {/* Product Image */}
+                        <img
+                          className="w-full h-full rounded-l-lg object-cover"
+                          src={product.img as string}
+                          alt="Product"
+                        />
+
+                        {/* Overlay for "품절" text */}
+                        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-l-lg">
+                          <span className="text-white text-xl font-semibold">
+                            품절
+                          </span>
+                        </div>
+                      </div>
+                    ) : (
+                      <img
+                        className="w-1/3 aspect-square rounded-l-lg object-cover"
+                        src={product.img as string}
+                        alt="Product"
+                      />
+                    )}
 
                     {/* Product Info */}
                     <div className="w-2/3 p-4 flex flex-col justify-between">
