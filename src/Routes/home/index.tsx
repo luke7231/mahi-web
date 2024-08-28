@@ -212,27 +212,30 @@ const Home = () => {
       ) : null}
       {isList ? (
         data?.stores?.length !== 0 ? (
-          <div className="mt-8 p-4 flex-1 overflow-y-auto">
+          <div className="mt-8 mb-12 p-4 flex-1 overflow-y-auto">
             {data?.stores?.map((store) => (
-              <StoreCard
-                title={store?.title as string}
-                quantity={(store?.products as Product[])[0].quantity}
-                saleEndTime={(store?.products as Product[])[0].saleEndTime}
-                discountPrice={
-                  (store?.products as Product[])[0].discountPrice as number
-                }
-                price={(store?.products as Product[])[0].price}
-                isLiked={store?.isLiked}
-                img={store?.img as string}
-                onClick={() => onClickStore(store?.id as number)}
-                onClickHeart={async (e) => {
-                  e.stopPropagation(); // Prevents triggering the store click
-                  await onClickLike(
-                    store?.id as number,
-                    store?.isLiked as boolean
-                  );
-                }}
-              />
+              <div className="mb-4">
+                <StoreCard
+                  title={store?.title as string}
+                  quantity={(store?.products as Product[])[0]?.quantity}
+                  saleEndTime={(store?.products as Product[])[0]?.saleEndTime}
+                  discountPrice={
+                    (store?.products as Product[])[0]?.discountPrice ||
+                    (0 as number)
+                  }
+                  price={(store?.products as Product[])[0]?.price || 0}
+                  isLiked={store?.isLiked}
+                  img={store?.img as string}
+                  onClick={() => onClickStore(store?.id as number)}
+                  onClickHeart={async (e) => {
+                    e.stopPropagation(); // Prevents triggering the store click
+                    await onClickLike(
+                      store?.id as number,
+                      store?.isLiked as boolean
+                    );
+                  }}
+                />
+              </div>
             ))}
           </div>
         ) : (
