@@ -8,7 +8,7 @@ import NoOrders from "../../components/order/no-orders";
 import { useQuery } from "@apollo/client";
 import Partition from "../../components/common/partition";
 
-const GET_ORDERS = gql(`
+export const GET_ORDERS = gql(`
 query Orders {
   orders {
     id

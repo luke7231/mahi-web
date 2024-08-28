@@ -1,20 +1,56 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BottomTab from "../../components/bottom-tab";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { useAuth } from "../../core/auth";
 import PIG from "./pig.png";
 import co2 from "./co2.png";
 import Partition from "../../components/common/partition";
 import Menu from "../../components/my/menu";
+import { GET_ORDERS } from "../order";
 
 const My = () => {
+  const { data, loading } = useQuery(GET_ORDERS);
+  const [totalDiscount, setTotalDiscount] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0);
   const navigate = useNavigate();
   const { logout } = useAuth();
+
+  useEffect(() => {
+    if (data?.orders) {
+      const orders = data.orders;
+      const getTotalDisount = () => {
+        return orders.reduce((total, item) => {
+          return total + item?.totalDiscount;
+        }, 0);
+      };
+      const total = getTotalDisount();
+      setTotalDiscount(total);
+    }
+    if (data?.orders) {
+      const orders = data.orders;
+      const getTotalAmount = () => {
+        return orders.reduce((total, item) => {
+          return total + item?.amount;
+        }, 0);
+      };
+      const total = getTotalAmount();
+      setTotalAmount(total);
+    }
+  }, [data?.orders]);
   function onClickLogout() {
     localStorage.removeItem("jwt");
     logout();
     navigate("/");
+  }
+  function calculateCarbonEmission(amount: number) {
+    // 입력된 금액을 1,000원 단위로 올림
+    const roundedAmount = Math.ceil(amount / 1000) * 1000;
+
+    // 1,000원당 0.25kg을 곱해서 탄소 배출량 계산
+    const carbonEmission = (roundedAmount / 1000) * 0.25;
+
+    return carbonEmission;
   }
   return (
     <div className="w-full h-[100vh] flex flex-col">
@@ -24,14 +60,13 @@ const My = () => {
       </div>
       <div className="h-[0.0625rem] w-full bg-[#eaeaea]" />
 
-      <div className="w-full max-w-md p-4 bg-white mb-2">
+      <div
+        className="w-full max-w-md p-4 bg-white mb-2"
+        onClick={() => navigate("/order")}
+      >
         {/* Header Section */}
         <div className="flex justify-between items-start mb-4">
-          <div className="text-black text-lg font-semibold">
-            마감원정대0456님의
-            <br />
-            이용 내역
-          </div>
+          <div className="text-black text-lg font-semibold">나의 이용 내역</div>
           <div className="text-[#757575] text-xs font-normal">자세히 보기</div>
         </div>
 
@@ -39,14 +74,18 @@ const My = () => {
         <div className="flex space-x-4">
           {/* Savings Card */}
           <div className="w-1/2 bg-[#ffede6] rounded-md p-4 flex flex-col items-center">
-            <div className="text-black text-lg font-bold mb-1">13,000원</div>
+            <div className="text-black text-lg font-bold mb-1">
+              {totalDiscount.toLocaleString() + "원"}
+            </div>
             <div className="text-black text-lg font-normal mb-4">아꼈어요!</div>
             <img className="w-20 h-20" src={PIG} alt="Piggy Bank" />
           </div>
 
           {/* CO2 Reduction Card */}
           <div className="w-1/2 bg-[#dbf7ff] rounded-md p-4 flex flex-col items-center">
-            <div className="text-black text-lg font-bold mb-1">1.5kg</div>
+            <div className="text-black text-lg font-bold mb-1">
+              {calculateCarbonEmission(totalAmount)}kg
+            </div>
             <div className="text-black text-lg font-normal mb-4">줄였어요!</div>
             <img className="w-24 h-24" src={co2} alt="CO2 Reduction" />
           </div>
@@ -55,7 +94,6 @@ const My = () => {
       <Partition color="light" height="thick" />
 
       {/* 메뉴   */}
-      <Menu title="이용 내역" to="/order" />
       <Menu title="문의하기" to="/customer-service" />
       <Menu title="약관 및 정책" to="/policy" />
       <Menu title="로그아웃" onClick={() => onClickLogout()} />

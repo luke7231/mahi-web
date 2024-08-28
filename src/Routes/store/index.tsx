@@ -280,7 +280,7 @@ const Store = () => {
           <Partition color="light" height="thick" />
 
           {/* 상품 목록 */}
-          {store.products?.length !== 0 ? (
+          {store.products?.length === 0 ? (
             <NoProduct
               isLiked={store.isLiked}
               onClickButton={async (e) => {
