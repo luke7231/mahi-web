@@ -1,7 +1,13 @@
 import React from "react";
 import NoProductImg from "./hero-icon.png";
 
-export const NoProduct = (): JSX.Element => {
+export const NoProduct = ({
+  onClickButton,
+  isLiked,
+}: {
+  isLiked: boolean | null | undefined;
+  onClickButton: (e: React.MouseEvent) => void;
+}): JSX.Element => {
   return (
     <div className="w-full h-full flex justify-center bg-[#f6f6f6]">
       <div className="relative w-full max-w-sm p-4 text-center bg-[#f6f6f6]">
@@ -24,8 +30,11 @@ export const NoProduct = (): JSX.Element => {
 
         {/* Recommendation Button */}
         <div className="mx-auto w-32 h-10 mb-[82px] bg-white rounded-md border border-solid border-[#dddddd] flex justify-center items-center cursor-pointer">
-          <span className="text-[#5b5b5b] text-sm font-semibold">
-            이 매장 찜하기
+          <span
+            className="text-[#5b5b5b] text-sm font-semibold"
+            onClick={onClickButton}
+          >
+            {isLiked ? "알림 완료" : "이 매장 찜하기"}
           </span>
         </div>
       </div>

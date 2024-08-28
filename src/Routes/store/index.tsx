@@ -280,8 +280,17 @@ const Store = () => {
           <Partition color="light" height="thick" />
 
           {/* 상품 목록 */}
-          {store.products?.length === 0 ? (
-            <NoProduct />
+          {store.products?.length !== 0 ? (
+            <NoProduct
+              isLiked={store.isLiked}
+              onClickButton={async (e) => {
+                e.stopPropagation(); // Prevents triggering the store click
+                await onClickLike(
+                  store?.id as number,
+                  store?.isLiked as boolean
+                );
+              }}
+            />
           ) : (
             <div className="w-full p-5 h-auto gap-y-5 relative flex flex-col">
               {store?.products?.map((product) => {
