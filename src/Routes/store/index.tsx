@@ -33,6 +33,8 @@ const GET_STORE = gql(`
         quantity
       }
       img
+      contactNumber
+      closingHours
     }
   }
 `);
@@ -47,7 +49,37 @@ const Store = () => {
     },
   });
   const store = data?.store;
+  const [isOpen, setIsOpen] = useState(false);
 
+  useEffect(() => {
+    const checkStoreStatus = () => {
+      if (store?.closingHours) {
+        const currentTime = new Date();
+        const closingTime = new Date();
+
+        // closingHours를 "HH:mm" 형식으로 가정
+        const [closingHoursHour, closingHoursMinute] = store?.closingHours
+          .split(":")
+          .map(Number);
+        closingTime.setHours(closingHoursHour);
+        closingTime.setMinutes(closingHoursMinute);
+        closingTime.setSeconds(0); // 초는 0으로 설정하여 정확한 비교
+
+        // 현재 시간이 closingHours보다 이전이면 영업중
+        if (currentTime < closingTime) {
+          setIsOpen(true);
+        } else {
+          setIsOpen(false);
+        }
+      }
+    };
+
+    checkStoreStatus();
+
+    // 상태 업데이트를 위해 주기적으로 확인 (선택 사항)
+    const interval = setInterval(checkStoreStatus, 60000); // 1분마다 상태 확인
+    return () => clearInterval(interval);
+  }, [store?.closingHours]);
   function onClickProduct(id: number) {
     navigate(`/product/${id}`);
   }
@@ -177,14 +209,19 @@ const Store = () => {
               <div className="flex">
                 <span className="text-gray-600">영업 시간</span>
                 <span className="text-black ml-2">
-                  10:00~18:00 <span className="font-bold">영업중</span>
+                  ~{store?.closingHours}까지{" "}
+                  <span className="font-bold">
+                    {isOpen ? "영업중" : "영업종료"}
+                  </span>
                 </span>
               </div>
 
               {/* Row for 매장 번호 */}
               <div className="flex">
                 <span className="text-gray-600">매장 번호</span>
-                <span className="text-black ml-2">비공개</span>
+                <span className="text-black ml-2">
+                  {store?.contactNumber || "비공개"}
+                </span>
               </div>
             </div>
           </div>
