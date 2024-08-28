@@ -38,7 +38,7 @@ const GET_STORES = gql(`
     }
   }
 `);
-const LIKE_STORE = apolloGql`
+export const LIKE_STORE = apolloGql`
   mutation LikeStore($storeId: Int!) {
     likeStore(storeId: $storeId) {
       id
@@ -48,7 +48,7 @@ const LIKE_STORE = apolloGql`
     }
   }
 `;
-const CANCEL_LIKE = apolloGql`
+export const CANCEL_LIKE = apolloGql`
   mutation CancelLike($storeId: Int!) {
     cancelLike(storeId: $storeId) {
       id

@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Product } from "../../__generated__/graphql";
 import { useCart } from "../../core/cart";
@@ -6,6 +6,9 @@ import { useEffect, useState } from "react";
 import Partition from "../../components/common/partition";
 import { gql } from "../../__generated__";
 import NoProduct from "../../components/store/no-product";
+import HeartBlackBorder from "../../components/common/heart-black-border";
+import { useAuth } from "../../core/auth";
+import { CANCEL_LIKE, LIKE_STORE } from "../home";
 
 const GET_STORE = gql(`
   query Store($storeId: Int!) {
@@ -40,6 +43,7 @@ const GET_STORE = gql(`
 `);
 
 const Store = () => {
+  const { isLoggedIn } = useAuth();
   const [timeString, setTimeString] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
@@ -47,8 +51,38 @@ const Store = () => {
     variables: {
       storeId: Number(id),
     },
+    fetchPolicy: "network-only",
   });
   const store = data?.store;
+  const [likeStore] = useMutation(LIKE_STORE, {
+    onCompleted: (data) => {
+      console.log(data);
+    },
+    onError: (error) => console.error(error),
+    refetchQueries: [
+      {
+        query: GET_STORE,
+        variables: {
+          storeId: Number(id),
+        },
+      },
+    ],
+  });
+  const [cancelLike] = useMutation(CANCEL_LIKE, {
+    onCompleted: (data) => {
+      console.log(data.cancelLike.storeId, "id..");
+    },
+    onError: (error) => console.error(error),
+    refetchQueries: [
+      // 흠... 이거 캐시로 수정해야해 ㅠㅠ 일단 이렇게 하긴하는데 불필요한 네트워크 요청이 넘 만을 것 같다. 이거부터 청산해야할 듯. 출시후에
+      {
+        query: GET_STORE,
+        variables: {
+          storeId: Number(id),
+        },
+      },
+    ],
+  });
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -125,6 +159,29 @@ const Store = () => {
     }
   }, [store]);
 
+  async function onClickLike(storeId: number, isLiked: boolean | null) {
+    if (!isLoggedIn) {
+      navigate("/login");
+      return;
+      // TODO: 로그인 페이지로 보낸다.
+    }
+    // 토글처리
+    if (isLiked) {
+      // deleteLike
+      cancelLike({
+        variables: {
+          storeId,
+        },
+      });
+    } else {
+      // createLike
+      likeStore({
+        variables: {
+          storeId,
+        },
+      });
+    }
+  }
   return (
     <div className="container h-[120vh] mx-auto mb-20">
       {store ? (
@@ -147,21 +204,16 @@ const Store = () => {
                 </h2>
                 {/* Favorite Icon */}
                 <div className="flex items-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="18"
-                    viewBox="0 0 20 18"
-                    fill="none"
-                  >
-                    <path
-                      d="M2.31804 2.31804C1.90017 2.7359 1.5687 3.23198 1.34255 3.77795C1.1164 4.32392 1 4.90909 1 5.50004C1 6.09099 1.1164 6.67616 1.34255 7.22213C1.5687 7.7681 1.90017 8.26417 2.31804 8.68204L10 16.364L17.682 8.68204C18.526 7.83812 19.0001 6.69352 19.0001 5.50004C19.0001 4.30656 18.526 3.16196 17.682 2.31804C16.8381 1.47412 15.6935 1.00001 14.5 1.00001C13.3066 1.00001 12.162 1.47412 11.318 2.31804L10 3.63604L8.68204 2.31804C8.26417 1.90017 7.7681 1.5687 7.22213 1.34255C6.67616 1.1164 6.09099 1 5.50004 1C4.90909 1 4.32392 1.1164 3.77795 1.34255C3.23198 1.5687 2.7359 1.90017 2.31804 2.31804Z"
-                      stroke="#292929"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
+                  <HeartBlackBorder
+                    isLiked={store.isLiked}
+                    onClick={async (e) => {
+                      e.stopPropagation(); // Prevents triggering the store click
+                      await onClickLike(
+                        store?.id as number,
+                        store?.isLiked as boolean
+                      );
+                    }}
+                  />
                 </div>
               </div>
 
