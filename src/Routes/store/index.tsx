@@ -183,7 +183,7 @@ const Store = () => {
     }
   }
   return (
-    <div className="container h-[120vh] mx-auto mb-20">
+    <div className="container mx-auto mb-20 ">
       {store ? (
         <>
           <div className="relative w-full max-w-sm mx-auto bg-white overflow-hidden">
@@ -292,7 +292,7 @@ const Store = () => {
               }}
             />
           ) : (
-            <div className="w-full p-5 h-auto gap-y-5 relative flex flex-col">
+            <div className="w-full p-5 h-full gap-y-5 relative flex flex-col ">
               {store?.products?.map((product) => {
                 return (
                   <div
