@@ -53,7 +53,7 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-[#f4f5f7] p-4">
+    <div className="flex items-center justify-center min-h-screen bg-[#fff] p-4">
       <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
         <div onClick={() => navigate(-1)}>
           <BackArrow />

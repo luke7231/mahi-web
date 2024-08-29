@@ -131,7 +131,7 @@ const Login: React.FC = () => {
   };
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center bg-[#f4f5f7] p-4">
+      <div className="min-h-screen flex items-center justify-center bg-[#fff] p-4">
         <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
           <div onClick={() => navigate(-1)}>
             <BackArrow />
