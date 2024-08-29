@@ -29,6 +29,7 @@ const GET_LIKED_STORES = gql(`
         updatedAt
       }
       img
+      closingHours
     }
   }
 `);
@@ -123,7 +124,7 @@ const Like = () => {
             <StoreCard
               title={store?.title as string}
               quantity={(store?.products as Product[])[0].quantity}
-              saleEndTime={(store?.products as Product[])[0].saleEndTime}
+              closingHours={store?.closingHours as string}
               discountPrice={
                 (store?.products as Product[])[0].discountPrice as number
               }

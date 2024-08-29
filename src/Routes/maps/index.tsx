@@ -222,9 +222,7 @@ function Map({ stores }: { stores: Store[] }) {
               <StoreCard
                 title={clickedStore?.title as string}
                 quantity={(clickedStore?.products as Product[])[0]?.quantity}
-                saleEndTime={
-                  (clickedStore?.products as Product[])[0]?.saleEndTime
-                }
+                closingHours={clickedStore?.closingHours as string}
                 discountPrice={
                   (clickedStore?.products as Product[])[0]
                     ?.discountPrice as number

@@ -6,7 +6,7 @@ interface IProp {
   onClickHeart: (e: React.MouseEvent) => void;
   quantity: number;
   title: string;
-  saleEndTime: string;
+  closingHours: string;
   discountPrice: number;
   price: number;
   isLiked: boolean | undefined | null;
@@ -16,7 +16,7 @@ interface IProp {
 export const StoreCard = ({
   quantity,
   title,
-  saleEndTime,
+  closingHours,
   discountPrice,
   price,
   onClick,
@@ -24,22 +24,6 @@ export const StoreCard = ({
   img,
   isLiked,
 }: IProp): JSX.Element => {
-  // saleEndTime을 Date 객체로 변환
-  const date = new Date(saleEndTime);
-
-  // 시와 분 추출
-  let hours = date.getUTCHours(); // 한국 시간에서 UTC로 변환하려면 9시간을 빼야 합니다
-  let minutes = date.getUTCMinutes();
-
-  // 시와 분을 2자리로 포맷
-  //   if (hours < 0) {
-  //     hours += 24; // 24시간 형식으로 조정
-  //   }
-  const formattedHours = hours.toString().padStart(2, "0");
-  const formattedMinutes = minutes.toString().padStart(2, "0");
-
-  // 시와 분을 원하는 형식으로 조합
-  const timeString = `${formattedHours}:${formattedMinutes}`;
   return (
     <div className="w-full h-52" onClick={onClick}>
       <div className="w-full h-full">
@@ -83,7 +67,7 @@ export const StoreCard = ({
                 </svg>
                 <p className="text-sm text-gray-600">
                   <span className="font-medium text-base">
-                    {timeString}까지
+                    {closingHours}까지
                   </span>{" "}
                   <span className="text-[#b6b6b6]">픽업 &middot; 도보</span> 약
                   8분
