@@ -8,14 +8,19 @@ import co2 from "./co2.png";
 import Partition from "../../components/common/partition";
 import Menu from "../../components/my/menu";
 import { GET_ORDERS } from "../order";
+import Modal from "../../components/common/modal";
 
 const My = () => {
+  // const [isOpenModal, setIsOpenModal] = useState(true);
   const { data, loading } = useQuery(GET_ORDERS);
   const [totalDiscount, setTotalDiscount] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
   const navigate = useNavigate();
   const { logout } = useAuth();
 
+  // const toggleModal = () => {
+  //   setIsOpenModal(!isOpenModal);
+  // };
   useEffect(() => {
     if (data?.orders) {
       const orders = data.orders;
@@ -96,8 +101,10 @@ const My = () => {
       {/* 메뉴   */}
       <Menu title="문의하기" to="/customer-service" />
       <Menu title="약관 및 정책" to="/policy" />
+      <Menu title="비밀번호 재설정" to="/change-password" />
       <Menu title="로그아웃" onClick={() => onClickLogout()} />
-      <Menu title="계정탈퇴" to={"/sign-out"} />
+      <Menu title="계정탈퇴" to="/sign-out" />
+      {/* <Modal isOpen={isOpenModal} onYes={} onClose={toggleModal} /> */}
 
       <BottomTab />
     </div>
