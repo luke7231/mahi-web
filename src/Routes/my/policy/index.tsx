@@ -14,7 +14,10 @@ const Policy = () => {
         title="개인정보 처리방침"
         to="https://quirky-moss-44e.notion.site/4fae5a1a1faa4f6fb569e5ec4f07e9c5?pvs=4"
       />
-      <Menu title="서비스 이용 약관" to="" />
+      <Menu
+        title="서비스 이용 약관"
+        to="https://quirky-moss-44e.notion.site/fffd3b7673888070be17ea9672b3d4dc?pvs=4"
+      />
 
       <BottomTab />
     </div>
