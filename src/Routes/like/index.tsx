@@ -123,7 +123,9 @@ const Like = () => {
           return (
             <StoreCard
               title={store?.title as string}
-              quantity={(store?.products as Product[])[0].quantity}
+              quantity={store?.products?.reduce((total, product) => {
+                return total + product.quantity;
+              }, 0)}
               closingHours={store?.closingHours as string}
               discountPrice={
                 (store?.products as Product[])[0].discountPrice as number

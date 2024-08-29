@@ -4,10 +4,10 @@ import HeartIcon from "../common/heart";
 interface IProp {
   onClick: () => void;
   onClickHeart: (e: React.MouseEvent) => void;
-  quantity: number;
+  quantity: number | undefined;
   title: string;
   closingHours: string;
-  discountPrice: number;
+  discountPrice?: number | null | undefined;
   price: number;
   isLiked: boolean | undefined | null;
   img: string;
@@ -33,9 +33,11 @@ export const StoreCard = ({
             className="absolute w-full h-[8.75rem] bg-cover bg-center"
             style={{ backgroundImage: `url(${img})` }}
           >
-            <div className="absolute bottom-0 right-0 bg-black text-white p-2 px-2.5">
-              <p className="text-base ">{quantity}개 남았어요!</p>
-            </div>
+            {quantity !== 0 && (
+              <div className="absolute bottom-0 right-0 bg-black text-white p-2 px-2.5">
+                <p className="text-base ">{quantity}개 남았어요!</p>
+              </div>
+            )}
             {/* Heart Icon */}
             <HeartIcon onClick={onClickHeart} isLiked={isLiked} />
           </div>
@@ -45,7 +47,9 @@ export const StoreCard = ({
             <div className="flex justify-between items-center mt-1">
               <p className="font-semibold text-black text-lg">{title}</p>
               <p className="font-bold text-black text-xl">
-                ~{discountPrice?.toLocaleString()}원
+                {discountPrice
+                  ? `~${discountPrice?.toLocaleString()}원`
+                  : "준비중"}
               </p>
             </div>
             <div className="flex justify-between items-center">
@@ -74,7 +78,7 @@ export const StoreCard = ({
                 </p>
               </div>
               <div className="text-xs text-gray-400 line-through">
-                {price?.toLocaleString()}원
+                {price ? `~${price?.toLocaleString()}원` : "준비중"}
               </div>
             </div>
           </div>

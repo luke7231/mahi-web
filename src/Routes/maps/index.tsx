@@ -221,7 +221,9 @@ function Map({ stores }: { stores: Store[] }) {
             <div className="shadow-[0px_0px_144px_0px_rgba(21,98,252,0.40)]">
               <StoreCard
                 title={clickedStore?.title as string}
-                quantity={(clickedStore?.products as Product[])[0]?.quantity}
+                quantity={clickedStore?.products?.reduce((total, product) => {
+                  return total + product.quantity;
+                }, 0)}
                 closingHours={clickedStore?.closingHours as string}
                 discountPrice={
                   (clickedStore?.products as Product[])[0]

@@ -217,13 +217,14 @@ const Home = () => {
               <div className="mb-4">
                 <StoreCard
                   title={store?.title as string}
-                  quantity={(store?.products as Product[])[0]?.quantity}
+                  quantity={store?.products?.reduce((total, product) => {
+                    return total + product.quantity;
+                  }, 0)}
                   closingHours={store?.closingHours as string}
                   discountPrice={
-                    (store?.products as Product[])[0]?.discountPrice ||
-                    (0 as number)
+                    (store?.products as Product[])[0]?.discountPrice
                   }
-                  price={(store?.products as Product[])[0]?.price || 0}
+                  price={(store?.products as Product[])[0]?.price}
                   isLiked={store?.isLiked}
                   img={store?.img as string}
                   onClick={() => onClickStore(store?.id as number)}
