@@ -212,7 +212,7 @@ const Home = () => {
       ) : null}
       {isList ? (
         data?.stores?.length !== 0 ? (
-          <div className="mt-8 mb-12 p-4 flex-1 overflow-y-auto">
+          <div className="pt-8 mb-12 p-4 flex-1 overflow-y-auto">
             {data?.stores?.map((store) => (
               <div className="mb-4">
                 <StoreCard
