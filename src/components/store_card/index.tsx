@@ -61,7 +61,7 @@ export const StoreCard = ({
             <div className="flex justify-between items-center mt-1">
               <p className="font-semibold text-black text-lg">{title}</p>
               <p className="font-bold text-black text-xl">
-                ~{discountPrice.toLocaleString()}원
+                ~{discountPrice?.toLocaleString()}원
               </p>
             </div>
             <div className="flex justify-between items-center">
@@ -90,7 +90,7 @@ export const StoreCard = ({
                 </p>
               </div>
               <div className="text-xs text-gray-400 line-through">
-                {price.toLocaleString()}원
+                {price?.toLocaleString()}원
               </div>
             </div>
           </div>

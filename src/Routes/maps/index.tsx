@@ -221,15 +221,15 @@ function Map({ stores }: { stores: Store[] }) {
             <div className="shadow-[0px_0px_144px_0px_rgba(21,98,252,0.40)]">
               <StoreCard
                 title={clickedStore?.title as string}
-                quantity={(clickedStore?.products as Product[])[0].quantity}
+                quantity={(clickedStore?.products as Product[])[0]?.quantity}
                 saleEndTime={
-                  (clickedStore?.products as Product[])[0].saleEndTime
+                  (clickedStore?.products as Product[])[0]?.saleEndTime
                 }
                 discountPrice={
                   (clickedStore?.products as Product[])[0]
-                    .discountPrice as number
+                    ?.discountPrice as number
                 }
-                price={(clickedStore?.products as Product[])[0].price}
+                price={(clickedStore?.products as Product[])[0]?.price}
                 isLiked={clickedStore?.isLiked}
                 img={clickedStore?.img as string}
                 onClick={() => onClickStore(clickedStore?.id as number)}

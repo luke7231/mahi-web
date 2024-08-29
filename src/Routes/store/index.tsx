@@ -141,7 +141,7 @@ const Store = () => {
   useEffect(() => {
     // saleEndTime을 Date 객체로 변환
     if (store) {
-      const date = new Date(store.products?.[0].saleEndTime);
+      const date = new Date(store.products?.[0]?.saleEndTime);
 
       // 시와 분 추출
       let hours = date.getUTCHours(); // 한국 시간에서 UTC로 변환하려면 9시간을 빼야 합니다
