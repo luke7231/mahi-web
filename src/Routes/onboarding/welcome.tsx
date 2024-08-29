@@ -1,15 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../core/auth";
 import IMG from "./Vector.png";
+import { postMessage } from "../../core/message";
 const Welcome = () => {
   const navigate = useNavigate();
   const { doneOnboarding } = useAuth();
   const onClickButton = () => {
-    // app
-    // postMessage("REQ_LOCATION", "");
     // web
     doneOnboarding();
-    navigate("/");
+    navigate("/", { replace: true });
   };
   return (
     <div className="h-[100vh]">
