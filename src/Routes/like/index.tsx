@@ -128,9 +128,9 @@ const Like = () => {
               }, 0)}
               closingHours={store?.closingHours as string}
               discountPrice={
-                (store?.products as Product[])[0].discountPrice as number
+                (store?.products as Product[])[0]?.discountPrice as number
               }
-              price={(store?.products as Product[])[0].price}
+              price={(store?.products as Product[])[0]?.price}
               isLiked={store?.isLiked}
               img={store?.img as string}
               onClick={() => onClickStore(store?.id as number)}
