@@ -47,13 +47,17 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
 
-    <!-- <script>
+    <script>
       document.addEventListener("message", function (event) {
-        if (typeof event.data === "string") {
-          // console.log("asd");
+        if (
+          typeof event.data === "string" &&
+          event.data.startsWith("ExponentPushToken")
+        ) {
+          console.log(event);
+          localStorage.setItem("expo_push_token", event.data);
         }
       });
-    </script> -->
+    </script>
     <div id="root"></div>
     <!--
       This HTML file is a template.
