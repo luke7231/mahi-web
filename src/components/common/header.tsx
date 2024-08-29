@@ -4,11 +4,13 @@ import { useNavigate } from "react-router-dom";
 interface HeaderProps {
   showBackButton?: boolean;
   onBackClick?: () => void; // Optional function prop for back button click handler
+  title: string; // Title for the header
 }
 
 const Header: React.FC<HeaderProps> = ({
   showBackButton = false,
   onBackClick,
+  title,
 }) => {
   const navigate = useNavigate();
   return (
@@ -39,7 +41,7 @@ const Header: React.FC<HeaderProps> = ({
 
         {/* Header Title */}
         <div className="flex-1 flex justify-center text-lg font-semibold">
-          마이페이지
+          {title}
         </div>
 
         {/* Placeholder for alignment when back button is not shown */}

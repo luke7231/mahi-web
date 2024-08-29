@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import NoOrders from "../../components/order/no-orders";
 import { useQuery } from "@apollo/client";
 import Partition from "../../components/common/partition";
+import Header from "../../components/common/header";
 
 export const GET_ORDERS = gql(`
 query Orders {
@@ -55,10 +56,7 @@ const Order = () => {
 
   return (
     <div className="w-full h-[100vh] flex flex-col">
-      <div className="flex justify-center py-4 text-lg font-semibold">
-        주문내역
-      </div>
-      <div className="h-[0.0625rem] w-full bg-[#eaeaea]" />
+      <Header title="주문내역" />
       {data?.orders?.length === 0 ? <NoOrders /> : null}
       <div>
         {loading ? <div>loading...</div> : null}

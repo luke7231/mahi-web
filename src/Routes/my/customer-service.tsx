@@ -2,6 +2,7 @@ import React from "react";
 import Menu from "../../components/my/menu";
 import BottomTab from "../../components/bottom-tab";
 import IMG from "./customer-service.png";
+import Header from "../../components/common/header";
 
 const CustomerService = () => {
   const copyToClipboard = (text: string) => {
@@ -17,10 +18,7 @@ const CustomerService = () => {
   return (
     <div className="w-full h-[100vh] flex flex-col">
       {/* 헤더 */}
-      <div className="flex justify-center py-4 text-lg font-semibold">
-        문의하기
-      </div>
-      <div className="h-[0.0625rem] w-full bg-[#eaeaea]" />
+      <Header title="문의하기" showBackButton />
 
       {/* 본문 내용 */}
       <div className="flex-1 flex flex-col items-center p-4 h-full justify-center bg-[#F6F6F6]">

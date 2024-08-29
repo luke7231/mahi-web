@@ -9,6 +9,7 @@ import Partition from "../../components/common/partition";
 import Menu from "../../components/my/menu";
 import { GET_ORDERS } from "../order";
 import Modal from "../../components/common/modal";
+import Header from "../../components/common/header";
 
 const My = () => {
   // const [isOpenModal, setIsOpenModal] = useState(true);
@@ -60,10 +61,7 @@ const My = () => {
   return (
     <div className="w-full h-[100vh] flex flex-col">
       {/* 헤더 */}
-      <div className="flex justify-center py-4 text-lg font-semibold">
-        마이페이지
-      </div>
-      <div className="h-[0.0625rem] w-full bg-[#eaeaea]" />
+      <Header title="마이페이지" />
 
       <div
         className="w-full max-w-md p-4 bg-white mb-2"

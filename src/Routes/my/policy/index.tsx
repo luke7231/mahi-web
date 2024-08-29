@@ -1,15 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
 import BottomTab from "../../../components/bottom-tab";
 import Menu from "../../../components/my/menu";
+import Header from "../../../components/common/header";
 
 const Policy = () => {
   return (
     <div className="w-full h-[100vh] flex flex-col">
       {/* 헤더 */}
-      <div className="flex justify-center py-4 text-lg font-semibold">
-        약관 및 정책
-      </div>
-      <div className="h-[0.0625rem] w-full bg-[#eaeaea]" />
+      <Header title="약관 및 정책" showBackButton />
 
       {/* 메뉴   */}
       <Menu
