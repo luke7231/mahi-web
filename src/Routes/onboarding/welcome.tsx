@@ -7,6 +7,7 @@ const Welcome = () => {
   const { doneOnboarding } = useAuth();
   const onClickButton = () => {
     // web
+    postMessage("clear_history", "");
     doneOnboarding();
     navigate("/", { replace: true });
   };
