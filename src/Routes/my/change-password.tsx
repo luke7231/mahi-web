@@ -5,19 +5,10 @@ import { useNavigate } from "react-router-dom";
 import Header from "../../components/common/header";
 import BackArrow from "../../components/common/back-arrow";
 const CHANGE_PASSWORD = gql`
-  mutation UpdateUserPassword($data: UpdatePasswordInput!) {
-    updateUserPassword(data: $data) {
-      id
-      name
-      email
-      password
-      phone
-      dateOfBirth
-      gender
-      address
-      createdAt
-      updatedAt
-      push_token
+  mutation UpdateUserPassword($oldPassword: String!, $newPassword: String!) {
+    updateUserPassword(oldPassword: $oldPassword, newPassword: $newPassword) {
+      ok
+      error
     }
   }
 `;
@@ -28,18 +19,12 @@ const ChangePassword = () => {
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [changePassword, { data }] = useMutation(CHANGE_PASSWORD, {
-    variables: {
-      data: {
-        oldPassword,
-        newPassword,
-      },
-    },
     onCompleted: (data) => {
-      if (data.updateUserPassword.id) {
-        navigate("/my");
+      if (data.updateUserPassword.ok) {
+        navigate("/");
       }
     },
-    onError: (error) => alert(error),
+    onError: (error) => console.log(error),
   });
 
   const handlePasswordReset = () => {
@@ -48,8 +33,13 @@ const ChangePassword = () => {
     // After successful password reset, provide appropriate feedback
     setIsSubmitting(false);
   };
-  const onClickButton = () => {
-    changePassword();
+  const onClickButton = async () => {
+    await changePassword({
+      variables: {
+        oldPassword,
+        newPassword,
+      },
+    });
   };
 
   return (
@@ -64,7 +54,7 @@ const ChangePassword = () => {
         </h2>
 
         {/* Password Reset Form */}
-        <form onSubmit={onClickButton} className="space-y-4">
+        <div className="space-y-4">
           <div>
             <label
               htmlFor="oldPassword"
@@ -128,11 +118,13 @@ const ChangePassword = () => {
                 : "bg-[#1562fc] hover:bg-[#124ab7] transition duration-150"
             }`}
             disabled={isSubmitting}
+            onClick={async () => await onClickButton()}
+
             // onClick={() => onClickButton()}
           >
             {isSubmitting ? "처리 중..." : "완료"}
           </button>
-        </form>
+        </div>
       </div>
     </div>
   );
