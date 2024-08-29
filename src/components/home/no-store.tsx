@@ -13,10 +13,10 @@ export const NoStore = (): JSX.Element => {
         />
 
         {/* Message */}
-        <p className="text-[#464646] text-lg font-semibold mb-4">
+        <p className="text-[#464646] text-lg font-semibold">
           해당 위치에는 현재 입점된 가게가 없어요.
         </p>
-
+        <p className="text-[#6d6d6d] text-sm font-medium">(반경 5Km 이내)</p>
         {/* Additional Message */}
         <p className="text-[#6d6d6d] text-sm font-medium mt-4">
           빠른 시일내로 입점될 수 있도록 <br />
