@@ -56,7 +56,7 @@ const Order = () => {
 
   return (
     <div className="w-full h-[100vh] flex flex-col">
-      <Header title="주문내역" />
+      <Header title="주문내역" showBackButton />
       {data?.orders?.length === 0 ? <NoOrders /> : null}
       <div>
         {loading ? <div>loading...</div> : null}
