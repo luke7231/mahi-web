@@ -1,5 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCart } from "../../core/cart";
 import { useAuth } from "../../core/auth";
@@ -59,6 +59,11 @@ const Product = () => {
     addToCart(product, quantity); // 전역변수에 추가
     navigate(`/store/${product.store.id}`);
   }
+  useEffect(() => {
+    if (product?.quantity === 0) {
+      setQuantity(0);
+    }
+  }, [product?.quantity]);
   return (
     <div className="container h-[100vh] mx-auto bg-[#F4F5F7]">
       {product ? (
@@ -180,29 +185,31 @@ const Product = () => {
           </div>
         </>
       ) : null}
-      <div
-        onClick={() => onClickButton()}
-        className="px-5 py-4 w-full sticky bottom-0 bg-white"
-      >
-        <div className="absolute left-0 top-[-2.7rem] w-full h-[43px] bg-[#282828] rounded-tl-[10px] rounded-tr-[10px] text-white text-sm font-semibold flex justify-center items-center">
-          {(product?.price - product?.discountPrice).toLocaleString()}원{" "}
-          할인받았어요!
-        </div>
-        <div className=" w-full max-w-md h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border">
-          {/* Button Content */}
-          <div className="text-center flex items-center space-x-1">
-            <span className="text-white text-base font-semibold leading-snug">
-              {quantity}개
-            </span>
-            <span className="text-white text-base font-bold leading-snug">
-              {(quantity * product?.discountPrice).toLocaleString()}원
-            </span>
-            <span className="text-white text-base font-semibold leading-snug">
-              담기
-            </span>
+      {product?.quantity !== 0 ? (
+        <div
+          onClick={() => onClickButton()}
+          className="px-5 py-4 w-full sticky bottom-0 bg-white"
+        >
+          <div className="absolute left-0 top-[-2.7rem] w-full h-[43px] bg-[#282828] rounded-tl-[10px] rounded-tr-[10px] text-white text-sm font-semibold flex justify-center items-center">
+            {(product?.price - product?.discountPrice).toLocaleString()}원{" "}
+            할인받았어요!
+          </div>
+          <div className=" w-full max-w-md h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border">
+            {/* Button Content */}
+            <div className="text-center flex items-center space-x-1">
+              <span className="text-white text-base font-semibold leading-snug">
+                {quantity}개
+              </span>
+              <span className="text-white text-base font-bold leading-snug">
+                {(quantity * product?.discountPrice).toLocaleString()}원
+              </span>
+              <span className="text-white text-base font-semibold leading-snug">
+                담기
+              </span>
+            </div>
           </div>
         </div>
-      </div>
+      ) : null}
     </div>
   );
 };
