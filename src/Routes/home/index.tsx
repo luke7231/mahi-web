@@ -244,6 +244,11 @@ const Home = () => {
       ) : null}
       {/* BOTTOM TAB */}
       <BottomTab />
+      <img
+        className="absolute bottom-0 z-0 w-[42px] h-[42px]"
+        src="https://waasrzvnijhadqtenzsq.supabase.co/storage/v1/object/public/product/3x_map-marker.png"
+        alt="Custom Marker"
+      />
     </div>
   );
 };
