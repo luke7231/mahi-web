@@ -142,7 +142,7 @@ const Home = () => {
     <div className="w-full h-[100vh] flex flex-col bg-white">
       {/* LOCATION */}
       <div
-        className="py-4 pl-5 bg-white flex items-center cursor-pointer "
+        className="py-3 pl-5 bg-white flex items-center cursor-pointer "
         onClick={() => navigate("/location")}
       >
         <svg
@@ -165,7 +165,7 @@ const Home = () => {
             stroke-linejoin="round"
           />
         </svg>
-        <span className="ml-1 text-black font-semibold text-lg">
+        <span className="ml-1 text-black font-semibold text-md">
           내 위치를 설정해주세요.
         </span>
       </div>
