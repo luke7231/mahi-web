@@ -11,6 +11,9 @@ const GET_PRODUCT = gql`
       id
       store {
         id
+        title
+        closingHours
+        address
       }
       name
       price
@@ -56,7 +59,11 @@ const Product = () => {
     //   return;
     // }
 
-    addToCart(product, quantity); // 전역변수에 추가
+    addToCart(product, quantity, {
+      closingHours: product?.store?.closingHours,
+      address: product?.store?.address,
+      title: product?.store?.title,
+    }); // 전역변수에 추가
     navigate(`/store/${product.store.id}`);
   }
   useEffect(() => {

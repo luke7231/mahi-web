@@ -19,9 +19,7 @@ const CheckoutPage: React.FC = () => {
   const onClickProceed = () => {
     navigate("/payment");
   };
-  const onClickBack = () => {
-    navigate(-1);
-  };
+
   return (
     <div className="container mx-auto h-[100vh]">
       <div onClick={() => navigate(-1)} className="p-5">
@@ -56,10 +54,11 @@ const CheckoutPage: React.FC = () => {
         <div className=" p-4">
           <div className="w-full bg-[#f4f5f7] rounded-lg p-6">
             <div className="text-center text-sm text-[#828282]">
-              매장 마감 시간
+              <span className="font-bold">{cart[0]?.store?.title}</span> 마감
+              시간
             </div>
             <div className="text-center text-black text-6xl font-semibold">
-              18:00
+              {cart[0]?.store?.closingHours}
             </div>
 
             {/* Notification Box */}

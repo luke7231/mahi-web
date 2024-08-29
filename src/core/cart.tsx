@@ -1,5 +1,10 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
+interface Store {
+  title: string;
+  closingHours: string;
+  address: string;
+}
 // 상품 데이터 타입 정의
 interface Product {
   id: number;
@@ -21,12 +26,13 @@ interface Product {
 interface CartItem {
   product: Product;
   quantity: number;
+  store?: Store;
 }
 
 // CartContext 타입 정의
 interface CartContextType {
   cart: CartItem[];
-  addToCart: (product: Product, quantity: number) => void;
+  addToCart: (product: Product, quantity: number, store: Store) => void;
   removeFromCart: (productId: number) => void;
 }
 
@@ -40,7 +46,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
   const [cart, setCart] = useState<CartItem[]>([]);
 
   // 장바구니에 상품 추가
-  const addToCart = (product: Product, quantity: number) => {
+  const addToCart = (product: Product, quantity: number, store: Store) => {
     if (cart.length > 0 && cart[0].product.store.id !== product.store.id) {
       // 사용자에게 다른 매장의 제품을 추가할지 확인
       const confirmReset = window.confirm(
@@ -49,7 +55,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
 
       if (confirmReset) {
         // 카트를 초기화하고 새 상품을 추가
-        const newCart = [{ product, quantity }];
+        const newCart = [{ product, quantity, store }];
         localStorage.setItem("cart", JSON.stringify(newCart));
         setCart(newCart);
         return;
@@ -75,14 +81,14 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
         // 이미 장바구니에 있는 경우, 수량 업데이트
         const resultCart = prevCart.map((item) =>
           item.product.id === product.id
-            ? { ...item, quantity: item.quantity + quantity }
+            ? { ...item, ...store, quantity: item.quantity + quantity }
             : item
         );
         localStorage.setItem("cart", JSON.stringify(resultCart));
         return resultCart;
       } else {
         // 새로운 상품을 장바구니에 추가
-        const resultCart = [...prevCart, { product, quantity }];
+        const resultCart = [...prevCart, { product, quantity, store }];
         localStorage.setItem("cart", JSON.stringify(resultCart));
         return resultCart;
       }
