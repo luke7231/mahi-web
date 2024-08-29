@@ -29,7 +29,7 @@ import Contact from "./Routes/my/contact";
 import ChangePassword from "./Routes/my/change-password";
 
 const Router = () => {
-  const { isFirst } = useAuth();
+  const { isFirst, isLoggedIn } = useAuth();
   return (
     <BrowserRouter>
       <Routes>
@@ -63,7 +63,10 @@ const Router = () => {
         <Route path="/fail" element={<FailPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/password-reset" element={<PasswordResetPage />} />
-        <Route path="/change-password" element={<ChangePassword />} />
+        <Route
+          path="/change-password"
+          element={!isLoggedIn ? <Navigate to="/login" /> : <ChangePassword />}
+        />
         <Route path="/auth" element={<KakaoRedirectHandler />} />
         <Route path="/sign-up" element={<SignUp />} />
       </Routes>
