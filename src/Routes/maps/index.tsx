@@ -208,9 +208,14 @@ function Map({ stores }: { stores: Store[] }) {
     resetListHandler();
     console.log("내 현재 위치로 돌아오면서 재 정렬한다?");
   };
+  const mapHeight = window.innerHeight - 45 - 56 - 64; // 1. 위치설정 바 2. 탭 3. 바텀탭
   return (
-    <div className="w-[100%] mt-4">
-      <div ref={mapElement} id="map" style={{ width: "100%", height: "600px" }}>
+    <div className="w-[100%]">
+      <div
+        ref={mapElement}
+        id="map"
+        style={{ width: "100%", height: `${mapHeight}px` }}
+      >
         {clickedStore ? (
           <div className="p-4 absolute bottom-1 z-50 w-full ">
             <div className="shadow-[0px_0px_144px_0px_rgba(21,98,252,0.40)]">
