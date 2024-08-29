@@ -151,7 +151,13 @@ const SignUp: React.FC = () => {
                 required
               />
               <label htmlFor="privacyPolicy" className="text-sm text-black">
-                개인정보 처리방침 동의(필수)
+                개인정보 처리방침 동의(필수){" "}
+                <a
+                  href="https://quirky-moss-44e.notion.site/4fae5a1a1faa4f6fb569e5ec4f07e9c5?pvs=4"
+                  className="underline"
+                >
+                  링크
+                </a>
               </label>
             </div>
 
@@ -165,7 +171,13 @@ const SignUp: React.FC = () => {
                 required
               />
               <label htmlFor="terms" className="text-sm text-black">
-                서비스 이용약관 동의(필수)
+                서비스 이용약관 동의(필수){" "}
+                <a
+                  href="https://quirky-moss-44e.notion.site/fffd3b7673888070be17ea9672b3d4dc?pvs=4"
+                  className="underline"
+                >
+                  링크
+                </a>
               </label>
             </div>
           </div>
