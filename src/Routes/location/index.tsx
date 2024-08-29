@@ -3,6 +3,14 @@ import CustomMapMarker from "../../components/custom-map-marker";
 import { useNavigate } from "react-router-dom";
 import { postMessage } from "../../core/message";
 import { useLocation } from "../../core/location-provider";
+import { gql } from "../../__generated__";
+import { useLazyQuery } from "@apollo/client";
+
+const GET_LOCAL_ADDRESS = gql(`
+query GetLocalAddress($lat: Float!, $lng: Float!, $pushToken: String) {
+  getLocalAddress(lat: $lat, lng: $lng, push_token: $pushToken)
+}
+`);
 
 const 판교주소_LAT = 37.3595704;
 const 판교주소_LNG = 127.105399;
@@ -10,6 +18,7 @@ const 판교주소_LNG = 127.105399;
 function Location() {
   const { hasLastLo, getLocationFromStorage, setLocationToStorage } =
     useLocation();
+  const [getLocalAddress, { data }] = useLazyQuery(GET_LOCAL_ADDRESS);
   const navigate = useNavigate();
   const mapElement = useRef<HTMLDivElement | null>(null);
 
@@ -125,12 +134,31 @@ function Location() {
     newMarker?.setMap(newMap);
   };
 
-  function onComplete() {
+  async function onComplete() {
     if (!newMap) return;
     const center = newMap.getCenter();
+    // const res = await getAddressFromCoords({ lat: center.y, lng: center.x }); // 서버로 해야할듯
+    await getLocalAddress({
+      variables: {
+        lat: center.y,
+        lng: center.x,
+        pushToken: localStorage.getItem("expo_push_token"),
+      },
+      onCompleted: (data) => {
+        if (data.getLocalAddress) {
+          localStorage.setItem("loadAddr", data.getLocalAddress);
+        }
+      },
+      onError: () => localStorage.setItem("loadAddr", ""),
+    });
+    // console.log(res);
     setLocationToStorage(center.y, center.x);
     navigate("/");
   }
+  // curl "https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc?request=coordsToaddr&coords=129.1133567,35.2982640&sourcecrs=epsg:4326&output=json&orders=legalcode,admcode" \
+  // -H "X-NCP-APIGW-API-KEY-ID: {애플리케이션 등록 시 발급받은 client id값}" \
+  // -H "X-NCP-APIGW-API-KEY: {애플리케이션 등록 시 발급받은 client secret값}" -v
+
   return (
     <div className="w-[100%]">
       <div ref={mapElement} id="map" style={{ width: "100%", height: "70vh" }}>

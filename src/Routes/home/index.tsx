@@ -209,7 +209,7 @@ const Home = () => {
             />
           </svg>
           <span className="ml-1 text-black font-semibold text-md">
-            내 위치를 설정해주세요.
+            {localStorage.getItem("loadAddr") || "내 위치를 설정해주세요."}
           </span>
         </div>
         <div className="relative inline-block mr-5 mt-1" onClick={onClickCart}>
@@ -238,12 +238,12 @@ const Home = () => {
         </div>
       </div>
 
-      {/* <div className="p-2 text-sm text-gray-600">
+      <div className="p-2 text-sm text-gray-600">
         <span className="cursor-pointer" onClick={() => localStorage.clear()}>
           token:
         </span>{" "}
         {localStorage.getItem("expo_push_token")}
-      </div> */}
+      </div>
       <div className="h-[0.0625rem] w-full bg-[#7a7a7a]" />
       {/* TAB */}
       <div className="">
