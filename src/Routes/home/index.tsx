@@ -39,6 +39,32 @@ const GET_STORES = gql(`
     }
   }
 `);
+const JUST_STORES = gql(`
+query JustStores {
+  justStores {
+    id
+    lat
+    lng
+    title
+    createdAt
+    updatedAt
+    isLiked
+    products {
+      id
+      price
+      discountPrice
+      saleEndTime
+      quantity
+      createdAt
+      updatedAt
+    }
+    address
+    img
+    contactNumber
+    closingHours
+  }
+}
+`);
 export const LIKE_STORE = apolloGql`
   mutation LikeStore($storeId: Int!) {
     likeStore(storeId: $storeId) {
@@ -73,6 +99,10 @@ const Home = () => {
     onCompleted: (data) => console.log(data),
     fetchPolicy: "network-only",
   });
+  const { data: justData } = useQuery(JUST_STORES, {
+    onCompleted: (data) => console.log(data),
+    fetchPolicy: "network-only",
+  });
   const [likeStore] = useMutation(LIKE_STORE, {
     onCompleted: (data) => {
       console.log(data);
@@ -85,6 +115,9 @@ const Home = () => {
           lat: hasLastLo ? getLocationFromStorage().lat : null,
           lng: hasLastLo ? getLocationFromStorage().lng : null,
         },
+      },
+      {
+        query: JUST_STORES,
       },
     ],
   });
@@ -101,6 +134,9 @@ const Home = () => {
           lat: hasLastLo ? getLocationFromStorage().lat : null,
           lng: hasLastLo ? getLocationFromStorage().lng : null,
         },
+      },
+      {
+        query: JUST_STORES,
       },
     ],
   });
@@ -240,7 +276,7 @@ const Home = () => {
         <div className="text-center text-gray-500">Loading...</div>
       ) : null}
       {!isList && data && data.stores ? (
-        <Map stores={data.stores as Store[]} />
+        <Map stores={justData?.justStores as Store[]} />
       ) : null}
       {isList ? (
         data?.stores?.length !== 0 ? (
