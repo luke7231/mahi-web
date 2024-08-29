@@ -28,6 +28,8 @@ const SignUp: React.FC = () => {
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [privacyPolicyChecked, setPrivacyPolicyChecked] = useState(false);
+  const [termsChecked, setTermsChecked] = useState(false);
   const [pureSignup] = useMutation(PURE_SIGNUP, {
     onCompleted: (data) => {
       setIsSubmitting(false);
@@ -35,7 +37,6 @@ const SignUp: React.FC = () => {
       if (jwt) {
         localStorage.setItem("jwt", jwt);
         authLogin();
-        // TODO: 원래 있던 곳으로 보낸다.
         navigate("/");
       }
     },
@@ -48,9 +49,18 @@ const SignUp: React.FC = () => {
   const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // 여기서 회원가입 로직을 처리하세요.
+
+    // Check if passwords match
     if (password !== passwordCheck) {
       alert("비밀번호가 일치하지 않습니다.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Check if both checkboxes are checked
+    if (!privacyPolicyChecked || !termsChecked) {
+      alert("개인정보 처리방침과 서비스 이용약관에 모두 동의해 주세요.");
+      setIsSubmitting(false);
       return;
     }
 
@@ -127,6 +137,37 @@ const SignUp: React.FC = () => {
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#1562fc]"
               placeholder="동일하게 입력해주세요."
             />
+          </div>
+
+          {/* Checkboxes for Terms and Privacy Policy */}
+          <div className="space-y-2 ml-1">
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                id="privacyPolicy"
+                checked={privacyPolicyChecked}
+                onChange={() => setPrivacyPolicyChecked(!privacyPolicyChecked)}
+                className="mr-2"
+                required
+              />
+              <label htmlFor="privacyPolicy" className="text-sm text-black">
+                개인정보 처리방침 동의(필수)
+              </label>
+            </div>
+
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                id="terms"
+                checked={termsChecked}
+                onChange={() => setTermsChecked(!termsChecked)}
+                className="mr-2"
+                required
+              />
+              <label htmlFor="terms" className="text-sm text-black">
+                서비스 이용약관 동의(필수)
+              </label>
+            </div>
           </div>
 
           {/* Submit Button */}
