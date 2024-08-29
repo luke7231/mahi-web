@@ -2,6 +2,7 @@ import { gql, useLazyQuery, useMutation } from "@apollo/client";
 import React, { useState } from "react";
 import { useAuth } from "../../core/auth";
 import { useNavigate } from "react-router-dom";
+import BackArrow from "../../components/common/back-arrow";
 
 const WEB_URL = process.env.REACT_APP_URL;
 
@@ -132,6 +133,9 @@ const Login: React.FC = () => {
     <>
       <div className="min-h-screen flex items-center justify-center bg-[#f4f5f7] p-4">
         <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
+          <div onClick={() => navigate(-1)}>
+            <BackArrow />
+          </div>
           {/* Header */}
           <div className="mb-6 text-center">
             <h1 className="text-2xl font-semibold text-black mb-2">로그인</h1>

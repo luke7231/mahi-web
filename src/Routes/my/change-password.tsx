@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-// import { gql } from "../../__generated__";
 
 import { gql, useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
+import Header from "../../components/common/header";
+import BackArrow from "../../components/common/back-arrow";
 const CHANGE_PASSWORD = gql`
   mutation UpdateUserPassword($data: UpdatePasswordInput!) {
     updateUserPassword(data: $data) {
@@ -54,6 +55,9 @@ const ChangePassword = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#f4f5f7] p-4">
       <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
+        <div onClick={() => navigate(-1)}>
+          <BackArrow />
+        </div>
         {/* Header */}
         <h2 className="text-2xl font-semibold text-center text-black mb-6">
           비밀번호 재설정
