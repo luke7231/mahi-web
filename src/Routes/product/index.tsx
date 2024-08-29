@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useCart } from "../../core/cart";
 import { useAuth } from "../../core/auth";
 import Partition from "../../components/common/partition";
-
+import BACK_IMG from "../../components/common/back-img.png";
 const GET_PRODUCT = gql`
   query Product($productId: Int!) {
     product(id: $productId) {
@@ -66,6 +66,11 @@ const Product = () => {
           <div className="relative w-full max-w-sm mx-auto bg-white overflow-hidden">
             {/* Image Container */}
             <div className="relative w-full">
+              <img
+                src={BACK_IMG}
+                onClick={() => navigate(-1)}
+                className="absolute top-5 left-5 w-[40px] h-[40px]"
+              />
               <img
                 className="object-cover "
                 alt="Store"

@@ -9,7 +9,7 @@ import NoProduct from "../../components/store/no-product";
 import HeartBlackBorder from "../../components/common/heart-black-border";
 import { useAuth } from "../../core/auth";
 import { CANCEL_LIKE, LIKE_STORE } from "../home";
-
+import BACK_IMG from "../../components/common/back-img.png";
 const GET_STORE = gql(`
   query Store($storeId: Int!) {
     store(id: $storeId) {
@@ -189,6 +189,11 @@ const Store = () => {
           <div className="relative w-full max-w-sm mx-auto bg-white overflow-hidden">
             {/* Image Container */}
             <div className="relative w-full">
+              <img
+                src={BACK_IMG}
+                onClick={() => navigate(-1)}
+                className="absolute top-5 left-5 w-[40px] h-[40px]"
+              />
               <img
                 className="w-full h-56 object-cover"
                 alt="Store"

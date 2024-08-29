@@ -131,7 +131,34 @@ import Header from "../../components/common/header";
 const Hey = () => {
   return (
     <>
-      <Header showBackButton title="hey" />
+      {/* <Header showBackButton title="hey" />
+       */}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="42"
+        height="42"
+        viewBox="0 0 42 42"
+        fill="none"
+        className="flex items-center justify-center"
+      >
+        <circle opacity="0.6" cx="21" cy="21" r="21" fill="black" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="28"
+          height="28"
+          viewBox="0 0 28 28"
+          fill="none"
+          className="flex items-center justify-center"
+        >
+          <path
+            d="M17.5 22.1666L9.33333 14L17.5 5.83329"
+            stroke="white"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </svg>
     </>
   );
 };

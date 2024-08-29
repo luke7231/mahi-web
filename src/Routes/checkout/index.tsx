@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../../core/cart";
 import Partition from "../../components/common/partition";
+import BackArrow from "../../components/common/back-arrow";
 
 const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
@@ -23,7 +24,10 @@ const CheckoutPage: React.FC = () => {
   };
   return (
     <div className="container mx-auto h-[100vh]">
-      <div className="w-full max-w-md mx-auto h-auto mt-16 bg-white">
+      <div onClick={() => navigate(-1)} className="p-5">
+        <BackArrow />
+      </div>
+      <div className="w-full max-w-md mx-auto h-auto mt-10 bg-white">
         {/* Header Section */}
         <div className="flex flex-col items-center text-center text-black mb-6">
           <svg
