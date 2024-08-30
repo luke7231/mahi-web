@@ -1,10 +1,12 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import CustomMapMarker from "../../components/custom-map-marker";
+
 import { useNavigate } from "react-router-dom";
 import { postMessage } from "../../core/message";
 import { useLocation } from "../../core/location-provider";
 import { gql } from "../../__generated__";
 import { useLazyQuery } from "@apollo/client";
+import BottomTab from "../../components/bottom-tab";
+import CustomMapMarker2 from "../../components/custome-map-marker2";
 
 const GET_LOCAL_ADDRESS = gql(`
 query GetLocalAddress($lat: Float!, $lng: Float!, $pushToken: String) {
@@ -69,14 +71,12 @@ function Location() {
       map,
       clickable: true,
       // [마커 커스터마이징]
-      // icon: {
-      //   //html element를 반환하는 CustomMapMarker 컴포넌트 할당
-      //   content: CustomMapMarker({ title: name, windowWidth: viewportWidth }),
-      //   //마커의 크기 지정
-      //   size: new naver.maps.Size(38, 58),
-      //   //마커의 기준위치 지정
-      //   anchor: new naver.maps.Point(19, 58),
-      // },
+      icon: {
+        //html element를 반환하는 CustomMapMarker 컴포넌트 할당
+        content: CustomMapMarker2(),
+        //마커의 기준위치 지정
+        anchor: new naver.maps.Point(25, 58),
+      },
     });
     setNewMarker(marker);
 
@@ -158,10 +158,14 @@ function Location() {
   // curl "https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc?request=coordsToaddr&coords=129.1133567,35.2982640&sourcecrs=epsg:4326&output=json&orders=legalcode,admcode" \
   // -H "X-NCP-APIGW-API-KEY-ID: {애플리케이션 등록 시 발급받은 client id값}" \
   // -H "X-NCP-APIGW-API-KEY: {애플리케이션 등록 시 발급받은 client secret값}" -v
-
+  const mapHeight = window.innerHeight - 92; // 1. 위치설정 바 2. 탭 3. 바텀탭
   return (
-    <div className="w-[100%]">
-      <div ref={mapElement} id="map" style={{ width: "100%", height: "70vh" }}>
+    <div className="w-[100%] h-full">
+      <div
+        ref={mapElement}
+        id="map"
+        style={{ width: "100%", height: mapHeight }}
+      >
         <div
           className="bg-[#1562fc] rounded-md w-10 h-10 absolute bottom-6 right-6 z-50 text-center flex justify-center items-center text-white"
           onClick={() => clickButton()}
@@ -188,16 +192,34 @@ function Location() {
       </div>
 
       {/* 완료 버튼 */}
-      <div className="pl-2 pr-2 mt-2">
+      {/* <div className="pl-2 pr-2 mt-2">
         <div
           className="bg-gray-800 rounded-xl font-bold text-white p-3 text-lg text-center shadow-md"
           onClick={() => onComplete()}
         >
           선택한 위치로 설정
         </div>
-      </div>
+      </div> */}
       <div>{currentLng ? currentLat : null}</div>
       <div>{currentLng ? currentLng : null}</div>
+      <div
+        onClick={() => onComplete()}
+        className="px-5 py-3 w-full fixed bottom-0 z-50 bg-white rounded-tl-[10px] rounded-tr-[10px]"
+      >
+        <div className="absolute left-0 top-[-1.3rem] w-full h-[24px] bg-[#282828] rounded-tl-[10px] rounded-tr-[10px] text-white text-xs font-semibold flex justify-center items-center">
+          {/* {(product?.price - product?.discountPrice).toLocaleString()}원{" "} */}
+          5km 내 매장을 찾아드려요!
+        </div>
+        <div className=" w-full max-w-md h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border">
+          {/* Button Content */}
+          <div className="text-center flex items-center space-x-1">
+            <span className="text-white text-base font-semibold leading-snug">
+              완료
+            </span>
+          </div>
+        </div>
+      </div>
+      {/* <BottomTab /> */}
     </div>
   );
 }
