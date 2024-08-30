@@ -1,17 +1,16 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { postMessage } from "../../core/message";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../core/auth";
-
+import IMG from "./bell3.png";
 const Onboarding2 = () => {
   const navigate = useNavigate();
   const { doneOnboarding } = useAuth();
   const onClickButton = () => {
     // app
-    // postMessage("REQ_NOTIFICATION", "");
+    // postMessage("REQ_LOCATION", "");
     // web
-    doneOnboarding(); // useAuth에서 전역변수 수정 & 로컬스토리지에 온보딩 끝났음을 저장.
-    navigate("/");
+    navigate("/welcome");
   };
 
   useEffect(() => {
@@ -19,13 +18,11 @@ const Onboarding2 = () => {
     const listener = (event: any) => {
       if (typeof event.data === "string" && event.data.startsWith(`{"type"`)) {
         const appData = JSON.parse(event?.data);
-        if (appData.type === "DONE") {
-          doneOnboarding();
-          navigate("/");
+        if (appData?.type === "DONE") {
+          navigate("/welcome");
         }
       }
     };
-
     // android, ios 구분하는 코드
     const receiver = navigator.userAgent.includes("Android")
       ? document
@@ -38,27 +35,44 @@ const Onboarding2 = () => {
     };
   }, []);
   return (
-    <div>
-      {/* <FadeInWrapper>
-        <Image src={"https://feople-eeho.com/image/onboarding2-img.png"} />
-      </FadeInWrapper> */}
-      <div className="h-[100vh]">
-        <div className="h-full flex flex-col items-center justify-between">
-          <div></div>
-          <div>
-            <p className="font-bold text-center mb-4 text-xl">2. 알림 설정</p>
-            <p className="text-center">
-              마감 상품에 대해 <br />
-              제일 먼저 소식을 들을 수 있어요!
-            </p>
+    <div className="h-[100vh]">
+      <div className="h-full flex flex-col items-center justify-between">
+        <div className="w-full max-w-xs h-full flex flex-col justify-center items-center p-4">
+          {/* Image */}
+          <img
+            className="w-full max-w-xs h-auto"
+            src={IMG}
+            alt="Location Illustration"
+          />
+
+          {/* Text Section */}
+          <div className="text-center">
+            <div className="text-black text-2xl font-semibold mb-5">
+              OO동에 새로운 재고가 나왔어요~!
+            </div>
+            <div className="text-black text-sm font-normal">
+              내가 선택한 동네의 마감 상품 소식을 <br />
+              빠르게 받아볼 수 있어요!
+            </div>
           </div>
-          <button
-            className="text-white font-bold p-3 bg-gray-800 w-full"
-            onClick={onClickButton}
-          >
-            알람 설정
-          </button>
         </div>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="33"
+          height="7"
+          viewBox="0 0 33 7"
+          fill="none"
+          className="mb-7  pl-2"
+        >
+          <circle cx="3.5" cy="3.5" r="3.5" fill="#1562FC" />
+          <circle cx="16.5" cy="3.5" r="3.5" fill="#D9D9D9" />
+        </svg>
+        <button
+          className="text-white font-semibold h-[60px] bg-[#1562fc] w-full"
+          onClick={onClickButton}
+        >
+          다음
+        </button>
       </div>
     </div>
   );
