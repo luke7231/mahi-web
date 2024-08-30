@@ -7,6 +7,7 @@ import { gql } from "../../__generated__";
 import { useLazyQuery } from "@apollo/client";
 import BottomTab from "../../components/bottom-tab";
 import CustomMapMarker2 from "../../components/custome-map-marker2";
+import LoadingSpinner from "../../components/loading-spinnere";
 
 const GET_LOCAL_ADDRESS = gql(`
 query GetLocalAddress($lat: Float!, $lng: Float!, $pushToken: String) {
@@ -18,6 +19,7 @@ const 판교주소_LAT = 37.3595704;
 const 판교주소_LNG = 127.105399;
 
 function Location() {
+  const [loading, setLoading] = useState(false);
   const { hasLastLo, getLocationFromStorage, setLocationToStorage } =
     useLocation();
   const [getLocalAddress, { data }] = useLazyQuery(GET_LOCAL_ADDRESS);
@@ -88,6 +90,7 @@ function Location() {
   }, []);
 
   const clickButton = () => {
+    setLoading(true);
     // APP
     // 메세지를 보낸다. 위치값 유저에게 요청하고 위치값 가져오라고.
     postMessage("REQ_CURRENT_LOCATION", "");
@@ -115,6 +118,7 @@ function Location() {
         );
         newMarker?.setMap(newMap);
         // 로컬스토리지에 저장. (다음부터는 꺼내쓸 수 있도록)
+        setLoading(false);
       }
       receiver.removeEventListener("message", listener);
     };
@@ -161,6 +165,7 @@ function Location() {
   const mapHeight = window.innerHeight - 92; // 1. 위치설정 바 2. 탭 3. 바텀탭
   return (
     <div className="w-[100%] h-full">
+      {loading ? <LoadingSpinner /> : null}
       <div
         ref={mapElement}
         id="map"
