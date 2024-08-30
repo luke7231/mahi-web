@@ -45,7 +45,7 @@ function Location() {
           getLocationFromStorage().lng
         )
       : new naver.maps.LatLng(판교주소_LAT, 판교주소_LNG);
-    // 지도 옵션 설정
+    // 지도 옵션 설정둪
     const mapOptions: naver.maps.MapOptions = {
       center,
       zoom: 15,
@@ -90,48 +90,48 @@ function Location() {
   const clickButton = () => {
     // APP
     // 메세지를 보낸다. 위치값 유저에게 요청하고 위치값 가져오라고.
-    // postMessage("REQ_CURRENT_LOCATION", "");
-    // const receiver = navigator.userAgent.includes("Android")
-    //   ? document
-    //   : window;
-    // const listener = (event: any) => {
-    //   const appData = JSON.parse(event?.data);
+    postMessage("REQ_CURRENT_LOCATION", "");
+    const receiver = navigator.userAgent.includes("Android")
+      ? document
+      : window;
+    const listener = (event: any) => {
+      const appData = JSON.parse(event?.data);
 
-    //   if (appData?.type === "RES_CURRENT_LOCATION") {
-    //     const coords = appData.data.coords;
-    //     setCurrentLat(coords.latitude);
-    //     setCurrentLng(coords.longitude);
+      if (appData?.type === "RES_CURRENT_LOCATION") {
+        const coords = appData.data.coords;
+        setCurrentLat(coords.latitude);
+        setCurrentLng(coords.longitude);
 
-    //     newMap?.panTo(
-    //       new naver.maps.LatLng(coords.latitude, coords.longitude),
-    //       {
-    //         duration: 0,
-    //       }
-    //     );
+        newMap?.panTo(
+          new naver.maps.LatLng(coords.latitude, coords.longitude),
+          {
+            duration: 0,
+          }
+        );
 
-    //     // TODO: 센터 마커도 같이 이동해야함.
-    //     newMarker?.setPosition(
-    //       new naver.maps.LatLng(coords.latitude, coords.longitude)
-    //     );
-    //     newMarker?.setMap(newMap);
-    //     // 로컬스토리지에 저장. (다음부터는 꺼내쓸 수 있도록)
-    //   }
-    //   receiver.removeEventListener("message", listener);
-    // };
+        // TODO: 센터 마커도 같이 이동해야함.
+        newMarker?.setPosition(
+          new naver.maps.LatLng(coords.latitude, coords.longitude)
+        );
+        newMarker?.setMap(newMap);
+        // 로컬스토리지에 저장. (다음부터는 꺼내쓸 수 있도록)
+      }
+      receiver.removeEventListener("message", listener);
+    };
 
-    // receiver.addEventListener("message", listener);
+    receiver.addEventListener("message", listener);
 
     // WEB
-    newMap?.panTo(new naver.maps.LatLng(36.99502164866016, 127.1596148737739), {
-      // 안성
-      duration: 0,
-    });
+    // newMap?.panTo(new naver.maps.LatLng(36.99502164866016, 127.1596148737739), {
+    //   // 안성
+    //   duration: 0,
+    // });
 
-    // TODO: 센터 마커도 같이 이동해야함.
-    newMarker?.setPosition(
-      new naver.maps.LatLng(36.99502164866016, 127.1596148737739) // 안성
-    );
-    newMarker?.setMap(newMap);
+    // // TODO: 센터 마커도 같이 이동해야함.
+    // newMarker?.setPosition(
+    //   new naver.maps.LatLng(36.99502164866016, 127.1596148737739) // 안성
+    // );
+    // newMarker?.setMap(newMap);
   };
 
   async function onComplete() {
@@ -163,10 +163,27 @@ function Location() {
     <div className="w-[100%]">
       <div ref={mapElement} id="map" style={{ width: "100%", height: "70vh" }}>
         <div
-          className="bg-sky-400 rounded-md w-8 h-8 absolute bottom-6 right-6 z-50 text-center text-white"
+          className="bg-[#1562fc] rounded-md w-10 h-10 absolute bottom-6 right-6 z-50 text-center flex justify-center items-center text-white"
           onClick={() => clickButton()}
         >
-          L
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="28"
+            height="28"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="7"></circle>{" "}
+            <circle cx="12" cy="12" r="3" fill="currentColor"></circle>
+            <path d="M12 2v2"></path>
+            <path d="M12 20v2"></path>
+            <path d="M2 12h2"></path>
+            <path d="M20 12h2"></path>
+          </svg>
         </div>
       </div>
 
