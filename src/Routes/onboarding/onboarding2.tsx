@@ -1,39 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { postMessage } from "../../core/message";
-import { useEffect, useState } from "react";
-import { useAuth } from "../../core/auth";
 import IMG from "./bell3.png";
 const Onboarding2 = () => {
   const navigate = useNavigate();
-  const { doneOnboarding } = useAuth();
   const onClickButton = () => {
-    // app
-    // postMessage("REQ_LOCATION", "");
-    // web
     navigate("/welcome");
   };
 
-  useEffect(() => {
-    // rn에서 Webview로 보낸 값을 수신하는 함수
-    const listener = (event: any) => {
-      if (typeof event.data === "string" && event.data.startsWith(`{"type"`)) {
-        const appData = JSON.parse(event?.data);
-        if (appData?.type === "DONE") {
-          navigate("/welcome");
-        }
-      }
-    };
-    // android, ios 구분하는 코드
-    const receiver = navigator.userAgent.includes("Android")
-      ? document
-      : window;
-    receiver.addEventListener("message", listener);
-
-    // Clean-up 함수: 컴포넌트가 언마운트될 때 실행
-    return () => {
-      receiver.removeEventListener("message", listener);
-    };
-  }, []);
   return (
     <div className="h-[100vh]">
       <div className="h-full flex flex-col items-center justify-between">

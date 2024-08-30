@@ -1,39 +1,14 @@
 import { useNavigate } from "react-router-dom";
-import { postMessage } from "../../core/message";
-import { useEffect, useState } from "react";
-import { useAuth } from "../../core/auth";
 import IMG from "./location.png";
 const Onboarding1 = () => {
   const navigate = useNavigate();
-  const { doneOnboarding } = useAuth();
   const onClickButton = () => {
     // app
     // postMessage("REQ_LOCATION", "");
     // web
-    navigate("/welcome");
+    navigate("/onboarding2");
   };
 
-  useEffect(() => {
-    // rn에서 Webview로 보낸 값을 수신하는 함수
-    const listener = (event: any) => {
-      if (typeof event.data === "string" && event.data.startsWith(`{"type"`)) {
-        const appData = JSON.parse(event?.data);
-        if (appData?.type === "DONE") {
-          navigate("/welcome");
-        }
-      }
-    };
-    // android, ios 구분하는 코드
-    const receiver = navigator.userAgent.includes("Android")
-      ? document
-      : window;
-    receiver.addEventListener("message", listener);
-
-    // Clean-up 함수: 컴포넌트가 언마운트될 때 실행
-    return () => {
-      receiver.removeEventListener("message", listener);
-    };
-  }, []);
   return (
     <div className="h-[100vh]">
       <div className="h-full flex flex-col items-center justify-between">
@@ -48,11 +23,11 @@ const Onboarding1 = () => {
           {/* Text Section */}
           <div className="text-center">
             <div className="text-black text-2xl font-semibold mb-5">
-              위치 설정이 필요해요
+              마감 히어로를 통해..
             </div>
             <div className="text-black text-sm font-normal">
-              위치 설정에 동의하시면
-              <br />내 근처 마감 상품을 볼 수 있어요!
+              내 근처 마감 상품을 <br />
+              빠르게 찾아볼 수 있어요!
             </div>
           </div>
         </div>
