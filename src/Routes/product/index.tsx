@@ -125,7 +125,7 @@ const Product = () => {
             </div>
           </div>
           <Partition color="light" height="md" />
-          <div className="w-full h-auto max-w-md flex items-center justify-between px-5 py-3 bg-white">
+          <div className="w-full h-auto max-w-md flex items-center justify-between px-5 py-5 bg-white">
             {/* Label */}
             <div className="flex items-center">
               <div className="text-black text-lg font-semibold">수량</div>
@@ -136,27 +136,27 @@ const Product = () => {
             {/* Quantity Controls */}
             <div className="flex items-center">
               {/* Minus Button */}
-              <div
+              {/* <div
                 onClick={decreaseQuantity}
                 className="w-[43px] h-[43px] flex items-center justify-center border border-[#e1e1e1] rounded-tl-[3px] rounded-bl-[3px]"
               >
                 <span className="text-black text-xl">-</span>
-              </div>
+              </div> */}
 
               {/* Quantity Display with Only Top and Bottom Borders */}
-              <div className="w-[43px] h-[43px] flex items-center justify-center border-t border-b border-[#e1e1e1]">
+              {/* <div className="w-[43px] h-[43px] flex items-center justify-center border-t border-b border-[#e1e1e1]">
                 <span className="text-black text-base font-semibold">
                   {quantity}
                 </span>
-              </div>
+              </div> */}
 
               {/* Plus Button */}
-              <div
+              {/* <div
                 onClick={increaseQuantity}
                 className="w-[43px] h-[43px] flex items-center justify-center border border-[#e1e1e1] rounded-tr-[3px] rounded-br-[3px]"
               >
                 <span className="text-black text-xl">+</span>
-              </div>
+              </div> */}
             </div>
           </div>
           <Partition color="light" height="md" />
@@ -194,16 +194,16 @@ const Product = () => {
       ) : null}
       {product?.quantity !== 0 ? (
         <div
-          onClick={() => onClickButton()}
-          className="px-5 py-4 w-full sticky bottom-0 bg-white"
+        // onClick={() => onClickButton()}
+        // className="px-5 py-4 w-full sticky bottom-0 bg-white"
         >
-          <div className="absolute left-0 top-[-2.7rem] w-full h-[43px] bg-[#282828] rounded-tl-[10px] rounded-tr-[10px] text-white text-sm font-semibold flex justify-center items-center">
+          {/* <div className="absolute left-0 top-[-2.7rem] w-full h-[43px] bg-[#282828] rounded-tl-[10px] rounded-tr-[10px] text-white text-sm font-semibold flex justify-center items-center">
             {(product?.price - product?.discountPrice).toLocaleString()}원{" "}
             할인받았어요!
-          </div>
-          <div className=" w-full max-w-md h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border">
-            {/* Button Content */}
-            <div className="text-center flex items-center space-x-1">
+          </div> */}
+          {/* <div className=" w-full max-w-md h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border"> */}
+          {/* Button Content */}
+          {/* <div className="text-center flex items-center space-x-1">
               <span className="text-white text-base font-semibold leading-snug">
                 {quantity}개
               </span>
@@ -213,8 +213,8 @@ const Product = () => {
               <span className="text-white text-base font-semibold leading-snug">
                 담기
               </span>
-            </div>
-          </div>
+            </div> */}
+          {/* </div> */}
         </div>
       ) : null}
     </div>
