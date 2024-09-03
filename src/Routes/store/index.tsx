@@ -182,6 +182,20 @@ const Store = () => {
       });
     }
   }
+  function copyToClipboard(text: string) {
+    // 클립보드에 텍스트를 쓰기
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        // 복사 성공
+        alert("텍스트가 클립보드에 복사되었습니다!");
+      })
+      .catch((err) => {
+        // 복사 실패
+        console.error("복사 실패:", err);
+      });
+  }
+
   return (
     <div className="container mx-auto bg-[#f6f6f6]">
       {store ? (
@@ -257,9 +271,13 @@ const Store = () => {
               <div className="flex">
                 <span className="text-gray-600">가게 위치</span>
                 <span className="text-black ml-2">{store.address}</span>
-                <button className="ml-2 px-1.5 rounded-3xl text-2xs bg-[#f4f5f7] text-[#969696]">
-                  지도보기
-                </button>
+                <div
+                  className="ml-2 px-1.5 rounded-3xl text-2xs bg-[#f4f5f7] text-[#969696]"
+                  // href="nmap://route/walk?slat=37.4640070&slng=126.9522394&sname=%EC%84%9C%EC%9A%B8%EB%8C%80%ED%95%99%EA%B5%90&dlat=37.4764356&dlng=126.9618302&dname=%EB%8F%99%EC%9B%90%EB%82%99%EC%84%B1%EB%8C%80%EC%95%84%ED%8C%8C%ED%8A%B8&appname=com.luke7299.mahi"
+                  onClick={() => copyToClipboard(store.address as string)}
+                >
+                  복사하기
+                </div>
               </div>
 
               {/* Row for 영업 시간 */}
