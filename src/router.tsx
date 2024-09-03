@@ -27,6 +27,8 @@ import Hey from "./Routes/hey";
 import PasswordResetPage from "./Routes/hey/password-reset";
 import Contact from "./Routes/my/contact";
 import ChangePassword from "./Routes/my/change-password";
+import Hey2 from "./Routes/hey/hey2";
+import Hey3 from "./Routes/hey/hey3";
 
 const Router = () => {
   const { isFirst, isLoggedIn } = useAuth();
@@ -55,7 +57,8 @@ const Router = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/policy" element={<Policy />} />
         <Route path="/sign-out" element={<SignOut />} />
-
+        <Route path="/order_confirm" element={<Hey2 />} />
+        <Route path="/order_result" element={<Hey3 />} />
         {/* <Route path="/notice" element={<Notice />} /> */}
         {/* <Route path="/profile-edit" element={<ProfileEdit />} /> */}
         <Route path="/payment" element={<Payment />} />

@@ -4,6 +4,8 @@ interface Window {
     postMessage(msg: string, data?: Data): void;
   };
   Kakao: any;
+  PaypleCpayAuthCheck: any;
+  AUTHNICE: any;
   AppleID: {
     auth: {
       init: (config: ClientConfig) => void;
@@ -17,6 +19,7 @@ interface ClientConfig {
   redirectURI: string;
   scope?: string;
   state?: string;
+
   nonce?: string;
   usePopup?: boolean;
 }
