@@ -186,6 +186,24 @@ const Home = () => {
   return (
     <div className="w-full h-[100vh] flex flex-col bg-white">
       {/* LOCATION */}
+      {/* <a
+        className="h-4 ml-2 px-1.5 rounded-3xl text-2xs bg-[#f4f5f7] text-[#969696] mb-4"
+        href="nmap://route/walk?slat=37.4640070&slng=126.9522394&sname=%EC%84%9C%EC%9A%B8%EB%8C%80%ED%95%99%EA%B5%90&dlat=37.4764356&dlng=126.9618302&dname=%EB%8F%99%EC%9B%90%EB%82%99%EC%84%B1%EB%8C%80%EC%95%84%ED%8C%8C%ED%8A%B8&appname=com.luke7299.mahi"
+      >
+        지도보기
+      </a>
+      <a
+        className="h-4 ml-2 px-1.5 rounded-3xl text-2xs bg-[#f4f5f7] text-[#969696]"
+        href="kakaomap://route?sp=37.53723,127.00551&ep=37.49795,127.027637&by=FOOT"
+      >
+        지도보기(kakao)
+      </a>
+      <div
+        className="h-4 ml-2 px-1.5 rounded-3xl text-2xs bg-[#f4f5f7] text-[#969696]"
+        onClick={() => navigate("/hey")}
+      >
+        go to hey!
+      </div> */}
       <div className="py-3 pl-5 bg-white flex items-center cursor-pointer justify-between">
         <div className="flex" onClick={() => navigate("/location")}>
           <svg
@@ -212,9 +230,9 @@ const Home = () => {
             {localStorage.getItem("loadAddr") || "내 위치를 설정해주세요."}
           </span>
         </div>
-        <div className="relative inline-block mr-5 mt-1" onClick={onClickCart}>
-          {/* Cart Icon */}
-          <svg
+        {/* <div className="relative inline-block mr-5 mt-1" onClick={onClickCart}> */}
+        {/* Cart Icon */}
+        {/* <svg
             xmlns="http://www.w3.org/2000/svg"
             width="21"
             height="21"
@@ -229,13 +247,13 @@ const Home = () => {
             <circle cx="9" cy="20" r="1"></circle>
             <circle cx="18" cy="20" r="1"></circle>
             <path d="M6 6L4 2"></path>
-          </svg>
+          </svg> */}
 
-          {/* Number Badge */}
-          <div className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-500 flex items-center justify-center text-white text-xs font-bold">
+        {/* Number Badge */}
+        {/* <div className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-500 flex items-center justify-center text-white text-xs font-bold">
             {cart.length}
-          </div>
-        </div>
+          </div> */}
+        {/* </div> */}
       </div>
 
       <div className="p-2 text-sm text-gray-600">
