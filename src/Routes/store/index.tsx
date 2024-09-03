@@ -200,7 +200,7 @@ const Store = () => {
     <div className="container mx-auto bg-[#f6f6f6]">
       {store ? (
         <>
-          <div className="relative w-full max-w-sm mx-auto bg-white overflow-hidden">
+          <div className="relative w-full  mx-auto bg-white overflow-hidden">
             {/* Image Container */}
             <div className="relative w-full">
               <img
