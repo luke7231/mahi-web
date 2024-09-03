@@ -5,7 +5,6 @@ import { postMessage } from "../../core/message";
 import { useLocation } from "../../core/location-provider";
 import { gql } from "../../__generated__";
 import { useLazyQuery } from "@apollo/client";
-import BottomTab from "../../components/bottom-tab";
 import CustomMapMarker2 from "../../components/custome-map-marker2";
 import LoadingSpinner from "../../components/loading-spinnere";
 
