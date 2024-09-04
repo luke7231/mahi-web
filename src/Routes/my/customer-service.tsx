@@ -6,12 +6,12 @@ import Header from "../../components/common/header";
 
 const CustomerService = () => {
   const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text).then(
+    navigator?.clipboard?.writeText(text).then(
       () => {
         alert("전화번호가 복사되었습니다!");
       },
       (err) => {
-        console.error("복사 실패: ", err);
+        alert("복사 실패");
       }
     );
   };

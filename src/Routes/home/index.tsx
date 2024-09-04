@@ -193,13 +193,13 @@ const Home = () => {
         지도보기
       </a>
       <a
-        className="h-4 ml-2 px-1.5 rounded-3xl text-2xs bg-[#f4f5f7] text-[#969696]"
+        className="h-4 ml-2 py-4 px-1.5 rounded-3xl text-2xs bg-[#f4f5f7] text-[#969696]"
         href="kakaomap://route?sp=37.53723,127.00551&ep=37.49795,127.027637&by=FOOT"
       >
         지도보기(kakao)
       </a>
       <div
-        className="h-4 ml-2 px-1.5 rounded-3xl text-2xs bg-[#f4f5f7] text-[#969696]"
+        className="h-4 ml-2 py-4 mt-4 px-1.5 rounded-3xl text-2xs bg-[#f4f5f7] text-[#969696]"
         onClick={() => navigate("/hey")}
       >
         go to hey!
@@ -256,12 +256,12 @@ const Home = () => {
         {/* </div> */}
       </div>
 
-      <div className="p-2 text-sm text-gray-600">
+      {/* <div className="p-2 text-sm text-gray-600">
         <span className="cursor-pointer" onClick={() => localStorage.clear()}>
           token:
         </span>{" "}
         {localStorage.getItem("expo_push_token")}
-      </div>
+      </div> */}
       <div className="h-[0.0625rem] w-full bg-[#7a7a7a]" />
       {/* TAB */}
       <div className="">
