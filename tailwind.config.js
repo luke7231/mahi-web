@@ -3,6 +3,15 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      keyframes: {
+        fadeIn: {
+          "0%": { opacity: "0.1" },
+          "100%": { opacity: "1" },
+        },
+      },
+      animation: {
+        fadeIn: "fadeIn 1s ease-in-out",
+      },
       fontSize: {
         "2xs": "0.625rem", // 아주 작은 폰트 크기
         xs: "0.6875rem", // 추가 폰트 크기 (작은 사이즈)

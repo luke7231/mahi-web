@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../core/auth";
 import IMG from "./Vector.png";
 import { postMessage } from "../../core/message";
+import FadeInWrapper from "../../components/fade-in-wrapper";
 const Welcome = () => {
   const navigate = useNavigate();
   const { doneOnboarding } = useAuth();
@@ -16,11 +17,13 @@ const Welcome = () => {
       <div className="h-full flex flex-col items-center justify-between">
         <div className="w-full max-w-xs h-full flex flex-col justify-center items-center p-4">
           {/* Image */}
-          <img
-            className="w-[9rem] max-w-xs h-auto"
-            src={IMG}
-            alt="Location Illustration"
-          />
+          <FadeInWrapper>
+            <img
+              className="w-[9rem] max-w-xs h-auto"
+              src={IMG}
+              alt="Location Illustration"
+            />
+          </FadeInWrapper>
 
           {/* Text Section */}
           <div className="text-center mt-12">

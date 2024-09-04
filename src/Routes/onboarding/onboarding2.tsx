@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import IMG from "./bell3.png";
+import FadeInWrapper from "../../components/fade-in-wrapper";
 const Onboarding2 = () => {
   const navigate = useNavigate();
   const onClickButton = () => {
@@ -11,12 +12,13 @@ const Onboarding2 = () => {
       <div className="h-full flex flex-col items-center justify-between">
         <div className="w-full max-w-xs h-full flex flex-col justify-center items-center p-4">
           {/* Image */}
-          <img
-            className="w-full max-w-xs h-auto"
-            src={IMG}
-            alt="Location Illustration"
-          />
-
+          <FadeInWrapper>
+            <img
+              className="w-full max-w-xs h-auto"
+              src={IMG}
+              alt="Location Illustration"
+            />
+          </FadeInWrapper>
           {/* Text Section */}
           <div className="text-center">
             <div className="text-black text-2xl font-semibold mb-5">
