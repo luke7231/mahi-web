@@ -13,6 +13,7 @@ import { StoreCard } from "../../components/store_card";
 import { NoStore } from "../../components/home/no-store";
 import { postMessage } from "../../core/message";
 import { useCart } from "../../core/cart";
+import LoadingSpinner from "../../components/loading-spinnere";
 // localStorage.clear();
 const GET_STORES = gql(`
   query Stores($lat: Float, $lng: Float) {
@@ -290,9 +291,7 @@ const Home = () => {
       </div>
       <div className="h-[0.0625rem] w-full bg-[#F4F5F7]" />
       {/* LIST */}
-      {isList && loading ? (
-        <div className="text-center text-gray-500">Loading...</div>
-      ) : null}
+      {isList && loading ? <LoadingSpinner /> : null}
       {!isList && data && data.stores ? (
         <Map stores={justData?.justStores as Store[]} />
       ) : null}

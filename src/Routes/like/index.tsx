@@ -9,6 +9,7 @@ import { Product } from "../../__generated__/graphql";
 import { useNavigate } from "react-router-dom";
 import NoLikedStore from "../../components/home/no-liked-store";
 import Header from "../../components/common/header";
+import LoadingSpinner from "../../components/loading-spinnere";
 const GET_LIKED_STORES = gql(`
   query LikedStores {
     likedStores {
@@ -117,7 +118,7 @@ const Like = () => {
       <Header title="관심매장" />
       {data?.likedStores?.length === 0 ? <NoLikedStore /> : null}
       <div className="mt-8 pl-4 pr-4">
-        {loading ? <div>loading...</div> : null}
+        {loading ? <LoadingSpinner /> : null}
 
         {data?.likedStores?.map((store) => {
           return (
