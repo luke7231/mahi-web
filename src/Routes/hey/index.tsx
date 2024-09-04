@@ -1,166 +1,170 @@
-// import React from "react";
-// import { Link } from "react-router-dom";
+import { nanoid } from "nanoid";
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
-import Header from "../../components/common/header";
+function OrderForm() {
+  // 상태 선언
 
-// const Hey = () => {
-//   return (
-//     <div className="min-h-screen flex items-center justify-center bg-[#f4f5f7] p-4">
-//       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
-//         {/* Header */}
-//         <div className="mb-6 text-center">
-//           <h1 className="text-2xl font-semibold text-black mb-2">로그인</h1>
-//           <p className="text-sm text-[#757575]">계정에 로그인하세요</p>
-//         </div>
+  const [payType, setPayType] = useState("");
+  const [cardVer, setCardVer] = useState("");
+  const navigate = useNavigate();
+  const content = useRef<any>({
+    // Default form set
+    is_direct: "N", // 결제창 방식 (DIRECT: Y | POPUP: N)
+    pay_type: "transfer", // 결제수단
+    work_type: "CERT", // 결제요청방식
+    card_ver: "", // DEFAULT: 01 (01: 정기결제 플렛폼, 02: 일반결제 플렛폼), 카드결제 시 필수
+    payple_payer_id: "", // 결제자 고유ID (본인인증 된 결제회원 고유 KEY)
+    buyer_no: "2335", // 가맹점 회원 고유번호
+    buyer_name: "홍길동", // 결제자 이름
+    buyer_hp: "01012345678", // 결제자 휴대폰 번호
+    buyer_email: "test@payple.kr", // 결제자 Email
+    buy_goods: "휴대폰", // 결제 상품
+    buy_total: "1000", // 결제 금액
+    buy_istax: "Y", // 과세여부 (과세: Y | 비과세(면세): N)
+    buy_taxtotal: "", // 부가세(복합과세인 경우 필수)
+    order_num: nanoid(), // 주문번호
+    pay_year: "", // [정기결제] 결제 구분 년도
+    pay_month: "", // [정기결제] 결제 구분 월
+    is_reguler: "N", // 정기결제 여부 (Y | N)
+    is_taxsave: "N", // 현금영수증 발행여부
+    simple_flag: "N", // 간편결제 여부
+    auth_type: "sms", // [간편결제/정기결제] 본인인증 방식 (sms : 문자인증 | pwd : 패스워드 인증)
+  });
 
-//         {/* Email and Password Fields */}
-//         <form className="space-y-4">
-//           <div>
-//             <label className="block text-sm font-medium text-black mb-1">
-//               이메일
-//             </label>
-//             <input
-//               type="email"
-//               className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-[#1562fc]"
-//               placeholder="이메일을 입력하세요"
-//               required
-//             />
-//           </div>
-//           <div>
-//             <label className="block text-sm font-medium text-black mb-1">
-//               비밀번호
-//             </label>
-//             <input
-//               type="password"
-//               className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-[#1562fc]"
-//               placeholder="비밀번호를 입력하세요"
-//               required
-//             />
-//           </div>
+  const handleChange = (e: any) => {
+    console.log(content);
+    content.current[e.target.name] = e.target.value;
+  };
 
-//           {/* Submit Button */}
-//           <button
-//             type="submit"
-//             className="w-full py-2 bg-[#1562fc] text-white text-sm font-semibold rounded-md hover:bg-[#124ab7] transition duration-150"
-//           >
-//             로그인
-//           </button>
-//         </form>
+  const handleSubmit = (e: any) => {
+    // e.preventDefault();
+    // navigate("/order_confirm", {
+    //   state: { content: content.current },
+    // });
+    // S2_7edb63a062cd4f799d14caa983faab78
+    function serverAuth() {
+      window.AUTHNICE.requestPay({
+        clientId: "S2_7edb63a062cd4f799d14caa983faab78",
+        method: "card",
+        orderId: nanoid(),
+        amount: 1004,
+        appScheme: "mahi://",
+        fnError: () => console.error(),
+        goodsName: "나이스페이-상품",
+        returnUrl: "http://172.25.80.176:4000/nice-auth",
+      });
+    }
+    serverAuth();
+  };
+  // `pay_type`이 변경될 때 상태 업데이트
+  useEffect(() => {
+    if (payType === "card") {
+      setCardVer(""); // 카드 선택 시 초기화
+    }
+  }, [payType]);
 
-//         {/* Divider */}
-//         <div className="my-4 flex items-center">
-//           <hr className="flex-grow border-t border-gray-300" />
-//           <span className="mx-4 text-xs text-gray-400">또는</span>
-//           <hr className="flex-grow border-t border-gray-300" />
-//         </div>
-
-//         {/* Social Login Buttons */}
-//         <div className="space-y-2">
-//           {/* Sign Up Button */}
-//           <div className="mt-4 text-center">
-//             <button
-//               className="w-full py-2 border border-[#1562fc] text-[#1562fc] text-sm font-semibold rounded-md hover:bg-[#e6f0ff] transition duration-150"
-//               onClick={() => console.log("Navigate to Sign Up")}
-//             >
-//               회원가입
-//             </button>
-//           </div>
-//           <button className="w-full py-2.5 border border-[#fae300] bg-[#fae300] text-black text-sm font-semibold rounded-md flex items-center justify-center hover:bg-[#e8d800] transition duration-150">
-//             <svg
-//               width="16px"
-//               height="16px"
-//               viewBox="0 0 512 512"
-//               version="1.1"
-//               xmlns="http://www.w3.org/2000/svg"
-//               className="mr-2"
-//             >
-//               <path
-//                 fill="#000000"
-//                 d="M255.5 48C299.345 48 339.897 56.5332 377.156 73.5996C414.415 90.666 443.871 113.873 465.522 143.22C487.174 172.566 498 204.577 498 239.252C498 273.926 487.174 305.982 465.522 335.42C443.871 364.857 414.46 388.109 377.291 405.175C340.122 422.241 299.525 430.775 255.5 430.775C241.607 430.775 227.262 429.781 212.467 427.795C148.233 472.402 114.042 494.977 109.892 495.518C107.907 496.241 106.012 496.15 104.208 495.248C103.486 494.706 102.945 493.983 102.584 493.08C102.223 492.177 102.043 491.365 102.043 490.642V489.559C103.126 482.515 111.335 453.169 126.672 401.518C91.8486 384.181 64.1974 361.2 43.7185 332.575C23.2395 303.951 13 272.843 13 239.252C13 204.577 23.8259 172.566 45.4777 143.22C67.1295 113.873 96.5849 90.666 133.844 73.5996C171.103 56.5332 211.655 48 255.5 48Z"
-//               ></path>
-//             </svg>
-//             카카오로 로그인
-//           </button>
-
-//           <button className="w-full py-2 bg-black text-white text-sm font-semibold rounded-md flex items-center justify-center hover:bg-gray-800 transition duration-150">
-//             <svg
-//               version="1.0"
-//               xmlns="http://www.w3.org/2000/svg"
-//               width="28px"
-//               height="28px"
-//               viewBox="0 0 348.000000 348.000000"
-//               preserveAspectRatio="xMidYMid meet"
-//               className="pb-0.5"
-//             >
-//               <g
-//                 transform="translate(0.000000,348.000000) scale(0.100000,-0.100000)"
-//                 fill="#FFFFFF"
-//                 stroke="none"
-//               >
-//                 <path
-//                   d="M2105 2816 c-193 -47 -351 -227 -363 -412 l-5 -77 61 5 c188 18 372
-// 233 372 438 0 33 -3 60 -7 59 -5 0 -30 -6 -58 -13z"
-//                 />
-//                 <path
-//                   d="M1323 2289 c-177 -30 -338 -164 -409 -339 -122 -303 -32 -749 221
-// -1087 158 -213 248 -247 445 -167 89 36 101 38 200 38 98 0 111 -2 197 -37
-// 165 -66 266 -47 377 73 73 79 156 207 210 321 66 140 66 130 -3 173 -110 67
-// -186 173 -216 298 -41 174 10 334 147 464 l70 66 -30 36 c-38 48 -134 114
-// -209 143 -49 20 -76 23 -178 23 -117 1 -122 0 -230 -42 -157 -61 -159 -61
-// -305 -9 -136 48 -207 60 -287 46z"
-//                 />
-//               </g>
-//             </svg>
-//             Apple로 로그인
-//           </button>
-//         </div>
-
-//         {/* Additional Links */}
-//         <div className="mt-4 text-center">
-//           {/* <div onClick= className="text-xs text-[#757575] hover:text-[#1562fc]"> */}
-//           {/* 비밀번호를 잊으셨나요? */}
-//           {/* </div> */}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Hey;
-
-const Hey = () => {
   return (
-    <>
-      {/* <Header showBackButton title="hey" />
-       */}
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="42"
-        height="42"
-        viewBox="0 0 42 42"
-        fill="none"
-        className="flex items-center justify-center"
-      >
-        <circle opacity="0.6" cx="21" cy="21" r="21" fill="black" />
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="28"
-          height="28"
-          viewBox="0 0 28 28"
-          fill="none"
-          className="flex items-center justify-center"
-        >
-          <path
-            d="M17.5 22.1666L9.33333 14L17.5 5.83329"
-            stroke="white"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </svg>
-    </>
-  );
-};
+    <div>
+      <form id="orderForm" name="orderForm" onChange={handleChange}>
+        <div>
+          <select name="simple_flag">
+            <option value="N">단건결제</option>
+            <option value="Y">간편결제</option>
+          </select>
+        </div>
+        <div>
+          <select name="is_direct">
+            <option value="N">POPUP</option>
+            <option value="Y">DIRECT</option>
+          </select>
+        </div>
+        <div>
+          <span>
+            <select
+              id="pay_type"
+              name="pay_type"
+              value={payType}
+              onChange={(e) => setPayType(e.target.value)}
+            >
+              <option value="transfer">계좌이체결제</option>
+              <option value="card">신용카드</option>
+            </select>
+          </span>
+          {payType === "card" && (
+            <span id="card_ver_view">
+              <select
+                id="card_ver"
+                name="card_ver"
+                value={cardVer}
+                onChange={(e) => setCardVer(e.target.value)}
+              >
+                {/* <option value="">=결제창 선택=</option> */}
+                {/* <option value="01">카드 정기</option> */}
+                <option value="02">카드 일반</option>
+              </select>
+            </span>
+          )}
+        </div>
 
-export default Hey;
+        {/* 나머지 form 요소들 */}
+
+        {payType !== "card" && (
+          <div id="taxsave_view">
+            <label htmlFor="is_taxsave">현금영수증</label>
+            <select id="is_taxsave" name="is_taxsave">
+              <option value="N">N</option>
+              <option value="Y">Y</option>
+            </select>
+          </div>
+        )}
+
+        {cardVer === "01" && (
+          <>
+            <div id="is_reguler_view">
+              <label htmlFor="is_reguler">정기결제</label>
+              <select id="is_reguler" name="is_reguler">
+                <option value="N">N</option>
+                <option value="Y">Y</option>
+              </select>
+            </div>
+            <div id="pay_year_view">
+              <label htmlFor="pay_year">정기결제 구분년도</label>
+              <select id="pay_year" name="pay_year">
+                <option value="">===</option>
+                <option value="2021">2021</option>
+                <option value="2020">2020</option>
+                <option value="2019">2019</option>
+              </select>
+            </div>
+            <div id="pay_month_view">
+              <label htmlFor="pay_month">정기결제 구분월</label>
+              <select id="pay_month" name="pay_month">
+                <option value="">===</option>
+                <option value="12">12</option>
+                <option value="11">11</option>
+                {/* 나머지 월 옵션들 */}
+              </select>
+            </div>
+          </>
+        )}
+
+        <div>
+          <label htmlFor="work_type">결제요청방식</label>
+          <select id="work_type" name="work_type" disabled={cardVer !== "01"}>
+            <option value="CERT">결제요청-결제확인-{">"}결제완료</option>
+            <option value="PAY">결제요청-{">"}결제완료</option>
+            <option value="AUTH">인증</option>
+          </select>
+        </div>
+
+        {/* 추가 폼 요소들 */}
+      </form>
+      <button id="orderFormSubmit" onClick={handleSubmit}>
+        상품구매
+      </button>
+    </div>
+  );
+}
+
+export default OrderForm;
