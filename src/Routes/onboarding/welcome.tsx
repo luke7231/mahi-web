@@ -18,11 +18,13 @@ const Welcome = () => {
         <div className="w-full max-w-xs h-full flex flex-col justify-center items-center p-4">
           {/* Image */}
           <FadeInWrapper>
-            <img
-              className="w-[9rem] max-w-xs h-auto"
-              src={IMG}
-              alt="Location Illustration"
-            />
+            <div className="w-[144px] h-[115px]">
+              <img
+                className="w-[9rem] max-w-xs h-auto"
+                src={IMG}
+                alt="Location Illustration"
+              />
+            </div>
           </FadeInWrapper>
 
           {/* Text Section */}
