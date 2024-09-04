@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useAuth } from "../../core/auth";
 import { useNavigate } from "react-router-dom";
 import BackArrow from "../../components/common/back-arrow";
+import { isIOSApp, isWeb } from "../../Lib/user-agent-utils";
 
 const WEB_URL = process.env.REACT_APP_URL;
 
@@ -220,40 +221,42 @@ const Login: React.FC = () => {
               카카오로 로그인
             </button>
 
-            <button
-              onClick={loginWithApple}
-              className="w-full py-2 bg-black text-white text-sm font-semibold rounded-md flex items-center justify-center hover:bg-gray-800 transition duration-150"
-            >
-              <svg
-                version="1.0"
-                xmlns="http://www.w3.org/2000/svg"
-                width="28px"
-                height="28px"
-                viewBox="0 0 348.000000 348.000000"
-                preserveAspectRatio="xMidYMid meet"
-                className="pb-0.5"
+            {isIOSApp() || isWeb() ? (
+              <button
+                onClick={loginWithApple}
+                className="w-full py-2 bg-black text-white text-sm font-semibold rounded-md flex items-center justify-center hover:bg-gray-800 transition duration-150"
               >
-                <g
-                  transform="translate(0.000000,348.000000) scale(0.100000,-0.100000)"
-                  fill="#FFFFFF"
-                  stroke="none"
+                <svg
+                  version="1.0"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="28px"
+                  height="28px"
+                  viewBox="0 0 348.000000 348.000000"
+                  preserveAspectRatio="xMidYMid meet"
+                  className="pb-0.5"
                 >
-                  <path
-                    d="M2105 2816 c-193 -47 -351 -227 -363 -412 l-5 -77 61 5 c188 18 372
+                  <g
+                    transform="translate(0.000000,348.000000) scale(0.100000,-0.100000)"
+                    fill="#FFFFFF"
+                    stroke="none"
+                  >
+                    <path
+                      d="M2105 2816 c-193 -47 -351 -227 -363 -412 l-5 -77 61 5 c188 18 372
 233 372 438 0 33 -3 60 -7 59 -5 0 -30 -6 -58 -13z"
-                  />
-                  <path
-                    d="M1323 2289 c-177 -30 -338 -164 -409 -339 -122 -303 -32 -749 221
+                    />
+                    <path
+                      d="M1323 2289 c-177 -30 -338 -164 -409 -339 -122 -303 -32 -749 221
 -1087 158 -213 248 -247 445 -167 89 36 101 38 200 38 98 0 111 -2 197 -37
 165 -66 266 -47 377 73 73 79 156 207 210 321 66 140 66 130 -3 173 -110 67
 -186 173 -216 298 -41 174 10 334 147 464 l70 66 -30 36 c-38 48 -134 114
 -209 143 -49 20 -76 23 -178 23 -117 1 -122 0 -230 -42 -157 -61 -159 -61
 -305 -9 -136 48 -207 60 -287 46z"
-                  />
-                </g>
-              </svg>
-              Apple로 로그인
-            </button>
+                    />
+                  </g>
+                </svg>
+                Apple로 로그인
+              </button>
+            ) : null}
           </div>
 
           {/* Additional Links */}
