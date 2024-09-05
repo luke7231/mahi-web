@@ -25,9 +25,12 @@ export const NoStore = (): JSX.Element => {
 
         {/* Recommendation Button */}
         <div className="mx-auto w-32 h-10 mt-8 bg-white rounded-md border border-solid border-[#dddddd] flex justify-center items-center cursor-pointer">
-          <span className="text-[#5b5b5b] text-sm font-semibold">
+          <a
+            href="https://forms.gle/PXmEvzq4LsNDC1Gj9"
+            className="text-[#5b5b5b] text-sm font-semibold"
+          >
             매장 추천하기
-          </span>
+          </a>
         </div>
       </div>
     </div>
