@@ -24,7 +24,8 @@ const ChangePassword = () => {
         navigate("/");
       }
     },
-    onError: (error) => console.log(error),
+    // TODO: 아폴로 에러라는 글씨 빼야하는데
+    onError: (error) => alert(error),
   });
 
   const handlePasswordReset = () => {
