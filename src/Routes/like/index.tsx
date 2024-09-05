@@ -58,7 +58,7 @@ const Like = () => {
   const navigate = useNavigate();
   const { hasLastLo, getLocationFromStorage } = useLocation();
   const { data, loading, error } = useQuery(GET_LIKED_STORES, {
-    fetchPolicy: "network-only",
+    fetchPolicy: "cache-and-network",
   });
   const [likeStore] = useMutation(LIKE_STORE, {
     onCompleted: (data) => {
@@ -117,7 +117,7 @@ const Like = () => {
     <div className="w-full h-[100vh] flex flex-col">
       <Header title="관심매장" />
       {data?.likedStores?.length === 0 ? <NoLikedStore /> : null}
-      <div className="pl-4 pr-4 mb-16 overflow-y-auto">
+      <div className="pl-4 pr-4 mt-4 pb-16 overflow-y-auto">
         {loading ? <LoadingSpinner /> : null}
         {data?.likedStores?.map((store) => {
           return (
