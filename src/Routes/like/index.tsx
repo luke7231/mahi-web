@@ -117,32 +117,33 @@ const Like = () => {
     <div className="w-full h-[100vh] flex flex-col">
       <Header title="관심매장" />
       {data?.likedStores?.length === 0 ? <NoLikedStore /> : null}
-      <div className="mt-8 pl-4 pr-4">
+      <div className="pl-4 pr-4 mb-16 overflow-y-auto">
         {loading ? <LoadingSpinner /> : null}
-
         {data?.likedStores?.map((store) => {
           return (
-            <StoreCard
-              title={store?.title as string}
-              quantity={store?.products?.reduce((total, product) => {
-                return total + product.quantity;
-              }, 0)}
-              closingHours={store?.closingHours as string}
-              discountPrice={
-                (store?.products as Product[])[0]?.discountPrice as number
-              }
-              price={(store?.products as Product[])[0]?.price}
-              isLiked={store?.isLiked}
-              img={store?.img as string}
-              onClick={() => onClickStore(store?.id as number)}
-              onClickHeart={async (e) => {
-                e.stopPropagation(); // Prevents triggering the store click
-                await onClickLike(
-                  store?.id as number,
-                  store?.isLiked as boolean
-                );
-              }}
-            />
+            <div className="mb-4">
+              <StoreCard
+                title={store?.title as string}
+                quantity={store?.products?.reduce((total, product) => {
+                  return total + product.quantity;
+                }, 0)}
+                closingHours={store?.closingHours as string}
+                discountPrice={
+                  (store?.products as Product[])[0]?.discountPrice as number
+                }
+                price={(store?.products as Product[])[0]?.price}
+                isLiked={store?.isLiked}
+                img={store?.img as string}
+                onClick={() => onClickStore(store?.id as number)}
+                onClickHeart={async (e) => {
+                  e.stopPropagation(); // Prevents triggering the store click
+                  await onClickLike(
+                    store?.id as number,
+                    store?.isLiked as boolean
+                  );
+                }}
+              />
+            </div>
           );
         })}
       </div>
