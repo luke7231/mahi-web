@@ -118,7 +118,13 @@ const Like = () => {
       <Header title="관심매장" />
       {data?.likedStores?.length === 0 ? <NoLikedStore /> : null}
       <div className="pl-4 pr-4 mt-4 pb-16 overflow-y-auto">
-        {loading ? <LoadingSpinner /> : null}
+        {/* {loading ? (
+          <div className="flex space-x-2">
+            <div className="w-3 h-3 bg-[#1562fc] rounded-full animate-bounce-sequence"></div>
+            <div className="w-3 h-3 bg-[#1562fc] rounded-full animate-bounce-sequence animation-delay-200"></div>
+            <div className="w-3 h-3 bg-[#1562fc] rounded-full animate-bounce-sequence animation-delay-400"></div>
+          </div>
+        ) : null} */}
         {data?.likedStores?.map((store) => {
           return (
             <div className="mb-4">

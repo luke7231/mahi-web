@@ -309,7 +309,13 @@ const Home = () => {
       </div>
       <div className="h-[0.0625rem] w-full bg-[#F4F5F7]" />
       {/* LIST */}
-      {isList && loading ? <LoadingSpinner /> : null}
+      {/* {isList && loading ? (
+        <div className="flex space-x-2">
+          <div className="w-3 h-3 bg-[#1562fc] rounded-full animate-bounce-sequence"></div>
+          <div className="w-3 h-3 bg-[#1562fc] rounded-full animate-bounce-sequence animation-delay-200"></div>
+          <div className="w-3 h-3 bg-[#1562fc] rounded-full animate-bounce-sequence animation-delay-400"></div>
+        </div>
+      ) : null} */}
       {!isList && data && data.stores ? (
         <Map stores={justData?.justStores as Store[]} />
       ) : null}
