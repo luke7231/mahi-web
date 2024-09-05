@@ -5,6 +5,7 @@ import { useCart } from "../../core/cart";
 import { useAuth } from "../../core/auth";
 import Partition from "../../components/common/partition";
 import BACK_IMG from "../../components/common/back-img.png";
+import LoadingDots from "../../components/loading-dots";
 const GET_PRODUCT = gql`
   query Product($productId: Int!) {
     product(id: $productId) {
@@ -33,7 +34,7 @@ const Product = () => {
   const { addToCart } = useCart();
   const navigate = useNavigate();
   const { id } = useParams();
-  const { data } = useQuery(GET_PRODUCT, {
+  const { data, loading } = useQuery(GET_PRODUCT, {
     variables: {
       productId: Number(id),
     },
@@ -73,6 +74,7 @@ const Product = () => {
   }, [product?.quantity]);
   return (
     <div className="container h-[100vh] mx-auto bg-[#F4F5F7]">
+      {loading ? <LoadingDots /> : null}
       {product ? (
         <>
           <div className="relative w-full max-w-sm mx-auto bg-white overflow-hidden">

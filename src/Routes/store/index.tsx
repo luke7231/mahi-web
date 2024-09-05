@@ -10,6 +10,7 @@ import HeartBlackBorder from "../../components/common/heart-black-border";
 import { useAuth } from "../../core/auth";
 import { CANCEL_LIKE, LIKE_STORE } from "../home";
 import BACK_IMG from "../../components/common/back-img.png";
+import LoadingDots from "../../components/loading-dots";
 const GET_STORE = gql(`
   query Store($storeId: Int!) {
     store(id: $storeId) {
@@ -47,7 +48,7 @@ const Store = () => {
   const [timeString, setTimeString] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
-  const { data } = useQuery(GET_STORE, {
+  const { data, loading } = useQuery(GET_STORE, {
     variables: {
       storeId: Number(id),
     },
@@ -198,6 +199,7 @@ const Store = () => {
 
   return (
     <div className="container mx-auto bg-[#f6f6f6]">
+      {loading ? <LoadingDots /> : null}
       {store ? (
         <>
           <div className="relative w-full  mx-auto bg-white overflow-hidden">
