@@ -89,6 +89,14 @@ const KakaoRedirectHandler = () => {
           <>
             <p className="text-red-500">로그인 중 오류가 발생했습니다.</p>
             {error.message}
+            <div className="mt-4 text-center">
+              <div
+                onClick={() => navigate("/login")}
+                className="text-xs text-[#757575] underline hover:text-[#1562fc]"
+              >
+                로그인 페이지로 돌아가기
+              </div>
+            </div>
           </>
         ) : (
           <p className="text-lg font-semibold text-gray-700">
