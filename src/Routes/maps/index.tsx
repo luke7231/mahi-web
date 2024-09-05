@@ -6,6 +6,12 @@ import { Product, Store } from "../../__generated__/graphql";
 import { StoreCard } from "../../components/store_card";
 import { useAuth } from "../../core/auth";
 
+function getAddressY() {
+  return localStorage.getItem("lat");
+}
+function getAddressX() {
+  return localStorage.getItem("lng");
+}
 function Map({ stores }: { stores: Store[] }) {
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
@@ -14,8 +20,12 @@ function Map({ stores }: { stores: Store[] }) {
   //   "안성시 공도읍 서동대로 4060-5, 효성해링턴플레이스 202동 306호 "
   // );
 
-  const [AddressY, setAddressY] = useState<number>(37.3595704);
-  const [AddressX, setAddressX] = useState<number>(127.105399);
+  const [AddressY, setAddressY] = useState<number>(
+    Number(getAddressY()) || 37.3595704
+  );
+  const [AddressX, setAddressX] = useState<number>(
+    Number(getAddressX()) || 127.105399
+  );
   const [clickedStore, setClickedStore] = useState<Store | null>(null);
   // useEffect(() => {
   //   if (searchKeyword) {
