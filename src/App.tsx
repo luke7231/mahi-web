@@ -12,6 +12,7 @@ import {
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { CartProvider } from "./core/cart";
+import AmplitudeContextProvider from "./core/amplitude";
 // import { getResponsiveMaxWidth } from "./utils/layout-util";
 // import { AuthProvider } from "./contexts/auth-provider";
 // import "react-toastify/dist/ReactToastify.css";
@@ -58,14 +59,16 @@ function App() {
     <>
       {/* <ToastContainer closeButton={false} /> */}
       <ApolloProvider client={client}>
-        <AuthProvider>
-          <LocationProvider>
-            <CartProvider>
-              {/* <GlobalStyle /> */}
-              <Router />
-            </CartProvider>
-          </LocationProvider>
-        </AuthProvider>
+        <AmplitudeContextProvider>
+          <AuthProvider>
+            <LocationProvider>
+              <CartProvider>
+                {/* <GlobalStyle /> */}
+                <Router />
+              </CartProvider>
+            </LocationProvider>
+          </AuthProvider>
+        </AmplitudeContextProvider>
       </ApolloProvider>
     </>
   );
