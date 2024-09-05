@@ -77,7 +77,7 @@ const Product = () => {
       {loading ? <LoadingDots /> : null}
       {product ? (
         <>
-          <div className="relative w-full max-w-sm mx-auto bg-white overflow-hidden">
+          <div className="relative w-full mx-auto bg-white overflow-hidden">
             {/* Image Container */}
             <div className="relative w-full">
               <img
