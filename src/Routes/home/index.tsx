@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Map from "../maps";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client";
@@ -13,7 +13,7 @@ import { NoStore } from "../../components/home/no-store";
 import { postMessage } from "../../core/message";
 import { useCart } from "../../core/cart";
 import LoadingSpinner from "../../components/loading-spinnere";
-// import { isAndroidApp, isIOSApp, isWeb } from "../../Lib/user-agent-utils";
+import { isAndroidApp, isIOSApp, isWeb } from "../../Lib/user-agent-utils";
 // localStorage.clear();
 const GET_STORES = gql(`
   query Stores($lat: Float, $lng: Float) {
@@ -187,24 +187,24 @@ const Home = () => {
   const [msg1, setMsg1] = useState("");
   // const [msg2, setMsg2] = useState("");
   // const [msg3, setMsg3] = useState("");
-  // useEffect(() => {
-  //   if (isAndroidApp()) {
-  //     setMsg1("android");
-  //   }
-  //   if (isIOSApp()) {
-  //     setMsg1("ios");
-  //   }
-  //   if (isWeb()) {
-  //     setMsg1("web");
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (isAndroidApp()) {
+      setMsg1("android");
+    }
+    if (isIOSApp()) {
+      setMsg1("ios");
+    }
+    if (isWeb()) {
+      setMsg1("web");
+    }
+  }, []);
   // // setMsg1("android: ", isAndroidApp());
   // // setMsg2("ios: ", isIOSApp());
   // // setMsg3("web: ", isWeb());
   return (
     <div className="w-full h-[100vh] flex flex-col bg-white">
       {/* LOCATION */}
-      {/* <a
+      <a
         className="h-4 ml-2 px-1.5 rounded-3xl text-2xs bg-[#f4f5f7] text-[#969696] mb-4"
         href="nmap://route/walk?slat=37.4640070&slng=126.9522394&sname=%EC%84%9C%EC%9A%B8%EB%8C%80%ED%95%99%EA%B5%90&dlat=37.4764356&dlng=126.9618302&dname=%EB%8F%99%EC%9B%90%EB%82%99%EC%84%B1%EB%8C%80%EC%95%84%ED%8C%8C%ED%8A%B8&appname=com.luke7299.mahi"
       >
@@ -221,8 +221,8 @@ const Home = () => {
         onClick={() => navigate("/hey")}
       >
         go to hey!
-      </div> */}
-      {/* {msg1} */}
+      </div>
+      {msg1}
       <div className="py-3 pl-5 bg-white flex items-center cursor-pointer justify-between">
         <div className="flex" onClick={() => navigate("/location")}>
           <svg
