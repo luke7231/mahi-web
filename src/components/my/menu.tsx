@@ -14,7 +14,7 @@ const Menu = ({
       {to ? (
         <Link
           to={to}
-          className="p-4 w-full max-w-md h-auto flex items-center justify-between border-b border-[#eaeaea]"
+          className="p-4 w-full h-auto flex items-center justify-between border-b border-[#eaeaea]"
         >
           {/* Text Section */}
           <div className="text-black text-base font-normal">{title}</div>
@@ -41,7 +41,7 @@ const Menu = ({
       ) : (
         <div
           onClick={onClick}
-          className="p-4 w-full max-w-md h-auto flex items-center justify-between border-b border-[#eaeaea]"
+          className="p-4 w-full h-auto flex items-center justify-between border-b border-[#eaeaea]"
         >
           {/* Text Section */}
           <div className="text-black text-base font-normal">{title}</div>

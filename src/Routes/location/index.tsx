@@ -208,13 +208,13 @@ function Location() {
       <div>{currentLng ? currentLng : null}</div>
       <div
         onClick={() => onComplete()}
-        className="px-5 py-3 w-full fixed bottom-0 z-50 bg-white rounded-tl-[10px] rounded-tr-[10px]"
+        className="max-w-[742px] px-5 py-3 w-full fixed bottom-0 z-50 bg-white rounded-tl-[10px] rounded-tr-[10px]"
       >
         <div className="absolute left-0 top-[-1.3rem] w-full h-[24px] bg-[#282828] rounded-tl-[10px] rounded-tr-[10px] text-white text-xs font-semibold flex justify-center items-center">
           {/* {(product?.price - product?.discountPrice).toLocaleString()}원{" "} */}
           5km 내 매장을 찾아드려요!
         </div>
-        <div className=" w-full max-w-md h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border">
+        <div className=" w-full h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border">
           {/* Button Content */}
           <div className="text-center flex items-center space-x-1">
             <span className="text-white text-base font-semibold leading-snug">
