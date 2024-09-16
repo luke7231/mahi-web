@@ -28,7 +28,7 @@ mutation CreateOrder($input: CreateOrderInput!) {
 
 const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
-  const { cart } = useCart(); // useCart 훅을 사용하여 카트 정보를 가져옵니다
+  const { cart, removeFromCart } = useCart(); // useCart 훅을 사용하여 카트 정보를 가져옵니다
   const [createOrder] = useMutation(CREATE_ORDER);
   const inputCart = cart.map((item) => {
     // typename왜 넣냐고 시비걸어서 그냥 필터링함
@@ -156,52 +156,75 @@ const CheckoutPage: React.FC = () => {
             </h2>
             <Partition height="thick" color="light" />
             {cart.length !== 0
-              ? cart.map((item) => {
+              ? cart.map((item, index) => {
                   return (
-                    <>
-                      <div className="w-full max-w-sm h-auto flex items-center p-5">
-                        {/* Image Container */}
-                        <div className="w-[3.5rem] h-[3.5rem]  bg-[#c4c4c4] rounded-md">
-                          <img
-                            alt="Cart Item"
-                            className="w-full h-full object-cover rounded-md"
-                            src={item.product.img}
+                    <div
+                      key={index}
+                      className="w-full h-auto flex items-center p-5 relative"
+                    >
+                      {/* X Icon */}
+                      <div
+                        className="absolute top-4 right-4 cursor-pointer text-gray-500"
+                        onClick={() => removeFromCart(item.product.id)}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={2}
+                          stroke="currentColor"
+                          className="w-5 h-5"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M6 18L18 6M6 6l12 12"
                           />
+                        </svg>
+                      </div>
+
+                      {/* Image Container */}
+                      <div className="w-[3.5rem] h-[3.5rem] bg-[#c4c4c4] rounded-md">
+                        <img
+                          alt="Cart Item"
+                          className="w-full h-full object-cover rounded-md"
+                          src={item.product.img}
+                        />
+                      </div>
+
+                      {/* Product Info */}
+                      <div className="ml-4 flex-1">
+                        {/* Product Name */}
+                        <div className="flex">
+                          <div className="text-black text-sm font-normal leading-[21px]">
+                            {item.product.name}
+                          </div>
+                          <div className="text-[#b6b6b6] text-xs font-normal leading-[21px] ml-2">
+                            {item.quantity}개
+                          </div>
                         </div>
 
-                        {/* Product Info */}
-                        <div className="ml-4 flex-1">
-                          {/* Product Name */}
-                          <div className="flex">
-                            <div className="text-black text-sm font-normal leading-[21px]">
-                              {item.product.name}
-                            </div>
-                            <div className="text-[#b6b6b6] text-xs font-normal leading-[21px] ml-2">
-                              {item.quantity}개
-                            </div>
+                        {/* Price and Original Price */}
+                        <div className="flex items-baseline space-x-2">
+                          <div className="text-black text-base font-semibold">
+                            {(
+                              item.quantity * item.product?.discountPrice
+                            ).toLocaleString()}
+                            원
                           </div>
-
-                          {/* Price and Original Price */}
-                          <div className="flex items-baseline space-x-2">
-                            <div className="text-black text-base font-semibold">
-                              {(
-                                item.quantity * item.product?.discountPrice
-                              ).toLocaleString()}
-                              원
-                            </div>
-                            <div className="text-[#b6b6b6] text-xs line-through">
-                              {(
-                                item.quantity * item.product?.price
-                              ).toLocaleString()}
-                              원
-                            </div>
+                          <div className="text-[#b6b6b6] text-xs line-through">
+                            {(
+                              item.quantity * item.product?.price
+                            ).toLocaleString()}
+                            원
                           </div>
                         </div>
                       </div>
-                    </>
+                    </div>
                   );
                 })
               : null}
+
             <Partition height="thick" color="light" />
             <div className="px-5 py-4 w-full sticky bottom-0 bg-white">
               <div
