@@ -55,10 +55,10 @@ const Product = () => {
   };
   const product = data?.product;
   function onClickButton() {
-    // if (!isLoggedIn) {
-    //   navigate("/login");
-    //   return;
-    // }
+    if (!isLoggedIn) {
+      navigate("/login");
+      return;
+    }
 
     addToCart(product, quantity, {
       closingHours: product?.store?.closingHours,
