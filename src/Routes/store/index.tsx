@@ -266,7 +266,7 @@ const Store = () => {
             </div>
           </div>
           <Partition />
-          <div className="w-full max-w-md p-4 bg-white">
+          <div className="w-full p-4 bg-white">
             {/* Container for labels and content */}
             <div className="flex flex-col text-sm leading-[21px] space-y-1">
               {/* Row for 가게 위치 */}
@@ -394,7 +394,7 @@ const Store = () => {
             </span>{" "}
             할인받았어요!
           </div>
-          <div className=" w-full max-w-md h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border">
+          <div className=" w-full h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border">
             {/* Button Content */}
             <div className="text-center flex items-center space-x-1">
               <span className="text-white text- font-bold leading-snug">

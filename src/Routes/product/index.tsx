@@ -127,7 +127,7 @@ const Product = () => {
             </div>
           </div>
           <Partition color="light" height="md" />
-          <div className="w-full h-auto max-w-md flex items-center justify-between px-5 py-5 bg-white">
+          <div className="w-full h-auto flex items-center justify-between px-5 py-5 bg-white">
             {/* Label */}
             <div className="flex items-center">
               <div className="text-black text-lg font-semibold">수량</div>
@@ -203,7 +203,7 @@ const Product = () => {
             {(product?.price - product?.discountPrice).toLocaleString()}원{" "}
             할인받았어요!
           </div>
-          <div className=" w-full max-w-md h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border">
+          <div className=" w-full h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border">
             {/* Button Content */}
             <div className="text-center flex items-center space-x-1">
               <span className="text-white text-base font-semibold leading-snug">

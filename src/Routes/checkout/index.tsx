@@ -103,7 +103,7 @@ const CheckoutPage: React.FC = () => {
           <div onClick={() => navigate(-1)} className="p-5">
             <BackArrow />
           </div>
-          <div className="w-full max-w-md mx-auto h-auto mt-10 bg-white">
+          <div className="w-full mx-auto h-auto mt-10 bg-white">
             {/* Header Section */}
             <div className="flex flex-col items-center text-center text-black mb-6">
               <svg
@@ -129,8 +129,8 @@ const CheckoutPage: React.FC = () => {
               </div>
             </div>
             {/* Main Content Section */}
-            <div className=" p-4">
-              <div className="w-full bg-[#f4f5f7] rounded-lg p-6">
+            <div className="p-4 flex justify-center">
+              <div className="w-full max-w-md  bg-[#f4f5f7] rounded-lg p-6">
                 <div className="text-center text-sm text-[#828282]">
                   <span className="font-bold">{cart[0]?.store?.title}</span>{" "}
                   마감 시간
@@ -229,7 +229,7 @@ const CheckoutPage: React.FC = () => {
             <div className="px-5 py-4 w-full sticky bottom-0 bg-white">
               <div
                 onClick={() => onClickProceed()}
-                className="w-full max-w-md h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border"
+                className="w-full h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border"
               >
                 {/* Button Content */}
                 <div className="text-center flex items-center space-x-1">
