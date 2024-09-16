@@ -5,11 +5,38 @@ import Partition from "../../components/common/partition";
 import BackArrow from "../../components/common/back-arrow";
 import Header from "../../components/common/header";
 import NoCart from "../../components/checkout/no-cart";
+import { nanoid } from "nanoid";
+import { gql } from "../../__generated__";
+import { useMutation } from "@apollo/client";
+
+const CREATE_ORDER = gql(`
+mutation CreateOrder($input: CreateOrderInput!) {
+  createOrder(input: $input) {
+    id
+    orderId
+    amount
+    coupon
+    products {
+      id
+      name
+    }
+    createdAt
+    updatedAt
+  }
+}
+`);
 
 const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
   const { cart } = useCart(); // useCart 훅을 사용하여 카트 정보를 가져옵니다
-
+  const [createOrder] = useMutation(CREATE_ORDER);
+  const inputCart = cart.map((item) => {
+    // typename왜 넣냐고 시비걸어서 그냥 필터링함
+    return {
+      product: { id: item?.product?.id as number },
+      quantity: item.quantity,
+    };
+  });
   // 카트의 총액을 계산하는 함수
   const getTotalAmount = () => {
     return cart.reduce((total, item) => {
@@ -17,9 +44,56 @@ const CheckoutPage: React.FC = () => {
       return total + price * item.quantity;
     }, 0);
   };
+  const getTotalQuantity = () => {
+    return cart.reduce((total, item) => {
+      const q = item.quantity;
+      return total + q;
+    }, 0);
+  };
 
-  const onClickProceed = () => {
-    navigate("/payment");
+  const getTotalDisount = () => {
+    return cart.reduce((total, item) => {
+      const discount = item.product?.discountPrice
+        ? item.product.price - item?.product?.discountPrice
+        : 0;
+      return total + discount * item.quantity;
+    }, 0);
+  };
+
+  const onClickProceed = async () => {
+    const orderId = nanoid();
+    const { data } = await createOrder({
+      variables: {
+        input: {
+          totalQuantity: getTotalQuantity(),
+          totalDiscount: getTotalDisount(),
+          orderId,
+          amount: getTotalAmount(), // 이전 페이지에서 받아오기
+          productIds: cart.map((item) => item?.product?.id), // 이전 페이지에서 받아오기 or productID만 받아서 query 치기
+        },
+      },
+      onCompleted: (data) => console.log(data), // TODO: 여러번 클릭되지 않도록? 조치해야할듯 디바운스
+    });
+    // if (data?.createOrder.id) {
+    // request.
+    const serverAuth = () => {
+      window.AUTHNICE.requestPay({
+        clientId: "S2_7edb63a062cd4f799d14caa983faab78", // 수정해야함.
+        method: "card",
+        orderId,
+        amount: getTotalAmount(),
+        appScheme: "mahi://",
+        fnError: () => console.error(),
+        goodsName: "나이스페이-상품",
+        returnUrl: `${process.env.REACT_APP_API_URL}/nice-auth`,
+        mallReserved: JSON.stringify(inputCart),
+      });
+    };
+    serverAuth();
+    // } else {
+    // 문제가 발생했습니다.
+    // TODO: toast ui 띄우기
+    // }
   };
 
   return (
