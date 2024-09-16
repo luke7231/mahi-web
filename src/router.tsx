@@ -29,7 +29,7 @@ import Contact from "./Routes/my/contact";
 import ChangePassword from "./Routes/my/change-password";
 import Hey2 from "./Routes/hey/hey2";
 import Hey3 from "./Routes/hey/hey3";
-import Haha from "./Routes/hey/hahah";
+import NiceResult from "./Routes/hey/nice-result";
 
 const Router = () => {
   const { isFirst, isLoggedIn } = useAuth();
@@ -60,7 +60,7 @@ const Router = () => {
         <Route path="/sign-out" element={<SignOut />} />
         <Route path="/order_confirm" element={<Hey2 />} />
         <Route path="/order_result" element={<Hey3 />} />
-        <Route path="/nice-result" element={<Haha />} />
+        <Route path="/nice-result" element={<NiceResult />} />
 
         {/* <Route path="/notice" element={<Notice />} /> */}
         {/* <Route path="/profile-edit" element={<ProfileEdit />} /> */}
