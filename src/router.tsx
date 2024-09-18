@@ -35,6 +35,7 @@ import PackCreateModal from "./Routes/admin/pack-create-modal";
 import SelectFromMenu from "./Routes/admin/select-from-menu";
 import ManualEntry from "./Routes/admin/manual-entry";
 import AdminHome from "./Routes/admin/admin-home";
+import MenuManagement from "./Routes/admin/menu-management";
 
 const Router = () => {
   const { isFirst, isLoggedIn } = useAuth();
@@ -86,6 +87,9 @@ const Router = () => {
         <Route path="/admin/pack-create-modal" element={<PackCreateModal />} />
         <Route path="/admin/select-from-menu" element={<SelectFromMenu />} />
         <Route path="/admin/manual-entry" element={<ManualEntry />} />
+
+        {/* 메뉴 관리 페이지 */}
+        <Route path="/admin/menu-management" element={<MenuManagement />} />
       </Routes>
     </BrowserRouter>
   );
