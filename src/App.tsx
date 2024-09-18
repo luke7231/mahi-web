@@ -13,6 +13,7 @@ import {
 import { setContext } from "@apollo/client/link/context";
 import { CartProvider } from "./core/cart";
 import AmplitudeContextProvider from "./core/amplitude";
+import { PackProvider } from "./Routes/admin/context/pack";
 // import { getResponsiveMaxWidth } from "./utils/layout-util";
 // import { AuthProvider } from "./contexts/auth-provider";
 // import "react-toastify/dist/ReactToastify.css";
@@ -63,8 +64,10 @@ function App() {
           <AuthProvider>
             <LocationProvider>
               <CartProvider>
-                {/* <GlobalStyle /> */}
-                <Router />
+                <PackProvider>
+                  {/* <GlobalStyle /> */}
+                  <Router />
+                </PackProvider>
               </CartProvider>
             </LocationProvider>
           </AuthProvider>

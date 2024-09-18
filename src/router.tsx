@@ -30,6 +30,11 @@ import ChangePassword from "./Routes/my/change-password";
 import Hey2 from "./Routes/hey/hey2";
 import Hey3 from "./Routes/hey/hey3";
 import NiceResult from "./Routes/hey/nice-result";
+import PackCreate from "./Routes/admin/pack-create";
+import PackCreateModal from "./Routes/admin/pack-create-modal";
+import SelectFromMenu from "./Routes/admin/select-from-menu";
+import ManualEntry from "./Routes/admin/manual-entry";
+import AdminHome from "./Routes/admin/admin-home";
 
 const Router = () => {
   const { isFirst, isLoggedIn } = useAuth();
@@ -75,6 +80,12 @@ const Router = () => {
         />
         <Route path="/auth" element={<KakaoRedirectHandler />} />
         <Route path="/sign-up" element={<SignUp />} />
+
+        <Route path="/admin/home" element={<AdminHome />} />
+        <Route path="/admin/pack-create" element={<PackCreate />} />
+        <Route path="/admin/pack-create-modal" element={<PackCreateModal />} />
+        <Route path="/admin/select-from-menu" element={<SelectFromMenu />} />
+        <Route path="/admin/manual-entry" element={<ManualEntry />} />
       </Routes>
     </BrowserRouter>
   );
