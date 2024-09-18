@@ -1,4 +1,5 @@
-import React, { useState } from "react"; // 수정 모달 가져오기
+import React, { useState } from "react";
+import DeleteConfirmationModal from "./menu-delete-modal";
 import MenuEditModal from "./menu-edit-modal";
 import AddMenuModal from "./menu-add-modal";
 
@@ -33,6 +34,7 @@ const MenuManagement: React.FC = () => {
 
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState<MenuItem | null>(null);
+  const [isDeleting, setIsDeleting] = useState<MenuItem | null>(null); // 삭제할 메뉴 상태 관리
 
   const handleAddMenu = () => {
     setIsAdding(true);
@@ -56,6 +58,7 @@ const MenuManagement: React.FC = () => {
 
   const handleDeleteMenu = (id: number) => {
     setMenus(menus.filter((menu) => menu.id !== id));
+    setIsDeleting(null); // 삭제 후 모달 닫기
   };
 
   return (
@@ -92,7 +95,7 @@ const MenuManagement: React.FC = () => {
               </button>
               <button
                 className="px-3 py-1 bg-red-500 text-white text-sm rounded"
-                onClick={() => handleDeleteMenu(menu.id)}
+                onClick={() => setIsDeleting(menu)}
               >
                 삭제
               </button>
@@ -115,6 +118,14 @@ const MenuManagement: React.FC = () => {
           menu={isEditing}
           onClose={() => setIsEditing(null)}
           onSave={handleSaveEditedMenu}
+        />
+      )}
+
+      {/* 삭제 확인 모달 */}
+      {isDeleting && (
+        <DeleteConfirmationModal
+          onClose={() => setIsDeleting(null)}
+          onConfirm={() => handleDeleteMenu(isDeleting.id)}
         />
       )}
     </div>
