@@ -1,27 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useQuery, gql } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 
-type UserInfo = {
+// GraphQL Query
+const GET_SELLER = gql`
+  query GetSeller($id: Int!) {
+    seller(id: $id) {
+      name
+      email
+      contactNumber
+      address
+    }
+  }
+`;
+
+type SellerInfo = {
   name: string;
   email: string;
-  password?: string;
   contactNumber?: string;
   address?: string;
 };
 
-const ProfilePage: React.FC = () => {
+const SellerProfilePage: React.FC = () => {
   const navigate = useNavigate();
-  const [userInfo, setUserInfo] = useState<UserInfo>({
-    name: "홍길동",
-    email: "owner@example.com",
-    contactNumber: "010-1234-5678",
-    address: "서울시 강남구 역삼동",
+  const [seller, setSeller] = useState<SellerInfo>({
+    name: "",
+    email: "",
+    contactNumber: "",
+    address: "",
   });
   const [isEditing, setIsEditing] = useState(false);
-  const [newPassword, setNewPassword] = useState("");
+
+  // Replace 1 with actual seller id or dynamic value
+  const { loading, error, data } = useQuery(GET_SELLER, {
+    variables: { id: 1 },
+  });
+
+  // Once data is fetched, update seller state
+  useEffect(() => {
+    if (data && data.seller) {
+      setSeller(data.seller);
+    }
+  }, [data]);
 
   const handleSave = () => {
-    // 백엔드로 데이터를 전송하거나 state 업데이트
+    // Save logic (could be another mutation to update the seller info)
+    console.log("Saving seller data:", seller);
     setIsEditing(false);
   };
 
@@ -30,8 +54,11 @@ const ProfilePage: React.FC = () => {
   };
 
   const handlePasswordChange = () => {
-    navigate("/admin/change-password"); // 비밀번호 변경 페이지로 이동
+    navigate("/admin/change-password");
   };
+
+  if (loading) return <p>로딩중입니다...</p>;
+  if (error) return <p>서버에러: {error.message}</p>;
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
@@ -47,10 +74,8 @@ const ProfilePage: React.FC = () => {
               </label>
               <input
                 type="text"
-                value={userInfo.name}
-                onChange={(e) =>
-                  setUserInfo({ ...userInfo, name: e.target.value })
-                }
+                value={seller.name}
+                onChange={(e) => setSeller({ ...seller, name: e.target.value })}
                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
               />
             </div>
@@ -62,9 +87,9 @@ const ProfilePage: React.FC = () => {
               </label>
               <input
                 type="email"
-                value={userInfo.email}
+                value={seller.email}
                 onChange={(e) =>
-                  setUserInfo({ ...userInfo, email: e.target.value })
+                  setSeller({ ...seller, email: e.target.value })
                 }
                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
               />
@@ -77,9 +102,9 @@ const ProfilePage: React.FC = () => {
               </label>
               <input
                 type="text"
-                value={userInfo.contactNumber || ""}
+                value={seller.contactNumber || ""}
                 onChange={(e) =>
-                  setUserInfo({ ...userInfo, contactNumber: e.target.value })
+                  setSeller({ ...seller, contactNumber: e.target.value })
                 }
                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
               />
@@ -92,16 +117,15 @@ const ProfilePage: React.FC = () => {
               </label>
               <input
                 type="text"
-                value={userInfo.address || ""}
+                value={seller.address || ""}
                 onChange={(e) =>
-                  setUserInfo({ ...userInfo, address: e.target.value })
+                  setSeller({ ...seller, address: e.target.value })
                 }
                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
               />
             </div>
 
             {/* 비밀번호 변경 */}
-            {/* 비밀번호 변경 버튼 */}
             <button
               onClick={handlePasswordChange}
               className="w-full px-4 py-2 bg-gray-500 text-white font-semibold rounded-lg shadow hover:bg-gray-600 transition mt-4"
@@ -131,28 +155,28 @@ const ProfilePage: React.FC = () => {
               <label className="block text-sm font-medium text-gray-700">
                 이름
               </label>
-              <p className="text-lg">{userInfo.name}</p>
+              <p className="text-lg">{seller.name}</p>
             </div>
 
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
                 이메일
               </label>
-              <p className="text-lg">{userInfo.email}</p>
+              <p className="text-lg">{seller.email}</p>
             </div>
 
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
                 연락처
               </label>
-              <p className="text-lg">{userInfo.contactNumber || "비공개"}</p>
+              <p className="text-lg">{seller.contactNumber || "비공개"}</p>
             </div>
 
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
                 주소
               </label>
-              <p className="text-lg">{userInfo.address || "비공개"}</p>
+              <p className="text-lg">{seller.address || "비공개"}</p>
             </div>
 
             <button
@@ -168,4 +192,4 @@ const ProfilePage: React.FC = () => {
   );
 };
 
-export default ProfilePage;
+export default SellerProfilePage;
