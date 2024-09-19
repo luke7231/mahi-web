@@ -1,11 +1,36 @@
 import React, { useState, useEffect } from "react";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery, useMutation, gql } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 
 // GraphQL Query
 const GET_SELLER = gql`
   query GetSeller($id: Int!) {
     seller(id: $id) {
+      name
+      email
+      contactNumber
+      address
+    }
+  }
+`;
+
+// GraphQL Mutation for updating seller info
+const UPDATE_SELLER = gql`
+  mutation UpdateSeller(
+    $id: Int!
+    $name: String
+    $email: String
+    $contactNumber: String
+    $address: String
+  ) {
+    updateSeller(
+      id: $id
+      name: $name
+      email: $email
+      contactNumber: $contactNumber
+      address: $address
+    ) {
+      id
       name
       email
       contactNumber
@@ -36,6 +61,9 @@ const SellerProfilePage: React.FC = () => {
     variables: { id: 1 },
   });
 
+  const [updateSeller, { loading: updateLoading, error: updateError }] =
+    useMutation(UPDATE_SELLER);
+
   // Once data is fetched, update seller state
   useEffect(() => {
     if (data && data.seller) {
@@ -44,9 +72,24 @@ const SellerProfilePage: React.FC = () => {
   }, [data]);
 
   const handleSave = () => {
-    // Save logic (could be another mutation to update the seller info)
-    console.log("Saving seller data:", seller);
-    setIsEditing(false);
+    updateSeller({
+      variables: {
+        id: 1, // Replace with actual seller ID
+        name: seller.name,
+        email: seller.email,
+        contactNumber: seller.contactNumber,
+        address: seller.address,
+      },
+    })
+      .then((response) => {
+        alert("수정이 완료되었습니다!");
+        setIsEditing(false);
+      })
+      .catch((error) => {
+        alert(
+          "수정하는 도중 에러가 발생했습니다. 문제가 또 발생한다면 고객센터로 문의주세요."
+        );
+      });
   };
 
   const handleEdit = () => {
@@ -59,6 +102,8 @@ const SellerProfilePage: React.FC = () => {
 
   if (loading) return <p>로딩중입니다...</p>;
   if (error) return <p>서버에러: {error.message}</p>;
+  if (updateLoading) return <p>업데이트 중...</p>;
+  if (updateError) return <p>업데이트 에러: {updateError.message}</p>;
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
