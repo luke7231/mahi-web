@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 // GraphQL Query
 const GET_SELLER = gql`
-  query GetSeller($id: Int!) {
-    seller(id: $id) {
+  query GetSeller {
+    seller {
       name
       email
       contactNumber
@@ -17,14 +17,12 @@ const GET_SELLER = gql`
 // GraphQL Mutation for updating seller info
 const UPDATE_SELLER = gql`
   mutation UpdateSeller(
-    $id: Int!
     $name: String
     $email: String
     $contactNumber: String
     $address: String
   ) {
     updateSeller(
-      id: $id
       name: $name
       email: $email
       contactNumber: $contactNumber
@@ -57,9 +55,7 @@ const SellerProfilePage: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   // Replace 1 with actual seller id or dynamic value
-  const { loading, error, data } = useQuery(GET_SELLER, {
-    variables: { id: 1 },
-  });
+  const { loading, error, data } = useQuery(GET_SELLER);
 
   const [updateSeller, { loading: updateLoading, error: updateError }] =
     useMutation(UPDATE_SELLER);
@@ -74,7 +70,6 @@ const SellerProfilePage: React.FC = () => {
   const handleSave = () => {
     updateSeller({
       variables: {
-        id: 1, // Replace with actual seller ID
         name: seller.name,
         email: seller.email,
         contactNumber: seller.contactNumber,
