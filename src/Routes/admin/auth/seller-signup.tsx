@@ -18,9 +18,12 @@ const CREATE_SELLER = gql`
       contactNumber: $contactNumber
       address: $address
     ) {
-      id
-      name
-      email
+      seller {
+        id
+        name
+        email
+      }
+      token
     }
   }
 `;
@@ -41,9 +44,14 @@ const SellerSignUpPage: React.FC = () => {
     createSeller({
       variables: { name, email, password, contactNumber, address },
     })
-      .then(() => {
+      .then((response) => {
+        const { token } = response.data.createSeller;
+
+        // 토큰을 localStorage에 저장
+        localStorage.setItem("sellerToken", token);
+
         alert("회원가입이 완료되었습니다.");
-        navigate("/admin/home");
+        navigate("/admin/home"); // 회원가입 성공 시 홈으로 이동
       })
       .catch((err) => {
         console.error("Error during sign-up:", err);
