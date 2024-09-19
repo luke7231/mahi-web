@@ -36,6 +36,8 @@ import SelectFromMenu from "./Routes/admin/select-from-menu";
 import ManualEntry from "./Routes/admin/manual-entry";
 import AdminHome from "./Routes/admin/admin-home";
 import MenuManagement from "./Routes/admin/menu-management";
+import StoreManagement from "./Routes/admin/store-management";
+import StoreLocation from "./Routes/admin/store-management/store-location";
 
 const Router = () => {
   const { isFirst, isLoggedIn } = useAuth();
@@ -90,6 +92,9 @@ const Router = () => {
 
         {/* 메뉴 관리 페이지 */}
         <Route path="/admin/menu-management" element={<MenuManagement />} />
+        {/* 매장 관리 페이지 */}
+        <Route path="/admin/store-management" element={<StoreManagement />} />
+        <Route path="/admin/store-location" element={<StoreLocation />} />
       </Routes>
     </BrowserRouter>
   );
