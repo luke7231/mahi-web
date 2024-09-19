@@ -40,6 +40,7 @@ import StoreManagement from "./Routes/admin/store-management";
 import StoreLocation from "./Routes/admin/store-management/store-location";
 import ProfilePage from "./Routes/admin/profile";
 import ChangePasswordAdmin from "./Routes/admin/profile/change-password";
+import SellerLoginPage from "./Routes/admin/auth/seller-login";
 
 const Router = () => {
   const { isFirst, isLoggedIn } = useAuth();
@@ -102,6 +103,7 @@ const Router = () => {
           path="/admin/change-password"
           element={<ChangePasswordAdmin />}
         />
+        <Route path="/admin/login" element={<SellerLoginPage />} />
       </Routes>
     </BrowserRouter>
   );

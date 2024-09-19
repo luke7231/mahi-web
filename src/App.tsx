@@ -32,14 +32,20 @@ window.addEventListener("message", (event) => {
 const httpLink = createHttpLink({
   uri: process.env.REACT_APP_API_URL,
 });
+
 const authLink = setContext((_, { headers }) => {
-  // get the authentication token from local storage if it exists
-  const token = localStorage.getItem("jwt");
-  // return the headers to the context so httpLink can read them
+  // 유저 토큰
+  const userToken = localStorage.getItem("jwt");
+
+  // 셀러 토큰
+  const sellerToken = localStorage.getItem("sellerToken");
+
+  // 헤더에 유저 및 셀러 토큰을 추가
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : "",
+      authorization: userToken ? `Bearer ${userToken}` : "",
+      "seller-authorization": sellerToken ? `Bearer ${sellerToken}` : "", // 셀러용 헤더
     },
   };
 });
