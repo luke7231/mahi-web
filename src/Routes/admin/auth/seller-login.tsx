@@ -111,21 +111,21 @@ const SellerLoginPage: React.FC = () => {
           <div className="mt-4 text-center">
             <button
               className="w-full py-2 border border-[#1562fc] text-[#1562fc] text-sm font-semibold rounded-md hover:bg-[#e6f0ff] transition duration-150"
-              onClick={() => navigate("/sign-up")}
+              onClick={() => navigate("/admin/sign-up")}
             >
               회원가입
             </button>
           </div>
 
           {/* Additional Links */}
-          <div className="mt-4 text-center">
+          {/* <div className="mt-4 text-center">
             <div
               onClick={() => navigate("/password-reset")}
               className="text-xs text-[#757575] hover:text-[#1562fc]"
             >
               비밀번호를 잊으셨나요?
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>
