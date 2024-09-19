@@ -38,6 +38,8 @@ import AdminHome from "./Routes/admin/admin-home";
 import MenuManagement from "./Routes/admin/menu-management";
 import StoreManagement from "./Routes/admin/store-management";
 import StoreLocation from "./Routes/admin/store-management/store-location";
+import ProfilePage from "./Routes/admin/profile";
+import ChangePasswordAdmin from "./Routes/admin/profile/change-password";
 
 const Router = () => {
   const { isFirst, isLoggedIn } = useAuth();
@@ -95,6 +97,11 @@ const Router = () => {
         {/* 매장 관리 페이지 */}
         <Route path="/admin/store-management" element={<StoreManagement />} />
         <Route path="/admin/store-location" element={<StoreLocation />} />
+        <Route path="/admin/profile" element={<ProfilePage />} />
+        <Route
+          path="/admin/change-password"
+          element={<ChangePasswordAdmin />}
+        />
       </Routes>
     </BrowserRouter>
   );
