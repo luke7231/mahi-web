@@ -1,21 +1,28 @@
 import React, { useState } from "react";
 
-type MenuItem = {
+type MenuInput = {
   id: number;
   name: string;
   price: number;
-  img: string;
+  img: File | null; // 파일로 수정
 };
 
 type AddMenuModalProps = {
   onClose: () => void;
-  onSave: (menu: MenuItem) => void;
+  onSave: (menu: MenuInput) => void;
 };
 
 const AddMenuModal: React.FC<AddMenuModalProps> = ({ onClose, onSave }) => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState<number | "">("");
-  const [img, setImg] = useState("");
+  const [img, setImg] = useState<File | null>(null); // 파일 타입으로 수정
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImg(file);
+    }
+  };
 
   const handleSubmit = () => {
     if (!name || !price || !img) {
@@ -23,11 +30,11 @@ const AddMenuModal: React.FC<AddMenuModalProps> = ({ onClose, onSave }) => {
       return;
     }
 
-    const newMenu: MenuItem = {
-      id: Math.random(), // 고유한 ID 생성
+    const newMenu: MenuInput = {
+      id: Math.random(), // 고유한 ID 생성, 실제로는 서버에서 생성된 ID 사용
       name,
       price: Number(price),
-      img,
+      img, // 파일로 전달
     };
     onSave(newMenu);
   };
@@ -65,14 +72,13 @@ const AddMenuModal: React.FC<AddMenuModalProps> = ({ onClose, onSave }) => {
 
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
-            이미지 URL
+            이미지 업로드
           </label>
           <input
-            type="text"
-            value={img}
-            onChange={(e) => setImg(e.target.value)}
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
             className="w-full border px-3 py-2 rounded"
-            placeholder="이미지 URL 입력"
           />
         </div>
 

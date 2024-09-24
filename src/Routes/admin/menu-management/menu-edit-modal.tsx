@@ -4,13 +4,19 @@ type MenuItem = {
   id: number;
   name: string;
   price: number;
-  img: string;
+  img: string | null;
+};
+type MenuInput = {
+  id: number;
+  name: string;
+  price: number;
+  img: File | null;
 };
 
 type MenuEditModalProps = {
   menu: MenuItem;
   onClose: () => void;
-  onSave: (updatedMenu: MenuItem) => void;
+  onSave: (updatedMenu: MenuInput, imgFile?: File) => void;
 };
 
 const MenuEditModal: React.FC<MenuEditModalProps> = ({
@@ -20,16 +26,29 @@ const MenuEditModal: React.FC<MenuEditModalProps> = ({
 }) => {
   const [name, setName] = useState(menu.name);
   const [price, setPrice] = useState<number | "">(menu.price);
-  const [img, setImg] = useState(menu.img);
+  const [imgPreview, setImgPreview] = useState(menu.img); // 이미지 미리보기
+  const [imgFile, setImgFile] = useState<File | null>(null); // 실제 파일
 
   const handleSubmit = () => {
-    if (!name || !price || !img) {
-      alert("모든 필드를 입력해 주세요.");
+    if (!name || !price) {
+      alert("이름과 가격을 입력해 주세요.");
       return;
     }
 
-    const updatedMenu: MenuItem = { ...menu, name, price: Number(price), img };
+    const updatedMenu: MenuInput = {
+      ...menu,
+      name,
+      price: Number(price),
+      img: imgFile,
+    };
     onSave(updatedMenu);
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImgFile(file);
+    }
   };
 
   return (
@@ -63,15 +82,28 @@ const MenuEditModal: React.FC<MenuEditModalProps> = ({
 
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
-            이미지 URL
+            이미지
           </label>
           <input
-            type="text"
-            value={img}
-            onChange={(e) => setImg(e.target.value)}
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
             className="w-full border px-3 py-2 rounded"
           />
         </div>
+
+        {imgPreview && (
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">
+              현재 이미지
+            </label>
+            <img
+              src={imgPreview}
+              alt="미리보기"
+              className="h-40 w-full object-cover rounded-md mb-2"
+            />
+          </div>
+        )}
 
         <div className="flex justify-end space-x-2">
           <button
