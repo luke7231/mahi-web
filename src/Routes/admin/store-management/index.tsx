@@ -16,6 +16,7 @@ const GET_SELLER_STORE = gql`
       closingHours
       lng
       lat
+      img
     }
   }
 `;
@@ -30,6 +31,7 @@ const UPDATE_STORE = gql`
     $address: String
     $contactNumber: String
     $closingHours: String
+    $img: Upload
   ) {
     updateStore(
       id: $id
@@ -39,6 +41,7 @@ const UPDATE_STORE = gql`
       address: $address
       contactNumber: $contactNumber
       closingHours: $closingHours
+      img: $img
     ) {
       id
       title
@@ -58,7 +61,7 @@ const CREATE_STORE = gql`
     $address: String
     $contactNumber: String
     $closingHours: String
-    $img: String
+    $img: Upload
   ) {
     createStore(
       lat: $lat
@@ -86,6 +89,7 @@ const GET_COORDS = gql`
 
 type Store = {
   id: number;
+  img?: string;
   title: string;
   address: string;
   contactNumber: string;
@@ -101,6 +105,7 @@ const StoreManagement: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
+  const [imgFile, setImgFile] = useState<File | null>(null); // 이미지 파일 상태 추가
 
   // Fetch seller's store using Apollo Client's useQuery hook
   const { loading, error, data } = useQuery(GET_SELLER_STORE, {
@@ -128,6 +133,7 @@ const StoreManagement: React.FC = () => {
           closingHours: storeInfo.closingHours,
           lat,
           lng,
+          img: imgFile, // 이미지 파일 전달
         },
       }).then(() => {
         setStore(storeInfo);
@@ -141,6 +147,9 @@ const StoreManagement: React.FC = () => {
           address: storeInfo.address,
           contactNumber: storeInfo.contactNumber,
           closingHours: storeInfo.closingHours,
+          lat,
+          lng,
+          img: imgFile, // 이미지 파일 전달
         },
       }).then((response) => {
         setStore(response.data.createStore);
@@ -156,6 +165,14 @@ const StoreManagement: React.FC = () => {
     setLat(lat);
     setIsModalOpen(false); // 모달 닫기
   };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImgFile(file); // 파일을 상태에 저장
+    }
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
@@ -187,31 +204,47 @@ const StoreManagement: React.FC = () => {
           setLat={setLat}
           lng={lng}
           lat={lat}
+          handleImageChange={handleImageChange} // 이미지 파일 핸들러 전달
         />
       ) : (
         <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md">
           <h1 className="text-2xl font-bold mb-6 text-center">매장 정보</h1>
+
+          {store?.img && (
+            <div className="mb-6">
+              <img
+                src={store.img}
+                alt={`${store?.title} 매장 이미지`}
+                className="w-full h-auto rounded-lg"
+              />
+            </div>
+          )}
+
           <div className="mb-4">
             <p className="font-semibold text-gray-600">
               이름: <span className="text-black">{store?.title}</span>
             </p>
           </div>
+
           <div className="mb-4">
             <p className="font-semibold text-gray-600">
               주소: <span className="text-black">{store?.address}</span>
             </p>
           </div>
+
           <div className="mb-4">
             <p className="font-semibold text-gray-600">
               연락처: <span className="text-black">{store?.contactNumber}</span>
             </p>
           </div>
+
           <div className="mb-4">
             <p className="font-semibold text-gray-600">
               영업 시간:{" "}
               <span className="text-black">~ {store?.closingHours}</span>
             </p>
           </div>
+
           <button
             onClick={() => setIsEditing(true)}
             className="w-full py-3 mt-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
@@ -242,6 +275,7 @@ type StoreEditFormProps = {
   setLat: (data: number) => void;
   lng: number;
   lat: number;
+  handleImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // 이미지 파일 핸들러 추가
 };
 
 const StoreEditForm: React.FC<StoreEditFormProps> = ({
@@ -253,6 +287,7 @@ const StoreEditForm: React.FC<StoreEditFormProps> = ({
   setLat,
   lng,
   lat,
+  handleImageChange, // 이미지 파일 핸들러 추가
 }) => {
   const [title, setTitle] = useState(store?.title || "");
   const [address, setAddress] = useState(store?.address || "");
@@ -357,6 +392,16 @@ const StoreEditForm: React.FC<StoreEditFormProps> = ({
         <input
           value={closingHours}
           onChange={(e) => setClosingHours(e.target.value)}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-400 transition duration-200"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label className="block text-gray-700 font-semibold">매장 이미지</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange} // 이미지 파일 변경 핸들러
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-400 transition duration-200"
         />
       </div>

@@ -14,6 +14,9 @@ import { setContext } from "@apollo/client/link/context";
 import { CartProvider } from "./core/cart";
 import AmplitudeContextProvider from "./core/amplitude";
 import { PackProvider } from "./Routes/admin/context/pack";
+import createUploadLink from "apollo-upload-client/createUploadLink.mjs";
+
+// import { createUploadLink } from "apollo-upload-client";
 // import { getResponsiveMaxWidth } from "./utils/layout-util";
 // import { AuthProvider } from "./contexts/auth-provider";
 // import "react-toastify/dist/ReactToastify.css";
@@ -29,7 +32,7 @@ window.addEventListener("message", (event) => {
   }
 });
 
-const httpLink = createHttpLink({
+const uploadLink = createUploadLink({
   uri: process.env.REACT_APP_API_URL,
 });
 
@@ -46,12 +49,13 @@ const authLink = setContext((_, { headers }) => {
       ...headers,
       authorization: userToken ? `Bearer ${userToken}` : "",
       "seller-authorization": sellerToken ? `Bearer ${sellerToken}` : "", // 셀러용 헤더
+      "Apollo-Require-Preflight": "true",
     },
   };
 });
 
 export const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: authLink.concat(uploadLink),
   cache: new InMemoryCache(),
 });
 // export const client = new ApolloClient({
