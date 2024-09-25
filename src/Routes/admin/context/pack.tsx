@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 export interface MenuItem {
   id: number;
   name: string;
-  img: string;
+  img: string | File;
   price: number;
   discountRate?: number; // 할인율 추가
   quantity?: number;

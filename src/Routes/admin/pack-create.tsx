@@ -52,24 +52,32 @@ const PackCreate: React.FC = () => {
     try {
       // 각 팩을 createProduct로 전송
       for (const pack of packs) {
-        const menus = pack.map((item) => ({
-          menuId: item.id,
-          quantity: item.quantity || 1,
-          img: item.img,
-        }));
+        let menus;
+        let img;
+        if (pack[0].id !== 0) {
+          // 메뉴선택이란뜻임,
+          menus = pack.map((item) => ({
+            menuId: item.id,
+            quantity: item.quantity || 1,
+            img: item.img,
+          }));
+        } else {
+          // 직접선택
+          img = pack[0].img;
+        }
         const packName = pack.map((item) => item.name).join(" + ");
         // 서버에 createProduct 요청
         await createProduct({
           variables: {
             input: {
-              storeId: 1, // 실제 storeId를 넣어주세요
               name: packName,
               price: calculateTotalPrice(pack),
               discountPrice: calculateDiscountedPrice(pack),
               description: ``,
               saleEndTime: new Date().toISOString(), // 판매 종료 시간 설정 (필요에 따라 수정 가능)
-              menus, // 메뉴 ID와 수량 함께 전송
+              menus, // 메뉴에서 선택했을 때에만 이걸 전송, 직접 입력 시 빈배열 전달.
               quantity: 1,
+              img, // 이미지가 없어도 서버에서 알아서 처리함.
             },
           },
         });
@@ -121,7 +129,11 @@ const PackCreate: React.FC = () => {
                 {pack.map((item) => (
                   <li key={item.id} className="flex items-center space-x-4">
                     <img
-                      src={item.img}
+                      src={
+                        item.img instanceof File
+                          ? URL.createObjectURL(item.img)
+                          : item.img
+                      }
                       alt={item.name}
                       className="w-16 h-16 object-cover rounded-md"
                     />

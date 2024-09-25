@@ -5,7 +5,7 @@ import { usePackContext } from "./context/pack"; // 경로 수정
 interface ManualMenuItem {
   id: number;
   name: string;
-  img: string;
+  img: File;
   price: number;
   discountRate: number; // 할인율 추가
 }
@@ -27,11 +27,10 @@ const ManualEntry: React.FC = () => {
       return;
     }
 
-    const imageUrl = URL.createObjectURL(imageFile); // 이미지 파일의 URL 생성
     const newMenuItem: ManualMenuItem = {
-      id: Date.now(), // 임시로 고유한 ID 생성
+      id: 0, // '직접입력임을 알리기 위함'
       name: menuName,
-      img: imageUrl, // 이미지 파일을 URL로 변환
+      img: imageFile, // 이미지 파일을 URL로 변환
       price: Number(price),
       discountRate: Number(discountRate),
     };
