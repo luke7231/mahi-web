@@ -12,7 +12,8 @@ export interface MenuItem {
 interface PackContextProps {
   packs: MenuItem[][];
   addPack: (items: MenuItem[]) => void;
-  resetPacks: () => void; // resetPacks 추가
+  resetPacks: () => void;
+  deletePack: (index: number) => void; // deletePack 추가
 }
 
 const PackContext = createContext<PackContextProps | undefined>(undefined);
@@ -38,8 +39,12 @@ export const PackProvider: React.FC<{ children: ReactNode }> = ({
     setPacks([]); // reset the packs to an empty array
   };
 
+  const deletePack = (index: number) => {
+    setPacks((prevPacks) => prevPacks.filter((_, i) => i !== index));
+  };
+
   return (
-    <PackContext.Provider value={{ packs, addPack, resetPacks }}>
+    <PackContext.Provider value={{ packs, addPack, resetPacks, deletePack }}>
       {children}
     </PackContext.Provider>
   );
