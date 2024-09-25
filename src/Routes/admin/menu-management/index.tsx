@@ -63,7 +63,7 @@ type MenuInput = {
 };
 
 const MenuManagement: React.FC = () => {
-  const storeId = 1; // 실제 storeId를 이곳에 사용하세요
+  const storeId = 1; // 상관 없음.
   const { data, loading, error, refetch } = useQuery(GET_MENUS, {
     variables: { storeId },
   });
