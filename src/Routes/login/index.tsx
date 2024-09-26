@@ -21,8 +21,8 @@ const PURE_LOGIN = gql`
   }
 `;
 const APPLE_LOGIN = gql`
-  query User($idToken: String!, $push_token: String) {
-    appleLogin(id_token: $idToken, push_token: $push_token) {
+  query User($name: String, $idToken: String!, $push_token: String) {
+    appleLogin(name: $name, id_token: $idToken, push_token: $push_token) {
       user {
         id
         name
@@ -95,7 +95,7 @@ const Login: React.FC = () => {
     // 카카오 간편 로그인
     kakao.Auth.authorize({
       redirectUri: `${WEB_URL}/auth`,
-      scope: "account_email",
+      scope: "account_email, profile_nickname",
     });
   };
   const loginWithApple = async (e: any) => {
@@ -105,7 +105,7 @@ const Login: React.FC = () => {
 
     window.AppleID.auth.init({
       clientId: "com.luke7299.mahi-sign-in",
-      scope: "email",
+      scope: "name email",
       redirectURI: `${process.env.REACT_APP_URL}/apple-auth`,
       state: "hey",
       usePopup: true,
@@ -115,6 +115,7 @@ const Login: React.FC = () => {
       const res = await window.AppleID.auth.signIn();
       console.log(res);
       const id_token = res.authorization.id_token;
+      const name = `${res?.user?.name.lastName}${res?.user?.name.firstName}`;
 
       const push_token = localStorage.getItem("expo_push_token") as
         | string
@@ -124,6 +125,7 @@ const Login: React.FC = () => {
         variables: {
           idToken: id_token,
           push_token,
+          name,
         },
       });
     } catch (error) {
