@@ -4,24 +4,11 @@ import { useNavigate } from "react-router-dom";
 
 // GraphQL Mutation for creating a seller
 const CREATE_SELLER = gql`
-  mutation CreateSeller(
-    $name: String!
-    $email: String!
-    $password: String!
-    $contactNumber: String
-    $address: String
-  ) {
-    createSeller(
-      name: $name
-      email: $email
-      password: $password
-      contactNumber: $contactNumber
-      address: $address
-    ) {
+  mutation CreateSeller($contactNumber: String!, $password: String!) {
+    createSeller(contactNumber: $contactNumber, password: $password) {
       seller {
         id
-        name
-        email
+        contactNumber
       }
       token
     }
@@ -30,19 +17,22 @@ const CREATE_SELLER = gql`
 
 const SellerSignUpPage: React.FC = () => {
   const navigate = useNavigate();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [contactNumber, setContactNumber] = useState("");
-  const [address, setAddress] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [createSeller, { loading, error, data }] = useMutation(CREATE_SELLER);
+  const [createSeller, { loading, error }] = useMutation(CREATE_SELLER);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (password !== confirmPassword) {
+      alert("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+
     createSeller({
-      variables: { name, email, password, contactNumber, address },
+      variables: { contactNumber, password },
     })
       .then((response) => {
         const { token } = response.data.createSeller;
@@ -72,28 +62,14 @@ const SellerSignUpPage: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-black mb-1">
-              이름
+              연락처 (ID로 사용됩니다.)
             </label>
             <input
               type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={contactNumber}
+              onChange={(e) => setContactNumber(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-[#1562fc]"
-              placeholder="이름을 입력하세요"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-black mb-1">
-              이메일
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-[#1562fc]"
-              placeholder="이메일을 입력하세요"
+              placeholder="연락처를 입력하세요"
               required
             />
           </div>
@@ -114,27 +90,15 @@ const SellerSignUpPage: React.FC = () => {
 
           <div>
             <label className="block text-sm font-medium text-black mb-1">
-              연락처
+              비밀번호 확인
             </label>
             <input
-              type="text"
-              value={contactNumber}
-              onChange={(e) => setContactNumber(e.target.value)}
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-[#1562fc]"
-              placeholder="연락처를 입력하세요"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-black mb-1">
-              주소
-            </label>
-            <input
-              type="text"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-[#1562fc]"
-              placeholder="주소를 입력하세요"
+              placeholder="비밀번호를 다시 입력하세요"
+              required
             />
           </div>
 

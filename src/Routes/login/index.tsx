@@ -270,6 +270,14 @@ const Login: React.FC = () => {
               비밀번호를 잊으셨나요?
             </div>
           </div>
+          <div className="mt-2 text-center">
+            <div
+              onClick={() => navigate("/admin/login")}
+              className="text-xs text-[#757575] hover:text-[#1562fc]"
+            >
+              사장님이세요?
+            </div>
+          </div>
         </div>
       </div>
     </>
