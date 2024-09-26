@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery, gql, useMutation } from "@apollo/client";
 
 // Sample GraphQL queries and mutations
@@ -8,6 +8,8 @@ const GET_PRODUCTS = gql`
       id
       name
       price
+      discountPrice
+      userPrice
       img
       order {
         id
@@ -24,25 +26,14 @@ const DELETE_PRODUCT = gql`
   }
 `;
 
-const UPDATE_PRODUCT = gql`
-  mutation UpdateProduct($id: Int!, $status: String!) {
-    updateProduct(id: $id, status: $status) {
-      id
-      status
-    }
-  }
-`;
-
 const SalesPage: React.FC = () => {
-  const [selectedProduct, setSelectedProduct] = useState(null);
   const [editingProduct, setEditingProduct] = useState(null);
+  const [countdown, setCountdown] = useState(60); // 카운트다운 상태 관리
 
   // Fetch products created by the store owner
   const { loading, error, data } = useQuery(GET_PRODUCTS);
-  console.log(data);
 
   const [deleteProduct] = useMutation(DELETE_PRODUCT);
-  const [updateProduct] = useMutation(UPDATE_PRODUCT);
 
   const handleDelete = (id: number) => {
     if (window.confirm("정말로 삭제하시겠습니까?")) {
@@ -54,16 +45,43 @@ const SalesPage: React.FC = () => {
     setEditingProduct(product);
   };
 
-  const handleUpdateStatus = (id: number, newStatus: string) => {
-    updateProduct({ variables: { id, status: newStatus } });
+  const handleRefresh = () => {
+    window.location.reload(); // 페이지 새로고침
   };
+
+  // 1분마다 페이지 자동 새로고침 및 카운트다운 업데이트
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      handleRefresh();
+    }, 60000); // 60000ms = 1분
+
+    const countdownId = setInterval(() => {
+      setCountdown((prev) => (prev > 0 ? prev - 1 : 60));
+    }, 1000); // 1초마다 카운트다운
+
+    return () => {
+      clearInterval(intervalId);
+      clearInterval(countdownId); // 컴포넌트가 언마운트될 때 interval 정리
+    };
+  }, []);
 
   if (loading) return <p>로딩 중...</p>;
   if (error) return <p>오류: {error.message}</p>;
 
   return (
     <div className="min-h-screen p-6 bg-gray-100">
-      <h1 className="text-2xl font-semibold mb-6">판매 현황</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-semibold">판매 현황</h1>
+        <div className="flex items-center space-x-4">
+          <button
+            onClick={handleRefresh}
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            새로고침
+          </button>
+          <p className="text-gray-700">{countdown}초 후 새로고침</p>
+        </div>
+      </div>
 
       {data?.productsBySeller?.length > 0 ? (
         <div className="grid grid-cols-1 gap-6">
@@ -83,8 +101,20 @@ const SalesPage: React.FC = () => {
                 />
                 <div>
                   <h2 className="text-xl font-semibold">{product.name}</h2>
-                  <p className="text-gray-600">
-                    {product.price.toLocaleString()}원
+                  <p className="text-gray-600 text-sm">
+                    원가: {product.price.toLocaleString()}원
+                  </p>
+                  <p className="text-gray-600 text-sm">
+                    할인가: {product.discountPrice?.toLocaleString()}원
+                  </p>
+                  <p className="text-gray-900">
+                    소비자가:{" "}
+                    {product?.userPriceMath
+                      ? Math.floor(product.userPrice).toLocaleString()
+                      : Math.floor(
+                          product.discountPrice + product.discountPrice * 0.1
+                        ).toLocaleString()}
+                    원<span className="text-sm text-gray-900">(10%)</span>
                   </p>
                   {/* Payment status based on order existence */}
                   <p
@@ -94,33 +124,19 @@ const SalesPage: React.FC = () => {
                   >
                     {product.order ? "결제 완료" : "결제 대기 중"}
                   </p>
-                  <div className="flex gap-2 mt-2">
-                    <button
-                      className="px-4 py-2 bg-yellow-400 text-white rounded hover:bg-yellow-500"
-                      onClick={() => handleUpdateStatus(product.id, "판매 중")}
-                    >
-                      판매 중으로 설정
-                    </button>
-                    <button
-                      className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                      onClick={() => handleUpdateStatus(product.id, "완판")}
-                    >
-                      완판으로 설정
-                    </button>
-                  </div>
                 </div>
               </div>
 
               {/* Action buttons */}
-              <div className="flex gap-4">
+              <div className="flex gap-2">
                 <button
-                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
                   onClick={() => handleEdit(product)}
                 >
                   편집
                 </button>
                 <button
-                  className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                  className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
                   onClick={() => handleDelete(product.id)}
                 >
                   삭제
