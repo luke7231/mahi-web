@@ -13,6 +13,9 @@ const GET_PRODUCTS = gql`
       img
       order {
         id
+        user {
+          name
+        }
       }
     }
   }
@@ -28,16 +31,16 @@ const DELETE_PRODUCT = gql`
 
 const SalesPage: React.FC = () => {
   const [editingProduct, setEditingProduct] = useState(null);
-  const [countdown, setCountdown] = useState(60); // 카운트다운 상태 관리
 
   // Fetch products created by the store owner
-  const { loading, error, data } = useQuery(GET_PRODUCTS);
+  const { loading, error, data, refetch } = useQuery(GET_PRODUCTS);
 
   const [deleteProduct] = useMutation(DELETE_PRODUCT);
 
   const handleDelete = (id: number) => {
     if (window.confirm("정말로 삭제하시겠습니까?")) {
       deleteProduct({ variables: { id } });
+      refetch(); // 삭제 후 데이터 새로고침
     }
   };
 
@@ -45,43 +48,12 @@ const SalesPage: React.FC = () => {
     setEditingProduct(product);
   };
 
-  const handleRefresh = () => {
-    window.location.reload(); // 페이지 새로고침
-  };
-
-  // 1분마다 페이지 자동 새로고침 및 카운트다운 업데이트
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      handleRefresh();
-    }, 60000); // 60000ms = 1분
-
-    const countdownId = setInterval(() => {
-      setCountdown((prev) => (prev > 0 ? prev - 1 : 60));
-    }, 1000); // 1초마다 카운트다운
-
-    return () => {
-      clearInterval(intervalId);
-      clearInterval(countdownId); // 컴포넌트가 언마운트될 때 interval 정리
-    };
-  }, []);
-
   if (loading) return <p>로딩 중...</p>;
   if (error) return <p>오류: {error.message}</p>;
 
   return (
     <div className="min-h-screen p-6 bg-gray-100">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold">판매 현황</h1>
-        <div className="flex items-center space-x-4">
-          <button
-            onClick={handleRefresh}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            새로고침
-          </button>
-          <p className="text-gray-700">{countdown}초 후 새로고침</p>
-        </div>
-      </div>
+      <h1 className="text-2xl font-semibold mb-6">판매 현황</h1>
 
       {data?.productsBySeller?.length > 0 ? (
         <div className="grid grid-cols-1 gap-6">
@@ -116,6 +88,11 @@ const SalesPage: React.FC = () => {
                         ).toLocaleString()}
                     원<span className="text-sm text-gray-900">(10%)</span>
                   </p>
+                  {product.order?.user && (
+                    <p className="text-white text-sm">
+                      구매자: {product.order.user.name}
+                    </p>
+                  )}
                   {/* Payment status based on order existence */}
                   <p
                     className={`text-sm ${
