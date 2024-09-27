@@ -10,10 +10,14 @@ import {
 
 interface AuthContextProps {
   isLoggedIn: boolean;
+  isAdminLoggedIn: boolean;
   login: () => void;
   logout: () => void;
   isFirst: boolean;
   doneOnboarding: () => void;
+  logoutAdmin: () => void;
+  lastPage: string | null;
+  changeLastPage: () => void;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -27,9 +31,19 @@ const processIsLoggedIn = () => {
   return Boolean(token);
 };
 
+const processIsAdminLoggedIn = () => {
+  const token = localStorage.getItem("sellerToken");
+  return Boolean(token);
+};
+
 const processIsFirst = () => {
   const onboardingDone = localStorage.getItem("onboarding_done");
   return !Boolean(onboardingDone);
+};
+
+const processLastPage = () => {
+  const lastPage = localStorage.getItem("lastPage");
+  return lastPage;
 };
 
 const CREATE_PUSH_TOKEN = gql`
@@ -47,7 +61,13 @@ const SET_TOKEN_TO_USER = gql`
 `;
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(processIsLoggedIn);
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(
+    processIsAdminLoggedIn
+  );
   const [isFirst, setIsFirst] = useState(processIsFirst);
+  const [lastPage, setLastPage] = useState<string | "seller" | "client" | null>(
+    processLastPage
+  );
   const [createToken] = useMutation(CREATE_PUSH_TOKEN);
   const [setTokenToUser] = useMutation(SET_TOKEN_TO_USER);
 
@@ -59,6 +79,22 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const logout = () => {
     // 로그아웃 로직 구현
     setIsLoggedIn(false);
+  };
+
+  const logoutAdmin = () => {
+    // 로그아웃 로직 구현
+    setIsAdminLoggedIn(false);
+  };
+
+  const changeLastPage = () => {
+    const current = localStorage.getItem("lastPage");
+    if (current === "seller") {
+      localStorage.setItem("lastpage", "client");
+      setLastPage("client");
+    } else {
+      localStorage.setItem("lastpage", "seller");
+      setLastPage("seller");
+    }
   };
 
   const doneOnboarding = () => {
@@ -93,7 +129,17 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, login, logout, isFirst, doneOnboarding }}
+      value={{
+        isLoggedIn,
+        login,
+        logout,
+        isFirst,
+        doneOnboarding,
+        isAdminLoggedIn,
+        logoutAdmin,
+        lastPage,
+        changeLastPage,
+      }}
     >
       {children}
     </AuthContext.Provider>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../core/auth";
 
 // GraphQL Query
 const GET_SELLER = gql`
@@ -46,6 +47,7 @@ type SellerInfo = {
 
 const SellerProfilePage: React.FC = () => {
   const navigate = useNavigate();
+  const { logoutAdmin } = useAuth();
   const [seller, setSeller] = useState<SellerInfo>({
     name: "",
     email: "",
@@ -95,8 +97,15 @@ const SellerProfilePage: React.FC = () => {
     navigate("/admin/change-password");
   };
 
+  // Log out the seller by clearing the token and redirecting to the login page
+  const handleLogout = () => {
+    localStorage.removeItem("sellerToken");
+    logoutAdmin();
+    navigate("/admin/login");
+  };
+
   if (loading) return <p>로딩중입니다...</p>;
-  if (error) return <p>서버에러: {error.message}</p>;
+  if (error) return <p>서버 에러: {error.message}</p>;
   if (updateLoading) return <p>업데이트 중...</p>;
   if (updateError) return <p>업데이트 에러: {updateError.message}</p>;
 
@@ -221,10 +230,18 @@ const SellerProfilePage: React.FC = () => {
 
             <button
               onClick={handleEdit}
-              className="w-full px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-600 transition"
+              className="w-full px-4 py-2 mb-4 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-600 transition"
             >
               정보 수정하기
             </button>
+
+            {/* 로그아웃 버튼 */}
+            <span
+              onClick={handleLogout}
+              className="mt-4 py-2 text-red-500 underline font-semibold"
+            >
+              로그아웃
+            </span>
           </>
         )}
       </div>

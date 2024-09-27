@@ -45,13 +45,22 @@ import SellerSignUpPage from "./Routes/admin/auth/seller-signup";
 import SalesPage from "./Routes/admin/sales";
 
 const Router = () => {
-  const { isFirst, isLoggedIn } = useAuth();
+  const { isFirst, isLoggedIn, isAdminLoggedIn, lastPage } = useAuth();
+  console.log(lastPage);
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path="/"
-          element={isFirst ? <Navigate to="/onboarding1" /> : <Home />}
+          element={
+            isFirst ? (
+              <Navigate to="/onboarding1" />
+            ) : isAdminLoggedIn && lastPage === "seller" ? (
+              <Navigate to="/admin/home" />
+            ) : (
+              <Home />
+            )
+          }
         />
         {/* <Route path="/" element={<Home />} /> */}
         <Route path="/like" element={<Like />} />
