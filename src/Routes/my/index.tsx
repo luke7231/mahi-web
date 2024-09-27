@@ -100,6 +100,7 @@ const My = () => {
       <Menu title="문의하기" to="/customer-service" />
       <Menu title="약관 및 정책" to="/policy" />
       <Menu title="비밀번호 재설정" to="/change-password" />
+      <Menu title="사장님 로그인" to="/admin/login" />
       <Menu title="로그아웃" onClick={() => onClickLogout()} />
       <Menu title="계정탈퇴" to="/sign-out" />
       {/* <Modal isOpen={isOpenModal} onYes={} onClose={toggleModal} /> */}

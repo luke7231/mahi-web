@@ -47,7 +47,7 @@ type SellerInfo = {
 
 const SellerProfilePage: React.FC = () => {
   const navigate = useNavigate();
-  const { logoutAdmin } = useAuth();
+  const { logoutAdmin, changeLastPage } = useAuth();
   const [seller, setSeller] = useState<SellerInfo>({
     name: "",
     email: "",
@@ -101,6 +101,7 @@ const SellerProfilePage: React.FC = () => {
   const handleLogout = () => {
     localStorage.removeItem("sellerToken");
     logoutAdmin();
+    changeLastPage();
     navigate("/admin/login");
   };
 

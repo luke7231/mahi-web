@@ -89,10 +89,10 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const changeLastPage = () => {
     const current = localStorage.getItem("lastPage");
     if (current === "seller") {
-      localStorage.setItem("lastpage", "client");
+      localStorage.setItem("lastPage", "client");
       setLastPage("client");
     } else {
-      localStorage.setItem("lastpage", "seller");
+      localStorage.setItem("lastPage", "seller");
       setLastPage("seller");
     }
   };

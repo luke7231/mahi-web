@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useMutation, gql } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import BackArrow from "../../../components/common/back-arrow";
+import { useAuth } from "../../../core/auth";
 
 // GraphQL Mutation for Seller Login
 const SELLER_LOGIN = gql`
@@ -23,6 +24,7 @@ const SELLER_LOGIN = gql`
 
 const SellerLoginPage: React.FC = () => {
   const navigate = useNavigate();
+  const { changeLastPage } = useAuth();
   const [contactNumber, setContactNumber] = useState("");
   const [password, setPassword] = useState("");
   const [login, { data, loading, error }] = useMutation(SELLER_LOGIN);
@@ -41,7 +43,7 @@ const SellerLoginPage: React.FC = () => {
         } else {
           // 토큰을 저장 (예: localStorage 또는 쿠키에 저장)
           localStorage.setItem("sellerToken", token);
-
+          changeLastPage();
           // 로그인 성공 시 '/admin/home'으로 이동
           navigate("/admin/home");
         }
@@ -106,6 +108,14 @@ const SellerLoginPage: React.FC = () => {
             </button>
           </form>
 
+          <div className="mt-4 text-center">
+            <div
+              onClick={() => navigate("/login")}
+              className="text-xs underline text-[#757575] hover:text-[#1562fc]"
+            >
+              그냥 둘러볼게요~!
+            </div>
+          </div>
           {/* Error Display */}
           {error && <p className="text-red-500 mt-2">{error.message}</p>}
 
