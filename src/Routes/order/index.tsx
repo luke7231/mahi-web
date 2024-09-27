@@ -73,7 +73,7 @@ const Order = () => {
                   {/* Image */}
                   <img
                     className="w-20 h-20 rounded-md object-cover"
-                    src={order.products?.[0].img as string}
+                    src={order.products?.[0]?.img as string}
                     alt="Product"
                   />
 
