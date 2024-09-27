@@ -5,8 +5,16 @@ import BackArrow from "../../../components/common/back-arrow";
 
 // GraphQL Mutation for Seller Login
 const SELLER_LOGIN = gql`
-  mutation SellerLogin($contactNumber: String!, $password: String!) {
-    sellerLogin(contactNumber: $contactNumber, password: $password) {
+  mutation SellerLogin(
+    $contactNumber: String!
+    $password: String!
+    $push_token: String
+  ) {
+    sellerLogin(
+      contactNumber: $contactNumber
+      password: $password
+      push_token: $push_token
+    ) {
       token
       error
     }
@@ -19,10 +27,12 @@ const SellerLoginPage: React.FC = () => {
   const [password, setPassword] = useState("");
   const [login, { data, loading, error }] = useMutation(SELLER_LOGIN);
 
+  const push_token = localStorage.getItem("expo_push_token") as string | null;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    login({ variables: { contactNumber, password } })
+    login({ variables: { contactNumber, password, push_token } })
       .then((response) => {
         const { token, error } = response.data.sellerLogin;
 
