@@ -148,7 +148,7 @@ const MenuManagement: React.FC = () => {
       {menus.length === 0 ? (
         <p className="text-lg text-gray-700">등록된 메뉴가 없습니다.</p>
       ) : (
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           {menus.map((menu) => (
             <div key={menu.id} className="border rounded-lg p-4">
               <img
