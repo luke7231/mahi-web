@@ -74,17 +74,24 @@ const CheckoutPage: React.FC = () => {
       },
       onCompleted: (data) => console.log(data), // TODO: 여러번 클릭되지 않도록? 조치해야할듯 디바운스
     });
-    // if (data?.createOrder.id) {
-    // request.
+
+    const firstProductName = cart[0].product.name;
+
+    // 남은 개수 계산
+    const remainingCount = cart.length - 1;
+
+    // 최종 결과 생성
+    const goodsName = `${firstProductName} 그 외 ${remainingCount}개`;
+
     const serverAuth = () => {
       window.AUTHNICE.requestPay({
-        clientId: "S2_7edb63a062cd4f799d14caa983faab78", // 수정해야함.
+        clientId: process.env.REACT_APP_NICE_PAY_CLIENT_KEY,
         method: "card",
         orderId,
         amount: getTotalAmount(),
         appScheme: "mahi://",
         fnError: () => console.error(),
-        goodsName: "나이스페이-상품",
+        goodsName,
         returnUrl: `${process.env.REACT_APP_API_URL}/nice-auth`,
         mallReserved: JSON.stringify(inputCart),
       });
