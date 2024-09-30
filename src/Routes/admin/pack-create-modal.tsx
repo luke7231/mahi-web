@@ -5,11 +5,11 @@ const PackCreateModal: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-92">
+    <div className="fixed inset-0 px-8 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full">
         <h2 className="text-xl font-semibold text-center mb-4">팩 만들기</h2>
 
-        <div className="flex justify-around items-center space-x-4">
+        <div className="flex justify-center items-center space-x-4">
           {/* 기존 메뉴에서 선택 */}
           <div
             className="flex flex-col items-center justify-center cursor-pointer bg-gray-100 border border-[#1562fc] p-4 rounded-lg hover:bg-gray-200 transition w-36 h-36" // 고정된 width, height

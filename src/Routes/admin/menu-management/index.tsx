@@ -137,8 +137,6 @@ const MenuManagement: React.FC = () => {
     <>
       <Header title="메뉴관리" showBackButton />
       <div className="p-6">
-        <h1 className="text-2xl font-semibold mb-4">메뉴 관리</h1>
-
         {/* 메뉴 추가 버튼 */}
         <button
           onClick={handleAddMenu}
@@ -153,29 +151,31 @@ const MenuManagement: React.FC = () => {
         ) : (
           <div className="grid grid-cols-2 gap-4">
             {menus.map((menu) => (
-              <div key={menu.id} className="border rounded-lg p-4">
+              <div key={menu.id} className="border rounded-lg">
                 <img
                   src={menu.img}
                   alt={menu.name}
                   className="h-40 w-full object-cover rounded-md mb-2"
                 />
-                <h2 className="text-lg font-semibold">{menu.name}</h2>
-                <p className="text-sm text-gray-600">
-                  {menu.price.toLocaleString()}원
-                </p>
-                <div className="flex justify-between mt-2">
-                  <button
-                    className="px-3 py-1 bg-green-500 text-white text-sm rounded"
-                    onClick={() => handleEditMenu(menu)}
-                  >
-                    수정
-                  </button>
-                  <button
-                    className="px-3 py-1 bg-red-500 text-white text-sm rounded"
-                    onClick={() => setIsDeleting(menu)}
-                  >
-                    삭제
-                  </button>
+                <div className="p-4">
+                  <h2 className="text-lg font-semibold">{menu.name}</h2>
+                  <p className="text-sm text-gray-600">
+                    {menu.price.toLocaleString()}원
+                  </p>
+                  <div className="flex justify-between mt-2">
+                    <button
+                      className="px-3 py-1 bg-green-500 text-white text-sm rounded"
+                      onClick={() => handleEditMenu(menu)}
+                    >
+                      수정
+                    </button>
+                    <button
+                      className="px-3 py-1 bg-red-500 text-white text-sm rounded"
+                      onClick={() => setIsDeleting(menu)}
+                    >
+                      삭제
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}

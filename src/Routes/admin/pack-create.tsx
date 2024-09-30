@@ -93,7 +93,7 @@ const PackCreate: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white pt-0">
-      <Header title="서프라이즈백 만들기" showBackButton />
+      <Header title="서프라이즈 팩 만들기" showBackButton />
       {/* pb-24로 하단 공간 확보 */}
       <div className="px-4 pt-6">
         <h2 className="text-2xl font-semibold mb-6">팩 만들기</h2>
