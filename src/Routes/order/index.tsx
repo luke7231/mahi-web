@@ -24,6 +24,7 @@ query Orders {
     }
     totalDiscount
     totalQuantity
+    isCanceled
   }
 }
 
@@ -58,16 +59,20 @@ const Order = () => {
     <div className="w-full h-[100vh] flex flex-col">
       <Header title="주문내역" showBackButton />
       {data?.orders?.length === 0 ? <NoOrders /> : null}
-      <div>
+      <div className="pb-[64px]">
         {loading ? <div>loading...</div> : null}
 
         {data?.orders?.map((order) => {
           return (
             <>
               <div className="w-full max-w-md p-4 bg-white ">
-                <div className="mb-3 ml-1 text-sm text-[#757575]">
+                <div
+                  className={`mb-3 ml-1 text-sm  ${
+                    order.isCanceled ? "text-red-500" : "text-[#757575]"
+                  }`}
+                >
                   {/* 0/00(요일) 픽업완료 */}
-                  {formatDate(order.createdAt)}
+                  {order.isCanceled ? "결제 취소" : formatDate(order.createdAt)}
                 </div>
                 <div className="flex items-start">
                   {/* Image */}
