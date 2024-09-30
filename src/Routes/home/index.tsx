@@ -97,16 +97,16 @@ const Home = () => {
       lat: hasLastLo ? getLocationFromStorage().lat : null,
       lng: hasLastLo ? getLocationFromStorage().lng : null,
     },
-    onCompleted: (data) => console.log(data),
+    // onCompleted: (data) => console.log(data),
     fetchPolicy: "network-only",
   });
   const { data: justData } = useQuery(JUST_STORES, {
-    onCompleted: (data) => console.log(data),
+    // onCompleted: (data) => console.log(data),
     fetchPolicy: "network-only",
   });
   const [likeStore] = useMutation(LIKE_STORE, {
     onCompleted: (data) => {
-      console.log(data);
+      // console.log(data);
     },
     onError: (error) => console.error(error),
     refetchQueries: [
@@ -123,9 +123,9 @@ const Home = () => {
     ],
   });
   const [cancelLike] = useMutation(CANCEL_LIKE, {
-    onCompleted: (data) => {
-      console.log(data.cancelLike.storeId, "id..");
-    },
+    // onCompleted: (data) => {
+    //   console.log(data.cancelLike.storeId, "id..");
+    // },
     onError: (error) => console.error(error),
     refetchQueries: [
       // 흠... 이거 캐시로 수정해야해 ㅠㅠ 일단 이렇게 하긴하는데 불필요한 네트워크 요청이 넘 만을 것 같다. 이거부터 청산해야할 듯. 출시후에
