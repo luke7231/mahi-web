@@ -43,6 +43,7 @@ import ChangePasswordAdmin from "./Routes/admin/profile/change-password";
 import SellerLoginPage from "./Routes/admin/auth/seller-login";
 import SellerSignUpPage from "./Routes/admin/auth/seller-signup";
 import SalesPage from "./Routes/admin/sales";
+import AdminSupport from "./Routes/admin/support";
 
 const Router = () => {
   const { isFirst, isLoggedIn, isAdminLoggedIn, lastPage } = useAuth();
@@ -118,6 +119,7 @@ const Router = () => {
         <Route path="/admin/sign-up" element={<SellerSignUpPage />} />
 
         <Route path="/admin/sales" element={<SalesPage />} />
+        <Route path="/admin/support" element={<AdminSupport />} />
       </Routes>
     </BrowserRouter>
   );
