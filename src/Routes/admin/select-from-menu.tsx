@@ -87,11 +87,11 @@ const SelectFromMenu: React.FC = () => {
         {menus.length === 0 ? (
           <p className="text-gray-600">현재 등록된 메뉴가 없습니다.</p>
         ) : (
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             {menus.map((menu) => (
               <div
                 key={menu?.id}
-                className={`p-4 border rounded-lg cursor-pointer ${
+                className={` border rounded-lg cursor-pointer ${
                   selectedItems.some((item) => item?.id === menu?.id)
                     ? "bg-[#1562fc] text-white"
                     : "bg-[#f3f3f3]"
@@ -101,11 +101,13 @@ const SelectFromMenu: React.FC = () => {
                   <img
                     src={menu?.img}
                     alt={menu?.name}
-                    className="w-full h-24 object-cover rounded-md mb-2"
+                    className="w-full h-28 object-cover rounded-md mb-2"
                   />
-                  <div className="text-lg font-semibold">{menu?.name}</div>
-                  <div className="text-sm text-gray-500">
-                    {menu?.price.toLocaleString()}원
+                  <div className="p-2">
+                    <div className="text-lg font-semibold">{menu?.name}</div>
+                    <div className="text-sm text-gray-500">
+                      {menu?.price.toLocaleString()}원
+                    </div>
                   </div>
                 </div>
 
