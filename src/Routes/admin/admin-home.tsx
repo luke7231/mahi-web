@@ -1,15 +1,23 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import FoodImg from "./food.png";
+
 const AdminHome = () => {
   const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-[#f4f5f7] p-6 flex flex-col items-center">
-      <h2 className="text-3xl font-semibold text-center mb-8 text-gray-800">
-        사장님 홈
+      {/* Title Section */}
+      <h2 className="text-4xl font-bold text-center mb-8 text-gray-800">
+        <span className="bg-gradient-to-r from-[#1562fc] to-[#00c6ff] bg-clip-text text-transparent">
+          마감히어로
+        </span>
+        <div className="bg-gradient-to-r from-[#1562fc] to-[#00c6ff] bg-clip-text text-xl text-transparent">
+          사장님 홈
+        </div>
       </h2>
 
+      {/* Button Grid */}
       <div className="grid grid-cols-2 gap-6 w-full max-w-md">
         {/* 판매현황 */}
         <button
@@ -50,16 +58,15 @@ const AdminHome = () => {
               d="M6 2L4 6v14a2 2 0 002 2h12a2 2 0 002-2V6l-2-4H6z"
               fill="none"
               stroke="black"
-              stroke-width="2"
+              strokeWidth="2"
             />
             <path
               d="M16 10a4 4 0 01-8 0"
               fill="none"
               stroke="black"
-              stroke-width="2"
+              strokeWidth="2"
             />
           </svg>
-
           <span className="text-sm text-[#1562fc] font-semibold">
             팩 만들기
           </span>
@@ -71,7 +78,6 @@ const AdminHome = () => {
           className="bg-white text-[#1562fc] py-4 rounded-lg shadow-md hover:bg-blue-50 transition-colors flex flex-col items-center justify-center space-y-2"
         >
           <img src={FoodImg} className="w-[28px] h-[28px]" />
-
           <span className="text-sm font-semibold">메뉴관리</span>
         </button>
 
@@ -90,23 +96,20 @@ const AdminHome = () => {
               d="M3 12L12 3l9 9M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
               fill="none"
               stroke="black"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
             <path
               d="M9 21V9h6v12"
               fill="none"
               stroke="black"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
-
-          <span className="text-sm   text-[#1562fc] font-semibold">
-            매장관리
-          </span>
+          <span className="text-sm text-[#1562fc] font-semibold">매장관리</span>
         </button>
 
         {/* 내정보 */}
@@ -128,7 +131,7 @@ const AdminHome = () => {
             <circle cx="12" cy="8" r="4"></circle>
             <path d="M6 18v-1a6 6 0 0112 0v1"></path>
           </svg>
-          <span className="text-sm  text-[#1562fc] font-semibold">내정보</span>
+          <span className="text-sm text-[#1562fc] font-semibold">내정보</span>
         </button>
 
         {/* 고객센터 */}
