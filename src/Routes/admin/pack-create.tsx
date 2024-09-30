@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { MenuItem, usePackContext } from "./context/pack"; // 경로 수정
 import { gql, useMutation } from "@apollo/client";
 import Modal from "./modal"; // 모달 컴포넌트 추가
+import Header from "../../components/common/header";
 
 const CREATE_PRODUCT = gql`
   mutation CreateProduct($input: CreateProductInput!) {
@@ -91,112 +92,117 @@ const PackCreate: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white p-6 pb-24">
-      {" "}
+    <div className="min-h-screen bg-white pt-0">
+      <Header title="서프라이즈백 만들기" showBackButton />
       {/* pb-24로 하단 공간 확보 */}
-      <h2 className="text-2xl font-semibold mb-6">팩 만들기</h2>
-      {packs.length > 0 ? (
-        <div>
-          <h3 className="text-lg font-semibold mb-2">선택된 팩들</h3>
-          {packs.map((pack, index) => (
-            <div
-              key={index}
-              className="mb-6 p-4 rounded-lg border border-gray-300 shadow-md bg-[#f9f9f9] relative"
-            >
-              <h4 className="font-medium mb-4 text-lg text-center">
-                팩 {index + 1}
-              </h4>
-              <button
-                className="absolute top-2 right-2 text-red-500 text-xl"
-                onClick={() => deletePack(index)} // 해당 팩을 삭제하는 함수 호출
+      <div className="px-4 pt-6">
+        <h2 className="text-2xl font-semibold mb-6">팩 만들기</h2>
+        {packs.length > 0 ? (
+          <div>
+            <h3 className="text-lg font-semibold mb-2">선택된 팩들</h3>
+            {packs.map((pack, index) => (
+              <div
+                key={index}
+                className="mb-6 p-4 rounded-lg border border-gray-300 shadow-md bg-[#f9f9f9] relative"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                <h4 className="font-medium mb-4 text-lg text-center">
+                  팩 {index + 1}
+                </h4>
+                <button
+                  className="absolute top-2 right-2 text-red-500 text-xl"
+                  onClick={() => deletePack(index)} // 해당 팩을 삭제하는 함수 호출
                 >
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </button>
-              <ul className="space-y-2">
-                {pack.map((item) => (
-                  <li key={item.id} className="flex items-center space-x-4">
-                    <img
-                      src={
-                        item.img instanceof File
-                          ? URL.createObjectURL(item.img)
-                          : item.img
-                      }
-                      alt={item.name}
-                      className="w-16 h-16 object-cover rounded-md"
-                    />
-                    <div className="flex-1">
-                      <div className="text-black text-lg">{item.name}</div>
-                      <div className="text-sm text-gray-500">
-                        {item.price.toLocaleString()}원
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+                <ul className="space-y-2">
+                  {pack.map((item) => (
+                    <li key={item.id} className="flex items-center space-x-4">
+                      <img
+                        src={
+                          item.img instanceof File
+                            ? URL.createObjectURL(item.img)
+                            : item.img
+                        }
+                        alt={item.name}
+                        className="w-16 h-16 object-cover rounded-md"
+                      />
+                      <div className="flex-1">
+                        <div className="text-black text-lg">{item.name}</div>
+                        <div className="text-sm text-gray-500">
+                          {item.price.toLocaleString()}원
+                        </div>
+                        {/* 수량 입력 필드 */}
+                        <div className="mt-2">
+                          <label className="text-sm text-gray-700">
+                            수량: {item.quantity}개
+                          </label>
+                        </div>
                       </div>
-                      {/* 수량 입력 필드 */}
-                      <div className="mt-2">
-                        <label className="text-sm text-gray-700">
-                          수량: {item.quantity}개
-                        </label>
-                      </div>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-              {/* 팩 총 가격 및 할인된 가격 표시 */}
-              <div className="mt-4">
-                <div className="text-md">
-                  총 가격: {calculateTotalPrice(pack).toLocaleString()}원
-                </div>
-                <div className="text-md text-[#1562fc] font-bold">
-                  할인된 가격: {calculateDiscountedPrice(pack).toLocaleString()}
-                  원
+                    </li>
+                  ))}
+                </ul>
+                {/* 팩 총 가격 및 할인된 가격 표시 */}
+                <div className="mt-4">
+                  <div className="text-md">
+                    총 가격: {calculateTotalPrice(pack).toLocaleString()}원
+                  </div>
+                  <div className="text-md text-[#1562fc] font-bold">
+                    할인된 가격:{" "}
+                    {calculateDiscountedPrice(pack).toLocaleString()}원
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+        ) : (
+          <p className="text-md text-gray-800">
+            이곳은 남은 재고를 올리는 페이지입니다! <br /> 아래 버튼을 클릭하여
+            오늘의 제품을 올려보세요~!
+          </p>
+        )}
+        {/* 새로운 팩 만들기 버튼 */}
+        <div className="mt-8">
+          <button
+            onClick={() => navigate("/admin/pack-create-modal")} // 팩 만들기 모달로 이동
+            className="w-full py-3 bg-gray-100 text-black rounded-md hover:bg-gray-300 transition duration-150 mb-4 border border-[#1562fc]"
+          >
+            + 새로운 팩 추가하기
+          </button>
         </div>
-      ) : (
-        <p>팩을 추가해보세요!</p>
-      )}
-      {/* 새로운 팩 만들기 버튼 */}
-      <div className="mt-8">
-        <button
-          onClick={() => navigate("/admin/pack-create-modal")} // 팩 만들기 모달로 이동
-          className="w-full py-3 bg-gray-100 text-black rounded-md hover:bg-gray-300 transition duration-150 mb-4 border border-[#1562fc]"
-        >
-          + 새로운 팩 추가하기
-        </button>
+        {/* 완료하기 버튼 - 화면 하단에 고정 */}
+        <div className="fixed bottom-0 w-full left-0 p-4 bg-white shadow-md">
+          <button
+            onClick={handleComplete}
+            className="w-full py-3 bg-[#1562fc] text-white rounded-md hover:bg-[#124ab7] transition duration-150"
+          >
+            완료하기
+          </button>
+        </div>
+        {/* 모달 */}
+        {isModalOpen && (
+          <Modal
+            title="게시 확인"
+            message="정말로 게시하시겠어요? 소비자에게 노출됩니다."
+            onConfirm={() => {
+              setIsModalOpen(false); // 모달 닫기
+            }}
+            onCancel={() => setIsModalOpen(false)} // 모달 취소
+          />
+        )}
       </div>
-      {/* 완료하기 버튼 - 화면 하단에 고정 */}
-      <div className="fixed bottom-0 w-full left-0 p-4 bg-white shadow-md">
-        <button
-          onClick={handleComplete}
-          className="w-full py-3 bg-[#1562fc] text-white rounded-md hover:bg-[#124ab7] transition duration-150"
-        >
-          완료하기
-        </button>
-      </div>
-      {/* 모달 */}
-      {isModalOpen && (
-        <Modal
-          title="게시 확인"
-          message="정말로 게시하시겠어요? 소비자에게 노출됩니다."
-          onConfirm={() => {
-            setIsModalOpen(false); // 모달 닫기
-          }}
-          onCancel={() => setIsModalOpen(false)} // 모달 취소
-        />
-      )}
     </div>
   );
 };
