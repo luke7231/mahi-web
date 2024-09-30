@@ -13,6 +13,10 @@ const GET_PRODUCTS = gql`
       discountPrice
       userPrice
       img
+      menus {
+        id
+        img
+      }
       order {
         id
         user {
@@ -85,11 +89,9 @@ const SalesPage: React.FC = () => {
   if (error) return <p>오류: {error.message}</p>;
 
   return (
-    <div className="min-h-screen  bg-gray-100">
+    <div className="min-h-screen bg-gray-100">
       <Header title="판매 현황" showBackButton />
       <div className="p-6">
-        <h1 className="text-2xl font-semibold mb-6">판매 현황</h1>
-
         {data?.productsBySeller?.length > 0 ? (
           <div className="grid grid-cols-1 gap-6">
             {data.productsBySeller.map((product: any) => (
@@ -98,25 +100,33 @@ const SalesPage: React.FC = () => {
                 className={`p-4 rounded-lg flex justify-between items-center shadow ${
                   product.order && !product.order?.isCanceled
                     ? "bg-green-500"
-                    : "bg-blue-100"
+                    : "bg-gray-100"
                 }`}
               >
-                <div className="flex items-center">
+                <div className="flex w-full flex-col">
                   {/* Product Image */}
-                  <img
-                    src={product.img || "https://via.placeholder.com/100"}
-                    alt={product.name}
-                    className="w-20 h-20 object-cover rounded-lg mr-4"
-                  />
-                  <div>
-                    <h2 className="text-xl font-semibold">{product.name}</h2>
+                  <div className="flex">
+                    <img
+                      src={
+                        product.img ||
+                        product?.menus[0].img ||
+                        "https://via.placeholder.com/100"
+                      }
+                      alt={product.name}
+                      className="w-20 h-20 object-cover rounded-lg mr-4"
+                    />
+                    <h2 className="text-lg break-keep	 font-semibold">
+                      {product.name}
+                    </h2>
+                  </div>
+                  <div className="mt-4">
                     <p className="text-gray-600 text-sm">
                       원가: {product.price.toLocaleString()}원
                     </p>
                     <p className="text-gray-600 text-sm">
                       할인가: {product.discountPrice?.toLocaleString()}원
                     </p>
-                    <p className="text-gray-900">
+                    <p className="text-gray-900 font-bold">
                       소비자가:{" "}
                       {product?.userPriceMath
                         ? Math.floor(product.userPrice).toLocaleString()
@@ -125,59 +135,66 @@ const SalesPage: React.FC = () => {
                           ).toLocaleString()}
                       원<span className="text-sm text-gray-900">(10%)</span>
                     </p>
-                    {product.order?.user && (
-                      <p className="text-white text-sm">
-                        구매자: {product.order.user.name}
-                      </p>
-                    )}
-                    {/* Payment status based on order existence */}
-                    <p
-                      className={`text-sm ${
-                        product.order ? "text-white" : "text-red-500"
-                      }`}
-                    >
-                      {product.order ? "결제 완료" : "결제 대기 중"}
-                    </p>
                   </div>
                 </div>
 
-                {/* Action buttons */}
-                {!product.order?.isCanceled && product.order && (
-                  <div className="flex gap-2">
-                    <button
-                      className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
-                      onClick={() => handleCancel(product)}
+                <div className="flex flex-col items-end w-full h-full justify-between">
+                  <div className="rounded p-1 bg-gray-200">
+                    <p
+                      className={`text-center text-sm ${
+                        product.order ? "text-black" : "font-bold text-red-500"
+                      }`}
                     >
-                      결제 취소
-                    </button>
+                      {product.order ? "결제 완료" : "결제 대기중"}
+                    </p>
+                    {product.order?.user && (
+                      <p className="text-md">
+                        구매자:{" "}
+                        <span className="text-black font-bold">
+                          {product.order.user.name}
+                        </span>
+                      </p>
+                    )}
+                    {/* Payment status based on order existence */}
                   </div>
-                )}
-                {!product.order?.isCanceled && !product.order && (
-                  <div className="flex gap-2">
-                    <button
-                      className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
-                      onClick={() => handleEdit(product as any)}
-                    >
-                      편집
-                    </button>
-                    <button
-                      className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
-                      onClick={() => handleDelete(product.id)}
-                    >
-                      삭제
-                    </button>
-                  </div>
-                )}
-                {product.order?.isCanceled && (
-                  <div className="flex gap-2">
-                    <div
-                      className="px-4 py-2 text-red-500 rounded hover:bg-blue-600 text-sm"
-                      onClick={() => handleCancel(product)}
-                    >
-                      취소 완료
+                  {/* Action buttons */}
+                  {!product.order?.isCanceled && product.order && (
+                    <div className="flex gap-2">
+                      <button
+                        className="px-2 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
+                        onClick={() => handleCancel(product)}
+                      >
+                        결제 취소
+                      </button>
                     </div>
-                  </div>
-                )}
+                  )}
+                  {!product.order?.isCanceled && !product.order && (
+                    <div className="flex gap-2">
+                      <button
+                        className="px-2 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
+                        onClick={() => handleEdit(product as any)}
+                      >
+                        편집
+                      </button>
+                      <button
+                        className="px-2 py-2 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
+                        onClick={() => handleDelete(product.id)}
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  )}
+                  {product.order?.isCanceled && (
+                    <div className="flex gap-2">
+                      <div
+                        className="px-2 py-2 text-red-500 rounded hover:bg-blue-600 text-sm"
+                        onClick={() => handleCancel(product)}
+                      >
+                        취소 완료
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
           </div>
