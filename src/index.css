@@ -66,3 +66,65 @@ body {
 .animation-delay-400 {
   animation-delay: 0.4s;
 }
+
+/* Checkmark Animation */
+.checkmark-path {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: draw 1s ease forwards;
+  animation-delay: 0.3s; /* Delay to sync with bounce animation */
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Bounce Animation for the Circle */
+.animate-bounce-check {
+  animation: bounce 0.4s ease forwards;
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Failure Icon Animation */
+.failure-icon {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: draw-fail 1s ease forwards;
+  animation-delay: 0.3s;
+}
+
+@keyframes draw-fail {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Bounce Animation for the Circle */
+.animate-bounce-check {
+  animation: bounce 0.4s ease forwards;
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

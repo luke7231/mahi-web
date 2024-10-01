@@ -20,10 +20,15 @@ query Orders {
       store {
         title
       }
+      menus {
+        id
+        img
+      }
       img
     }
     totalDiscount
     totalQuantity
+    isCanceled
   }
 }
 
@@ -41,7 +46,7 @@ const Order = () => {
     const weekDays = ["일", "월", "화", "수", "목", "금", "토"];
     const dayOfWeek = weekDays[date.getDay()]; // 요일
 
-    return `${month}/${day}(${dayOfWeek}) 픽업완료`;
+    return `${month}/${day}(${dayOfWeek}) 주문완료`;
   };
 
   function calculateCarbonEmission(amount: number) {
@@ -54,26 +59,34 @@ const Order = () => {
     return carbonEmission;
   }
 
+  console.log(data?.orders);
   return (
     <div className="w-full h-[100vh] flex flex-col">
       <Header title="주문내역" showBackButton />
       {data?.orders?.length === 0 ? <NoOrders /> : null}
-      <div>
+      <div className="pb-[64px]">
         {loading ? <div>loading...</div> : null}
 
         {data?.orders?.map((order) => {
           return (
             <>
               <div className="w-full max-w-md p-4 bg-white ">
-                <div className="mb-3 ml-1 text-sm text-[#757575]">
+                <div
+                  className={`mb-3 ml-1 text-sm  ${
+                    order.isCanceled ? "text-red-500" : "text-[#757575]"
+                  }`}
+                >
                   {/* 0/00(요일) 픽업완료 */}
-                  {formatDate(order.createdAt)}
+                  {order.isCanceled ? "결제 취소" : formatDate(order.createdAt)}
                 </div>
                 <div className="flex items-start">
                   {/* Image */}
                   <img
                     className="w-20 h-20 rounded-md object-cover"
-                    src={order.products?.[0].img as string}
+                    src={
+                      (order.products?.[0]?.img as string) ||
+                      (order.products?.[0]?.menus?.[0].img as string)
+                    }
                     alt="Product"
                   />
 

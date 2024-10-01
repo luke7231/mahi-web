@@ -32,7 +32,10 @@ interface Authorization {
 
 interface User {
   email: string;
-  name: string;
+  name: {
+    lastName: string;
+    firstName: string;
+  };
 }
 
 interface SigninResponse {

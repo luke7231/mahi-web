@@ -160,7 +160,7 @@ const BottomTab = (): JSX.Element => {
         </div>
 
         {/* Order History Tab */}
-        {/* <div
+        <div
           className={`flex flex-col items-center ${
             location.pathname === "/order" ? "opacity-100" : "opacity-40"
           }`}
@@ -184,7 +184,7 @@ const BottomTab = (): JSX.Element => {
           <p className="w-12 text-center mb-0.5 text-sm font-semibold">
             주문내역
           </p>
-        </div> */}
+        </div>
 
         {/* My Page Tab */}
         <div

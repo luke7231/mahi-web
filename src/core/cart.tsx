@@ -11,6 +11,7 @@ interface Product {
   name: string;
   price: number;
   discountPrice: number;
+  userPrice: number;
   quantity: number;
   description: string;
   saleEndTime: string;
@@ -19,6 +20,12 @@ interface Product {
   store: {
     id: number;
   };
+  menus:
+    | {
+        id: number;
+        img: string;
+      }[]
+    | null;
   img: string;
 }
 

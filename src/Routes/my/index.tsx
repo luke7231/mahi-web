@@ -63,43 +63,44 @@ const My = () => {
       {/* 헤더 */}
       <Header title="마이페이지" />
 
-      {/* <div
-        className="w-full max-w-md p-4 bg-white mb-2"
+      <div
+        className="w-full p-4 bg-white mb-2"
         onClick={() => navigate("/order")}
-      > */}
-      {/* Header Section */}
-      {/* <div className="flex justify-between items-start mb-4">
+      >
+        {/* Header Section */}
+        <div className="flex justify-between items-start mb-4">
           <div className="text-black text-lg font-semibold">나의 이용 내역</div>
           <div className="text-[#757575] text-xs font-normal">자세히 보기</div>
-        </div> */}
+        </div>
 
-      {/* Card Section */}
-      {/* <div className="flex space-x-4"> */}
-      {/* Savings Card */}
-      {/* <div className="w-1/2 bg-[#ffede6] rounded-md p-4 flex flex-col items-center">
+        {/* Card Section */}
+        <div className="flex space-x-4">
+          {/* Savings Card */}
+          <div className="w-1/2 bg-[#ffede6] rounded-md p-4 flex flex-col items-center">
             <div className="text-black text-lg font-bold mb-1">
               {totalDiscount.toLocaleString() + "원"}
             </div>
             <div className="text-black text-lg font-normal mb-4">아꼈어요!</div>
             <img className="w-20 h-20" src={PIG} alt="Piggy Bank" />
-          </div> */}
+          </div>
 
-      {/* CO2 Reduction Card */}
-      {/* <div className="w-1/2 bg-[#dbf7ff] rounded-md p-4 flex flex-col items-center">
+          {/* CO2 Reduction Card */}
+          <div className="w-1/2 bg-[#dbf7ff] rounded-md p-4 flex flex-col items-center">
             <div className="text-black text-lg font-bold mb-1">
               {calculateCarbonEmission(totalAmount)}kg
             </div>
             <div className="text-black text-lg font-normal mb-4">줄였어요!</div>
             <img className="w-24 h-24" src={co2} alt="CO2 Reduction" />
-          </div> */}
-      {/* </div> */}
-      {/* </div> */}
-      {/* <Partition color="light" height="thick" /> */}
+          </div>
+        </div>
+      </div>
+      <Partition color="light" height="thick" />
 
       {/* 메뉴   */}
       <Menu title="문의하기" to="/customer-service" />
       <Menu title="약관 및 정책" to="/policy" />
       <Menu title="비밀번호 재설정" to="/change-password" />
+      <Menu title="사장님 로그인" to="/admin/login" />
       <Menu title="로그아웃" onClick={() => onClickLogout()} />
       <Menu title="계정탈퇴" to="/sign-out" />
       {/* <Modal isOpen={isOpenModal} onYes={} onClose={toggleModal} /> */}

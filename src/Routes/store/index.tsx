@@ -11,6 +11,9 @@ import { useAuth } from "../../core/auth";
 import { CANCEL_LIKE, LIKE_STORE } from "../home";
 import BACK_IMG from "../../components/common/back-img.png";
 import LoadingDots from "../../components/loading-dots";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 const GET_STORE = gql(`
   query Store($storeId: Int!) {
     store(id: $storeId) {
@@ -32,9 +35,20 @@ const GET_STORE = gql(`
         name
         price
         discountPrice
+        userPrice
         img
+        isDeleted
         saleEndTime
         quantity
+        menus {
+          id
+          img
+          menu {
+            id
+            name
+            img
+          }
+        }
       }
       img
       contactNumber
@@ -45,13 +59,14 @@ const GET_STORE = gql(`
 
 const Store = () => {
   const { isLoggedIn } = useAuth();
-  const [timeString, setTimeString] = useState("");
+  // const [timeString, setTimeString] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
   const { data, loading } = useQuery(GET_STORE, {
     variables: {
       storeId: Number(id),
     },
+    onCompleted: (data) => console.log(data.store?.products),
     fetchPolicy: "network-only",
   });
   const store = data?.store;
@@ -126,39 +141,39 @@ const Store = () => {
   // 카트의 총액 계산
   const getTotalAmount = () => {
     return cart.reduce((total, item) => {
-      const price = item.product.discountPrice || item.product.price;
+      const price = item.product.userPrice || item.product.price;
       return total + price * item.quantity;
     }, 0);
   };
 
   const getTotalDisount = () => {
     return cart.reduce((total, item) => {
-      const discount = item.product?.discountPrice
-        ? item.product.price - item?.product?.discountPrice
+      const discount = item.product?.userPrice
+        ? item.product.price - item?.product?.userPrice
         : 0;
       return total + discount * item.quantity;
     }, 0);
   };
-  useEffect(() => {
-    // saleEndTime을 Date 객체로 변환
-    if (store) {
-      const date = new Date(store.products?.[0]?.saleEndTime);
+  // useEffect(() => {
+  //   // saleEndTime을 Date 객체로 변환
+  //   if (store) {
+  //     const date = new Date(store.closingHours);
 
-      // 시와 분 추출
-      let hours = date.getUTCHours(); // 한국 시간에서 UTC로 변환하려면 9시간을 빼야 합니다
-      let minutes = date.getUTCMinutes();
+  //     // 시와 분 추출
+  //     let hours = date.getUTCHours(); // 한국 시간에서 UTC로 변환하려면 9시간을 빼야 합니다
+  //     let minutes = date.getUTCMinutes();
 
-      // 시와 분을 2자리로 포맷
-      //   if (hours < 0) {
-      //     hours += 24; // 24시간 형식으로 조정
-      //   }
-      const formattedHours = hours.toString().padStart(2, "0");
-      const formattedMinutes = minutes.toString().padStart(2, "0");
+  //     // 시와 분을 2자리로 포맷
+  //     //   if (hours < 0) {
+  //     //     hours += 24; // 24시간 형식으로 조정
+  //     //   }
+  //     const formattedHours = hours.toString().padStart(2, "0");
+  //     const formattedMinutes = minutes.toString().padStart(2, "0");
 
-      // 시와 분을 원하는 형식으로 조합
-      setTimeString(`${formattedHours}:${formattedMinutes}`);
-    }
-  }, [store]);
+  //     // 시와 분을 원하는 형식으로 조합
+  //     setTimeString(`${formattedHours}:${formattedMinutes}`);
+  //   }
+  // }, [store]);
 
   async function onClickLike(storeId: number, isLiked: boolean | null) {
     if (!isLoggedIn) {
@@ -199,16 +214,15 @@ const Store = () => {
 
   return (
     <div className="container mx-auto bg-[#f6f6f6]">
-      {loading ? <LoadingDots /> : null}
       {store ? (
         <>
-          <div className="relative w-full  mx-auto bg-white overflow-hidden">
-            {/* Image Container */}
+          <div className="relative w-full mx-auto bg-white overflow-hidden">
             <div className="relative w-full">
               <img
                 src={BACK_IMG}
                 onClick={() => navigate(-1)}
                 className="absolute top-5 left-5 w-[40px] h-[40px]"
+                alt="back"
               />
               <img
                 className="w-full h-56 object-cover"
@@ -217,18 +231,16 @@ const Store = () => {
               />
             </div>
 
-            {/* Store Name */}
             <div className="px-4 py-3">
               <div className="flex justify-between mb-3 ">
                 <h2 className="text-3xl font-semibold text-black">
                   {store.title}
                 </h2>
-                {/* Favorite Icon */}
                 <div className="flex items-center">
                   <HeartBlackBorder
                     isLiked={store.isLiked}
                     onClick={async (e) => {
-                      e.stopPropagation(); // Prevents triggering the store click
+                      e.stopPropagation();
                       await onClickLike(
                         store?.id as number,
                         store?.isLiked as boolean
@@ -238,7 +250,6 @@ const Store = () => {
                 </div>
               </div>
 
-              {/* Pickup and Walk Time Info */}
               <div className="flex items-center text-md">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -257,7 +268,7 @@ const Store = () => {
                 </svg>
                 <p className="text-sm text-gray-600">
                   <span className="font-medium text-base">
-                    {timeString}까지
+                    {store.closingHours}까지
                   </span>{" "}
                   <span className="text-[#b6b6b6]">픽업 &middot; 도보</span> 약
                   8분
@@ -265,24 +276,22 @@ const Store = () => {
               </div>
             </div>
           </div>
+
           <Partition />
-          <div className="w-full max-w-md p-4 bg-white">
-            {/* Container for labels and content */}
+
+          <div className="w-full p-4 bg-white">
             <div className="flex flex-col text-sm leading-[21px] space-y-1">
-              {/* Row for 가게 위치 */}
               <div className="flex">
                 <span className="text-gray-600">가게 위치</span>
                 <span className="text-black ml-2">{store.address}</span>
                 <div
                   className="ml-2 px-1.5 rounded-3xl text-2xs bg-[#f4f5f7] text-[#969696]"
-                  // href="nmap://route/walk?slat=37.4640070&slng=126.9522394&sname=%EC%84%9C%EC%9A%B8%EB%8C%80%ED%95%99%EA%B5%90&dlat=37.4764356&dlng=126.9618302&dname=%EB%8F%99%EC%9B%90%EB%82%99%EC%84%B1%EB%8C%80%EC%95%84%ED%8C%8C%ED%8A%B8&appname=com.luke7299.mahi"
                   onClick={() => copyToClipboard(store.address as string)}
                 >
                   복사하기
                 </div>
               </div>
 
-              {/* Row for 영업 시간 */}
               <div className="flex">
                 <span className="text-gray-600">영업 시간</span>
                 <span className="text-black ml-2">
@@ -293,7 +302,6 @@ const Store = () => {
                 </span>
               </div>
 
-              {/* Row for 매장 번호 */}
               <div className="flex">
                 <span className="text-gray-600">매장 번호</span>
                 <span className="text-black ml-2">
@@ -302,14 +310,14 @@ const Store = () => {
               </div>
             </div>
           </div>
+
           <Partition color="light" height="thick" />
 
-          {/* 상품 목록 */}
           {store.products?.length === 0 ? (
             <NoProduct
               isLiked={store.isLiked}
               onClickButton={async (e) => {
-                e.stopPropagation(); // Prevents triggering the store click
+                e.stopPropagation();
                 await onClickLike(
                   store?.id as number,
                   store?.isLiked as boolean
@@ -318,44 +326,34 @@ const Store = () => {
             />
           ) : (
             <div className="w-full p-5 pb-20 h-full gap-y-5 relative flex flex-col ">
-              {store?.products?.map((product) => {
-                return (
+              {store?.products
+                ?.filter(
+                  (product) =>
+                    product.isDeleted === false || product.isDeleted === null
+                )
+                .map((product) => (
                   <div
-                    onClick={() => onClickProduct(product.id)}
+                    key={product.id}
                     className="w-full h-full flex rounded-[0.625rem] border border-[#F9F9F9] bg-white shadow-[0_3px_8px_0_rgba(0,0,0,0.05)]"
                   >
-                    {product.quantity === 0 ? (
-                      <div className="relative w-1/3 aspect-square">
-                        {/* Product Image */}
-                        <img
-                          className="w-full h-full rounded-l-lg object-cover"
-                          src={product.img as string}
-                          alt="Product"
-                        />
-
-                        {/* Overlay for "품절" text */}
+                    <div className="relative w-1/3">
+                      <ProductImageSlider product={product} />
+                      {product.quantity === 0 && (
                         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-l-lg">
                           <span className="text-white text-xl font-semibold">
                             품절
                           </span>
                         </div>
-                      </div>
-                    ) : (
-                      <img
-                        className="w-1/3 aspect-square rounded-l-lg object-cover"
-                        src={product.img as string}
-                        alt="Product"
-                      />
-                    )}
+                      )}
+                    </div>
 
-                    {/* Product Info */}
-                    <div className="w-2/3 p-4 flex flex-col justify-between">
-                      {/* Product Name */}
+                    <div
+                      onClick={() => onClickProduct(product.id)}
+                      className="w-2/3 p-4 flex flex-col justify-between"
+                    >
                       <div className="text-black text-lg font-semibold">
                         {product.name}
                       </div>
-
-                      {/* Stock Info */}
                       <div className="bg-[#f3f3f3] px-2 pb-1 rounded-md w-fit mt-2">
                         <span className="text-black text-xs font-bold">
                           {product.quantity}개
@@ -365,11 +363,9 @@ const Store = () => {
                           남았어요!
                         </span>
                       </div>
-
-                      {/* Price Info */}
                       <div className="flex flex-col items-end mt-2">
                         <div className="text-xl text-black font-bold">
-                          {product.discountPrice?.toLocaleString()}원
+                          {product.userPrice?.toLocaleString()}원
                         </div>
                         <div className="text-xs text-[#b6b6b6] line-through">
                           {product.price.toLocaleString()}원
@@ -377,13 +373,12 @@ const Store = () => {
                       </div>
                     </div>
                   </div>
-                );
-              })}
+                ))}
             </div>
           )}
         </>
       ) : null}
-      {cart.length > 0 ? (
+      {cart.length > 0 && (
         <div
           onClick={() => onClickPurchage()}
           className="px-5 py-4 w-full sticky bottom-0 bg-white"
@@ -394,10 +389,9 @@ const Store = () => {
             </span>{" "}
             할인받았어요!
           </div>
-          <div className=" w-full max-w-md h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border">
-            {/* Button Content */}
+          <div className="w-full h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border">
             <div className="text-center flex items-center space-x-1">
-              <span className="text-white text- font-bold leading-snug">
+              <span className="text-white font-bold leading-snug">
                 {getTotalAmount().toLocaleString()}원
               </span>
               <span className="text-white text-base font-semibold leading-snug">
@@ -406,9 +400,64 @@ const Store = () => {
             </div>
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 };
 
 export default Store;
+
+const ProductImageSlider: React.FC<{ product: any }> = ({ product }) => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const settings = {
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    afterChange: (current: number) => setCurrentSlide(current), // 슬라이드 변경 후 상태 업데이트
+  };
+
+  // 메뉴 이미지 배열
+  const menuImages = product.menus?.map((menu: any) => menu.img) || [];
+
+  // 메뉴가 1개일 경우 슬라이더 대신 단일 이미지로 표시
+  if (menuImages.length === 1) {
+    return (
+      <div>
+        <img
+          className="w-full h-full object-cover rounded-lg"
+          src={menuImages[0] || product.img}
+          alt="Menu"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="h-full relative">
+      <Slider {...settings}>
+        {menuImages.map((img: string, index: number) => (
+          <div key={index} className="flex">
+            <img
+              className="w-full h-full object-cover rounded-lg"
+              src={img || product.img}
+              alt={`Menu ${index + 1}`}
+            />
+          </div>
+        ))}
+      </Slider>
+
+      {/* Custom Dots */}
+      <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        {menuImages.map((_: any, index: number) => (
+          <div
+            key={index}
+            className={`w-1.5 h-1.5 rounded-full cursor-pointer ${
+              currentSlide === index ? "bg-[#1562fc]" : "bg-gray-300"
+            }`}
+            onClick={() => setCurrentSlide(index)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};

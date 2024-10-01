@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Map from "../maps";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client";
@@ -13,7 +13,7 @@ import { NoStore } from "../../components/home/no-store";
 import { postMessage } from "../../core/message";
 import { useCart } from "../../core/cart";
 import LoadingSpinner from "../../components/loading-spinnere";
-// import { isAndroidApp, isIOSApp, isWeb } from "../../Lib/user-agent-utils";
+import { isAndroidApp, isIOSApp, isWeb } from "../../Lib/user-agent-utils";
 // localStorage.clear();
 const GET_STORES = gql(`
   query Stores($lat: Float, $lng: Float) {
@@ -97,16 +97,16 @@ const Home = () => {
       lat: hasLastLo ? getLocationFromStorage().lat : null,
       lng: hasLastLo ? getLocationFromStorage().lng : null,
     },
-    onCompleted: (data) => console.log(data),
+    // onCompleted: (data) => console.log(data),
     fetchPolicy: "network-only",
   });
   const { data: justData } = useQuery(JUST_STORES, {
-    onCompleted: (data) => console.log(data),
+    // onCompleted: (data) => console.log(data),
     fetchPolicy: "network-only",
   });
   const [likeStore] = useMutation(LIKE_STORE, {
     onCompleted: (data) => {
-      console.log(data);
+      // console.log(data);
     },
     onError: (error) => console.error(error),
     refetchQueries: [
@@ -123,9 +123,9 @@ const Home = () => {
     ],
   });
   const [cancelLike] = useMutation(CANCEL_LIKE, {
-    onCompleted: (data) => {
-      console.log(data.cancelLike.storeId, "id..");
-    },
+    // onCompleted: (data) => {
+    //   console.log(data.cancelLike.storeId, "id..");
+    // },
     onError: (error) => console.error(error),
     refetchQueries: [
       // 흠... 이거 캐시로 수정해야해 ㅠㅠ 일단 이렇게 하긴하는데 불필요한 네트워크 요청이 넘 만을 것 같다. 이거부터 청산해야할 듯. 출시후에
@@ -187,17 +187,17 @@ const Home = () => {
   const [msg1, setMsg1] = useState("");
   // const [msg2, setMsg2] = useState("");
   // const [msg3, setMsg3] = useState("");
-  // useEffect(() => {
-  //   if (isAndroidApp()) {
-  //     setMsg1("android");
-  //   }
-  //   if (isIOSApp()) {
-  //     setMsg1("ios");
-  //   }
-  //   if (isWeb()) {
-  //     setMsg1("web");
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (isAndroidApp()) {
+      setMsg1("android");
+    }
+    if (isIOSApp()) {
+      setMsg1("ios");
+    }
+    if (isWeb()) {
+      setMsg1("web");
+    }
+  }, []);
   // // setMsg1("android: ", isAndroidApp());
   // // setMsg2("ios: ", isIOSApp());
   // // setMsg3("web: ", isWeb());
@@ -221,8 +221,8 @@ const Home = () => {
         onClick={() => navigate("/hey")}
       >
         go to hey!
-      </div> */}
-      {/* {msg1} */}
+      </div>
+      {msg1} */}
       <div className="py-3 pl-5 bg-white flex items-center cursor-pointer justify-between">
         <div className="flex" onClick={() => navigate("/location")}>
           <svg
@@ -249,9 +249,9 @@ const Home = () => {
             {localStorage.getItem("loadAddr") || "내 위치를 설정해주세요."}
           </span>
         </div>
-        {/* <div className="relative inline-block mr-5 mt-1" onClick={onClickCart}> */}
-        {/* Cart Icon */}
-        {/* <svg
+        <div className="relative inline-block mr-5 mt-1" onClick={onClickCart}>
+          {/* Cart Icon */}
+          <svg
             xmlns="http://www.w3.org/2000/svg"
             width="21"
             height="21"
@@ -266,13 +266,13 @@ const Home = () => {
             <circle cx="9" cy="20" r="1"></circle>
             <circle cx="18" cy="20" r="1"></circle>
             <path d="M6 6L4 2"></path>
-          </svg> */}
+          </svg>
 
-        {/* Number Badge */}
-        {/* <div className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-500 flex items-center justify-center text-white text-xs font-bold">
+          {/* Number Badge */}
+          <div className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-500 flex items-center justify-center text-white text-xs font-bold">
             {cart.length}
-          </div> */}
-        {/* </div> */}
+          </div>
+        </div>
       </div>
 
       {/* <div className="p-2 text-sm text-gray-600">
