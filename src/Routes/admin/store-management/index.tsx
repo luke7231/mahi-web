@@ -1,4 +1,4 @@
-import { useDaumPostcodePopup } from "react-daum-postcode";
+import DaumPostcodeEmbed from "react-daum-postcode";
 import React, { useState, useEffect, useRef } from "react";
 import { useQuery, useMutation, gql, useLazyQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
@@ -307,9 +307,9 @@ const StoreEditForm: React.FC<StoreEditFormProps> = ({
     });
   };
 
-  const openPostCode = useDaumPostcodePopup(
-    "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
-  );
+  // const openPostCode = useDaumPostcodePopup(
+  //   "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
+  // );
 
   const handleAddressComplete = (data: any) => {
     let fullAddress = data.address;
@@ -324,9 +324,10 @@ const StoreEditForm: React.FC<StoreEditFormProps> = ({
       setLat(response.data.getCoords.lat);
     });
   };
-
+  const [openPostModal, setOpenPostModal] = useState(false);
   const handleAddressClick = () => {
-    openPostCode({ onComplete: handleAddressComplete });
+    setOpenPostModal(true);
+    // openPostCode({ onComplete: handleAddressComplete });
   };
 
   const handleSpecificAddressClick = () => {
@@ -338,7 +339,6 @@ const StoreEditForm: React.FC<StoreEditFormProps> = ({
   return (
     <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-6 text-center">매장 정보 수정</h2>
-
       <div className="mb-4">
         <label className="block text-gray-700 font-semibold">매장 이름</label>
         <input
@@ -357,7 +357,12 @@ const StoreEditForm: React.FC<StoreEditFormProps> = ({
           {address}
         </div>
       </div>
-
+      {openPostModal && (
+        <DaumPostcodeEmbed
+          onComplete={handleAddressComplete}
+          scriptUrl="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
+        />
+      )}
       <div className="flex flex-col mb-4">
         <label className="block text-gray-700 font-semibold">
           지도에서 한 번 더 설정
