@@ -15,6 +15,7 @@ interface AuthContextProps {
   logout: () => void;
   isFirst: boolean;
   doneOnboarding: () => void;
+  loginAdmin: () => void;
   logoutAdmin: () => void;
   lastPage: string | null;
   changeLastPage: () => void;
@@ -81,6 +82,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsLoggedIn(false);
   };
 
+  const loginAdmin = () => {
+    setIsAdminLoggedIn(true);
+  };
   const logoutAdmin = () => {
     // 로그아웃 로직 구현
     setIsAdminLoggedIn(false);
@@ -136,6 +140,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         isFirst,
         doneOnboarding,
         isAdminLoggedIn,
+        loginAdmin,
         logoutAdmin,
         lastPage,
         changeLastPage,

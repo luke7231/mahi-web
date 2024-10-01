@@ -242,9 +242,10 @@ const SellerProfilePage: React.FC = () => {
               {/* 로그아웃 버튼 */}
               <span
                 onClick={handleLogout}
-                className="mt-4 py-2 text-red-500 underline font-semibold"
+                className="mt-4 py-2 text-red-500 font-semibold"
               >
-                로그아웃
+                <span className="underline">로그아웃 </span>
+                <span className="text-gray-800">(소비자앱으로 전환)</span>
               </span>
             </>
           )}
