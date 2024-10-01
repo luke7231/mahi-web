@@ -292,9 +292,9 @@ const StoreEditForm: React.FC<StoreEditFormProps> = ({
   const [contactNumber, setContactNumber] = useState(
     store?.contactNumber || ""
   );
+  const [isSpecificSet, setIsSpecificSet] = useState(false);
   const [closingHours, setClosingHours] = useState(store?.closingHours || "");
   const [getCoordsFromAddress] = useLazyQuery(GET_COORDS);
-
   const handleSubmit = () => {
     onSave({
       id: store?.id || 0,
@@ -332,6 +332,7 @@ const StoreEditForm: React.FC<StoreEditFormProps> = ({
   const handleSpecificAddressClick = () => {
     // location modal open
     handleOpenModal();
+    setIsSpecificSet(true);
   };
 
   return (
@@ -351,7 +352,7 @@ const StoreEditForm: React.FC<StoreEditFormProps> = ({
         <label className="block text-gray-700 font-semibold">매장 주소</label>
         <div
           onClick={handleAddressClick}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-400 transition duration-200"
+          className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-400 transition duration-200"
         >
           {address}
         </div>
@@ -359,14 +360,14 @@ const StoreEditForm: React.FC<StoreEditFormProps> = ({
 
       <div className="flex flex-col mb-4">
         <label className="block text-gray-700 font-semibold">
-          상세 주소 등록
+          지도에서 한 번 더 설정
         </label>
         <div className="flex gap-2">
           <div
             onClick={handleSpecificAddressClick}
             className="text-blue-500 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-400 transition duration-200"
           >
-            {lat && lng ? "완료(재설정)" : "클릭"}
+            {isSpecificSet ? "완료" : "설정하기"}
           </div>
         </div>
       </div>
