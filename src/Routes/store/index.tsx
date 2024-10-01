@@ -58,7 +58,7 @@ const GET_STORE = gql(`
 
 const Store = () => {
   const { isLoggedIn } = useAuth();
-  const [timeString, setTimeString] = useState("");
+  // const [timeString, setTimeString] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
   const { data, loading } = useQuery(GET_STORE, {
@@ -153,26 +153,26 @@ const Store = () => {
       return total + discount * item.quantity;
     }, 0);
   };
-  useEffect(() => {
-    // saleEndTime을 Date 객체로 변환
-    if (store) {
-      const date = new Date(store.products?.[0]?.saleEndTime);
+  // useEffect(() => {
+  //   // saleEndTime을 Date 객체로 변환
+  //   if (store) {
+  //     const date = new Date(store.closingHours);
 
-      // 시와 분 추출
-      let hours = date.getUTCHours(); // 한국 시간에서 UTC로 변환하려면 9시간을 빼야 합니다
-      let minutes = date.getUTCMinutes();
+  //     // 시와 분 추출
+  //     let hours = date.getUTCHours(); // 한국 시간에서 UTC로 변환하려면 9시간을 빼야 합니다
+  //     let minutes = date.getUTCMinutes();
 
-      // 시와 분을 2자리로 포맷
-      //   if (hours < 0) {
-      //     hours += 24; // 24시간 형식으로 조정
-      //   }
-      const formattedHours = hours.toString().padStart(2, "0");
-      const formattedMinutes = minutes.toString().padStart(2, "0");
+  //     // 시와 분을 2자리로 포맷
+  //     //   if (hours < 0) {
+  //     //     hours += 24; // 24시간 형식으로 조정
+  //     //   }
+  //     const formattedHours = hours.toString().padStart(2, "0");
+  //     const formattedMinutes = minutes.toString().padStart(2, "0");
 
-      // 시와 분을 원하는 형식으로 조합
-      setTimeString(`${formattedHours}:${formattedMinutes}`);
-    }
-  }, [store]);
+  //     // 시와 분을 원하는 형식으로 조합
+  //     setTimeString(`${formattedHours}:${formattedMinutes}`);
+  //   }
+  // }, [store]);
 
   async function onClickLike(storeId: number, isLiked: boolean | null) {
     if (!isLoggedIn) {
@@ -267,7 +267,7 @@ const Store = () => {
                 </svg>
                 <p className="text-sm text-gray-600">
                   <span className="font-medium text-base">
-                    {timeString}까지
+                    {store.closingHours}까지
                   </span>{" "}
                   <span className="text-[#b6b6b6]">픽업 &middot; 도보</span> 약
                   8분
@@ -335,7 +335,7 @@ const Store = () => {
                     key={product.id}
                     className="w-full h-full flex rounded-[0.625rem] border border-[#F9F9F9] bg-white shadow-[0_3px_8px_0_rgba(0,0,0,0.05)]"
                   >
-                    <div className="relative w-1/3 aspect-square">
+                    <div className="relative w-1/3">
                       <ProductImageSlider product={product} />
                       {product.quantity === 0 && (
                         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-l-lg">
@@ -409,11 +409,9 @@ export default Store;
 const ProductImageSlider: React.FC<{ product: any }> = ({ product }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const settings = {
-    infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    arrows: true,
     afterChange: (current: number) => setCurrentSlide(current), // 슬라이드 변경 후 상태 업데이트
   };
 
@@ -425,7 +423,7 @@ const ProductImageSlider: React.FC<{ product: any }> = ({ product }) => {
     return (
       <div>
         <img
-          className="w-full h-full object-cover rounded-l-lg"
+          className="w-full h-full object-cover rounded-lg"
           src={menuImages[0] || product.img}
           alt="Menu"
         />
@@ -434,12 +432,12 @@ const ProductImageSlider: React.FC<{ product: any }> = ({ product }) => {
   }
 
   return (
-    <div className="relative">
+    <div className="h-full relative">
       <Slider {...settings}>
         {menuImages.map((img: string, index: number) => (
-          <div key={index} className="relative">
+          <div key={index} className="flex">
             <img
-              className="w-full h-full object-cover rounded-l-lg"
+              className="w-full h-full object-cover rounded-lg"
               src={img || product.img}
               alt={`Menu ${index + 1}`}
             />
@@ -448,11 +446,11 @@ const ProductImageSlider: React.FC<{ product: any }> = ({ product }) => {
       </Slider>
 
       {/* Custom Dots */}
-      <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
+      <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {menuImages.map((_: any, index: number) => (
           <div
             key={index}
-            className={`w-2 h-2 rounded-full cursor-pointer ${
+            className={`w-1.5 h-1.5 rounded-full cursor-pointer ${
               currentSlide === index ? "bg-[#1562fc]" : "bg-gray-300"
             }`}
             onClick={() => setCurrentSlide(index)}
