@@ -17,7 +17,7 @@ const ManualEntry: React.FC = () => {
 
   const [menuName, setMenuName] = useState("");
   const [price, setPrice] = useState<number | string | "">("");
-  const [discountRate, setDiscountRate] = useState<number | string | "">(0); // 할인율 추가
+  const [discountRate, setDiscountRate] = useState<number | string | "">(40); // 할인율 추가
   const [imageFile, setImageFile] = useState<File | null>(null); // 이미지 파일로 받기
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -53,13 +53,13 @@ const ManualEntry: React.FC = () => {
       <div className="p-6">
         <h2 className="text-2xl font-semibold mb-6">팩 직접 입력</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* 메뉴 이름 */}
+          {/* 팩 이름 */}
           <div>
             <label
               htmlFor="menuName"
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-              메뉴 이름
+              팩 이름
             </label>
             <input
               type="text"
@@ -122,7 +122,7 @@ const ManualEntry: React.FC = () => {
               value={discountRate}
               onChange={(e) => setDiscountRate(e.target.value)}
               required
-              min="0"
+              min="40"
               max="100"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-[#1562fc] focus:border-[#1562fc]"
             />

@@ -25,7 +25,7 @@ const SelectFromMenu: React.FC = () => {
   const navigate = useNavigate();
   const { addPack } = usePackContext();
   const [selectedItems, setSelectedItems] = useState<MenuItem[]>([]);
-  const [discountRate, setDiscountRate] = useState(0);
+  const [discountRate, setDiscountRate] = useState(40);
   const storeId = 1; // 실제 storeId는 동적으로 가져오거나 context에서 가져오는 방식으로 수정
 
   const { loading, error, data } = useQuery(GET_MENUS_BY_STORE, {
@@ -155,7 +155,7 @@ const SelectFromMenu: React.FC = () => {
           </label>
           <input
             type="number"
-            min="0"
+            min="40"
             max="100"
             value={discountRate}
             onChange={(e) => setDiscountRate(Number(e.target.value))}
