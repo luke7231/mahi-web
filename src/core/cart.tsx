@@ -19,6 +19,12 @@ interface Product {
   store: {
     id: number;
   };
+  menus:
+    | {
+        id: number;
+        img: string;
+      }[]
+    | null;
   img: string;
 }
 

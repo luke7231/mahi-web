@@ -64,7 +64,7 @@ const My = () => {
       <Header title="마이페이지" />
 
       <div
-        className="w-full max-w-md p-4 bg-white mb-2"
+        className="w-full p-4 bg-white mb-2"
         onClick={() => navigate("/order")}
       >
         {/* Header Section */}

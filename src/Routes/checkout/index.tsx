@@ -29,6 +29,7 @@ mutation CreateOrder($input: CreateOrderInput!) {
 const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
   const { cart, removeFromCart } = useCart(); // useCart 훅을 사용하여 카트 정보를 가져옵니다
+  console.log("cart", cart);
   const [createOrder] = useMutation(CREATE_ORDER);
   const inputCart = cart.map((item) => {
     // typename왜 넣냐고 시비걸어서 그냥 필터링함
@@ -195,7 +196,9 @@ const CheckoutPage: React.FC = () => {
                         <img
                           alt="Cart Item"
                           className="w-full h-full object-cover rounded-md"
-                          src={item.product.img}
+                          src={
+                            item.product.img || item.product?.menus?.[0]?.img
+                          }
                         />
                       </div>
 

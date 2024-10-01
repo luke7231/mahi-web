@@ -25,6 +25,10 @@ const GET_PRODUCT = gql`
       createdAt
       updatedAt
       img
+      menus {
+        id
+        img
+      }
     }
   }
 `;
@@ -85,11 +89,25 @@ const Product = () => {
                 onClick={() => navigate(-1)}
                 className="absolute top-5 left-5 w-[40px] h-[40px]"
               />
-              <img
-                className="object-cover "
-                alt="Store"
-                src={product.img as string}
-              />
+
+              <div className="flex overflow-scroll">
+                {product.menus ? (
+                  <>
+                    {product.menus.map((menu: { id: number; img: string }) => (
+                      <img
+                        src={menu.img}
+                        className=" rounded m-4 h-56 aspect-square"
+                      />
+                    ))}
+                  </>
+                ) : (
+                  <img
+                    className="object-cover w-full h-56"
+                    alt="Product"
+                    src={(product.img as string) || product.menus[0].img}
+                  />
+                )}
+              </div>
             </div>
 
             {/* Store Name */}

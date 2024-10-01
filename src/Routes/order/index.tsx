@@ -20,6 +20,10 @@ query Orders {
       store {
         title
       }
+      menus {
+        id
+        img
+      }
       img
     }
     totalDiscount
@@ -42,7 +46,7 @@ const Order = () => {
     const weekDays = ["일", "월", "화", "수", "목", "금", "토"];
     const dayOfWeek = weekDays[date.getDay()]; // 요일
 
-    return `${month}/${day}(${dayOfWeek}) 픽업완료`;
+    return `${month}/${day}(${dayOfWeek}) 주문완료`;
   };
 
   function calculateCarbonEmission(amount: number) {
@@ -55,6 +59,7 @@ const Order = () => {
     return carbonEmission;
   }
 
+  console.log(data?.orders);
   return (
     <div className="w-full h-[100vh] flex flex-col">
       <Header title="주문내역" showBackButton />
@@ -78,7 +83,10 @@ const Order = () => {
                   {/* Image */}
                   <img
                     className="w-20 h-20 rounded-md object-cover"
-                    src={order.products?.[0]?.img as string}
+                    src={
+                      (order.products?.[0]?.img as string) ||
+                      (order.products?.[0]?.menus?.[0].img as string)
+                    }
                     alt="Product"
                   />
 

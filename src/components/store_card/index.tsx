@@ -24,6 +24,25 @@ export const StoreCard = ({
   img,
   isLiked,
 }: IProp): JSX.Element => {
+  const calculateTimeLeft = () => {
+    const now = new Date();
+    const [closingHour, closingMinute] = closingHours.split(":").map(Number);
+
+    const closingTime = new Date();
+    closingTime.setHours(closingHour, closingMinute, 0, 0); // closingHours 설정
+
+    const difference = closingTime.getTime() - now.getTime(); // 밀리초로 시간 차 계산
+
+    if (difference > 0) {
+      const hoursLeft = Math.floor(difference / (1000 * 60 * 60));
+      const minutesLeft = Math.floor(
+        (difference % (1000 * 60 * 60)) / (1000 * 60)
+      );
+      return `${hoursLeft}시간 ${minutesLeft}분 남음`;
+    } else {
+      return "마감되었습니다.";
+    }
+  };
   return (
     <div className="w-full h-52" onClick={onClick}>
       <div className="w-full h-full">
@@ -73,8 +92,7 @@ export const StoreCard = ({
                   <span className="font-medium text-base">
                     {closingHours}까지
                   </span>{" "}
-                  <span className="text-[#b6b6b6]">픽업 &middot; 도보</span> 약
-                  8분
+                  <span className="text-[#b6b6b6]">{calculateTimeLeft()}</span>
                 </p>
               </div>
               <div className="text-xs text-gray-400 line-through">
