@@ -148,10 +148,12 @@ const SalesPage: React.FC = () => {
                   >
                     <p
                       className={`text-center text-sm ${
-                        product.order ? "text-black" : "font-bold text-red-500"
+                        product.order
+                          ? "text-black"
+                          : "font-bold text-green-500"
                       }`}
                     >
-                      {product.order ? "결제 완료" : "결제 대기중"}
+                      {product.order ? "결제 완료" : "소비자 노출중"}
                     </p>
                     {product.order?.user && (
                       <p className="text-md">
