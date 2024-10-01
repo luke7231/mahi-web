@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useQuery, gql, useMutation } from "@apollo/client";
 import CancelModal from "../cancel-modal";
 import Header from "../../../components/common/header";
+import { useNavigate } from "react-router-dom";
+import { GET_SELLER_STORE } from "../store-management";
 
 // Sample GraphQL queries and mutations
 const GET_PRODUCTS = gql`
@@ -45,7 +47,19 @@ const CANCEL_PAYMENT = gql`
   }
 `;
 
+type Store = {
+  id: number;
+  img?: string;
+  title: string;
+  address: string;
+  contactNumber: string;
+  closingHours: string;
+  lat: number;
+  lng: number;
+};
+
 const SalesPage: React.FC = () => {
+  const navigate = useNavigate();
   const [editingProduct, setEditingProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [cancelingProduct, setCancelingProduct] = useState<any>();
@@ -55,6 +69,13 @@ const SalesPage: React.FC = () => {
 
   const [deleteProduct] = useMutation(DELETE_PRODUCT);
   const [cancelPayment] = useMutation(CANCEL_PAYMENT);
+
+  const [store, setStore] = useState<Store | null>(null);
+  const { data: storeData } = useQuery(GET_SELLER_STORE, {
+    onCompleted: (data) => {
+      setStore(data.getSellerStore);
+    },
+  });
 
   const handleDelete = (id: number) => {
     if (window.confirm("정말로 삭제하시겠습니까?")) {
@@ -84,7 +105,20 @@ const SalesPage: React.FC = () => {
   const handleReason = (reason: string) => {
     setReason(reason);
   };
-
+  if (!store)
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+        <p className="text-lg mb-6 text-gray-700">
+          매장이 아직 등록되지 않았습니다.
+        </p>
+        <button
+          onClick={() => navigate("/admin/store-management")}
+          className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
+        >
+          매장 추가하러 가기
+        </button>
+      </div>
+    );
   if (loading) return <p>로딩 중...</p>;
   if (error) return <p>오류: {error.message}</p>;
 

@@ -4,6 +4,8 @@ import DeleteConfirmationModal from "./menu-delete-modal";
 import MenuEditModal from "./menu-edit-modal";
 import AddMenuModal from "./menu-add-modal";
 import Header from "../../../components/common/header";
+import { useNavigate } from "react-router-dom";
+import { GET_SELLER_STORE } from "../store-management";
 
 // GraphQL Queries & Mutations
 const GET_MENUS = gql`
@@ -63,8 +65,28 @@ type MenuInput = {
   img: File | null;
 };
 
+type Store = {
+  id: number;
+  img?: string;
+  title: string;
+  address: string;
+  contactNumber: string;
+  closingHours: string;
+  lat: number;
+  lng: number;
+};
+
 const MenuManagement: React.FC = () => {
   const storeId = 1; // 상관 없음.
+  const navigate = useNavigate();
+
+  const [store, setStore] = useState<Store | null>(null);
+  const { data: storeData } = useQuery(GET_SELLER_STORE, {
+    onCompleted: (data) => {
+      setStore(data.getSellerStore);
+    },
+  });
+
   const { data, loading, error, refetch } = useQuery(GET_MENUS, {
     variables: { storeId },
   });
@@ -129,7 +151,20 @@ const MenuManagement: React.FC = () => {
       setIsDeleting(null); // 삭제 후 모달 닫기
     });
   };
-
+  if (!store)
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+        <p className="text-lg mb-6 text-gray-700">
+          매장이 아직 등록되지 않았습니다.
+        </p>
+        <button
+          onClick={() => navigate("/admin/store-management")}
+          className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
+        >
+          매장 추가하러 가기
+        </button>
+      </div>
+    );
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 

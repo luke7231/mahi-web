@@ -7,7 +7,7 @@ import CustomMapMarker2 from "../../../components/custome-map-marker2";
 import Header from "../../../components/common/header";
 
 // GraphQL Query to fetch seller's store
-const GET_SELLER_STORE = gql`
+export const GET_SELLER_STORE = gql`
   query GetSellerStore {
     getSellerStore {
       id
@@ -179,9 +179,10 @@ const StoreManagement: React.FC = () => {
 
   if (!store && !isEditing) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-        <p className="text-lg mb-6 text-gray-700">
-          매장이 아직 등록되지 않았습니다.
+      <div className="flex flex-col items-center justify-start h-screen bg-gray-100">
+        <Header title="매장정보" showBackButton />
+        <p className="text-lg mb-6 text-gray-700 mt-12">
+          매장을 등록해보세요!!
         </p>
         <button
           onClick={handleAddStore}
