@@ -63,14 +63,16 @@ const SellerLoginPage: React.FC = () => {
           </div>
           {/* Header */}
           <div className="mb-6 text-center">
-            <h1 className="text-2xl font-semibold text-black mb-2">로그인</h1>
-            <p className="text-sm text-[#757575]">계정에 로그인하세요</p>
+            <h1 className="text-2xl font-semibold text-black mb-2">
+              사장님 로그인
+            </h1>
+            <p className="text-xl text-[#757575]">계정에 로그인하세요</p>
           </div>
 
           {/* Contact Number and Password Fields */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-black mb-1">
+              <label className="block text-xl font-medium text-black mb-1">
                 연락처
               </label>
               <input
@@ -78,13 +80,13 @@ const SellerLoginPage: React.FC = () => {
                 id="contactNumber"
                 value={contactNumber}
                 onChange={(e) => setContactNumber(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-[#1562fc]"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md text-xl focus:outline-none focus:border-[#1562fc]"
                 placeholder="연락처를 입력하세요"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-black mb-1">
+              <label className="block text-xl font-medium text-black mb-1">
                 비밀번호
               </label>
               <input
@@ -92,7 +94,7 @@ const SellerLoginPage: React.FC = () => {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full mb-6 px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-[#1562fc]"
+                className="w-full mb-6 px-4 py-2 border border-gray-300 rounded-md text-xl focus:outline-none focus:border-[#1562fc]"
                 placeholder="비밀번호를 입력하세요"
                 required
               />
@@ -101,17 +103,17 @@ const SellerLoginPage: React.FC = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full py-2 bg-[#1562fc]  text-white text-sm font-semibold rounded-md hover:bg-[#124ab7] transition duration-150"
+              className="w-full py-2 bg-[#1562fc]  text-white text-xl font-semibold rounded-md hover:bg-[#124ab7] transition duration-150"
               disabled={loading}
             >
               {loading ? "로그인 중..." : "로그인"}
             </button>
           </form>
 
-          <div className="mt-4 text-center">
+          <div className="mt-6 text-center">
             <div
               onClick={() => navigate("/login")}
-              className="text-xs underline text-[#757575] hover:text-[#1562fc]"
+              className="text-xl underline text-[#757575] hover:text-[#1562fc]"
             >
               그냥 둘러볼게요~!
             </div>
