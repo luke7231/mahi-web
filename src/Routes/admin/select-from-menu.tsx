@@ -105,14 +105,14 @@ const SelectFromMenu: React.FC = () => {
                   />
                   <div className="p-2">
                     <div className="text-lg font-semibold">{menu?.name}</div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-md text-gray-800">
                       {menu?.price.toLocaleString()}원
                     </div>
                   </div>
                 </div>
 
                 {selectedItems.some((item) => item?.id === menu?.id) && (
-                  <div className="mt-2 flex flex-col items-center bg-white">
+                  <div className="pt-1 flex flex-col items-center bg-white">
                     <label className="block text-sm font-semibold text-black">
                       수량
                     </label>
@@ -176,7 +176,7 @@ const SelectFromMenu: React.FC = () => {
                   />
                   <div>
                     <div className="text-black text-lg">{menu?.name}</div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-md text-gray-500">
                       {menu?.price.toLocaleString()}원 (수량: {menu?.quantity})
                     </div>
                   </div>
