@@ -93,7 +93,7 @@ const SelectFromMenu: React.FC = () => {
                 key={menu?.id}
                 className={` border rounded-lg cursor-pointer ${
                   selectedItems.some((item) => item?.id === menu?.id)
-                    ? "bg-[#1562fc] text-white"
+                    ? "bg-blue-400 text-white"
                     : "bg-[#f3f3f3]"
                 }`}
               >
@@ -112,11 +112,11 @@ const SelectFromMenu: React.FC = () => {
                 </div>
 
                 {selectedItems.some((item) => item?.id === menu?.id) && (
-                  <div className="mt-4">
-                    <label className="block text-sm font-semibold text-white">
+                  <div className="mt-2 flex flex-col items-center bg-white">
+                    <label className="block text-sm font-semibold text-black">
                       수량
                     </label>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-2 pb-2 rounded">
                       <button
                         onClick={() => decrementQuantity(menu?.id)}
                         className="px-2 py-1 bg-gray-200 rounded"

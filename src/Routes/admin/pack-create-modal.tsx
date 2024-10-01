@@ -39,7 +39,7 @@ const PackCreateModal: React.FC = () => {
               <rect x="17" y="17" width="4" height="4"></rect>
             </svg>
 
-            <span className="text-lg font-medium text-center">
+            <span className="text-lg break-keep font-medium text-center">
               메뉴에서 선택
             </span>
           </div>
