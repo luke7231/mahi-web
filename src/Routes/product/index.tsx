@@ -19,6 +19,7 @@ const GET_PRODUCT = gql`
       name
       price
       discountPrice
+      userPrice
       quantity
       description
       saleEndTime
@@ -140,7 +141,7 @@ const Product = () => {
 
               {/* Discounted Price */}
               <div className="text-black text-lg font-bold">
-                {product.discountPrice.toLocaleString()}원
+                {product.userPrice.toLocaleString()}원
               </div>
             </div>
           </div>
@@ -218,7 +219,7 @@ const Product = () => {
           className="px-5 py-4 w-full sticky bottom-0 bg-white"
         >
           <div className="absolute left-0 top-[-2.7rem] w-full h-[43px] bg-[#282828] rounded-tl-[10px] rounded-tr-[10px] text-white text-sm font-semibold flex justify-center items-center">
-            {(product?.price - product?.discountPrice).toLocaleString()}원{" "}
+            {(product?.price - product?.userPrice).toLocaleString()}원{" "}
             할인받았어요!
           </div>
           <div className=" w-full h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border">
@@ -228,7 +229,7 @@ const Product = () => {
                 {quantity}개
               </span>
               <span className="text-white text-base font-bold leading-snug">
-                {(quantity * product?.discountPrice).toLocaleString()}원
+                {(quantity * product?.userPrice).toLocaleString()}원
               </span>
               <span className="text-white text-base font-semibold leading-snug">
                 담기

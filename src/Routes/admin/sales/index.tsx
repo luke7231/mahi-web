@@ -162,10 +162,13 @@ const SalesPage: React.FC = () => {
                     </p>
                     <p className="text-gray-900 font-bold">
                       소비자가:{" "}
-                      {product?.userPriceMath
+                      {product?.userPrice
                         ? Math.floor(product.userPrice).toLocaleString()
                         : Math.floor(
-                            product.discountPrice + product.discountPrice * 0.1
+                            ((product.discountPrice +
+                              product.discountPrice * 0.1) /
+                              10) *
+                              10
                           ).toLocaleString()}
                       원<span className="text-sm text-gray-900">(10%)</span>
                     </p>

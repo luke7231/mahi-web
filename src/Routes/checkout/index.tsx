@@ -40,7 +40,7 @@ const CheckoutPage: React.FC = () => {
   // 카트의 총액을 계산하는 함수
   const getTotalAmount = () => {
     return cart.reduce((total, item) => {
-      const price = item.product.discountPrice ?? item.product.price;
+      const price = item.product.userPrice ?? item.product.price;
       return total + price * item.quantity;
     }, 0);
   };
@@ -53,8 +53,8 @@ const CheckoutPage: React.FC = () => {
 
   const getTotalDisount = () => {
     return cart.reduce((total, item) => {
-      const discount = item.product?.discountPrice
-        ? item.product.price - item?.product?.discountPrice
+      const discount = item.product?.userPrice
+        ? item.product.price - item?.product?.userPrice
         : 0;
       return total + discount * item.quantity;
     }, 0);
@@ -217,7 +217,7 @@ const CheckoutPage: React.FC = () => {
                         <div className="flex items-baseline space-x-2">
                           <div className="text-black text-base font-semibold">
                             {(
-                              item.quantity * item.product?.discountPrice
+                              item.quantity * item.product?.userPrice
                             ).toLocaleString()}
                             원
                           </div>

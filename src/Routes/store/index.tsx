@@ -35,6 +35,7 @@ const GET_STORE = gql(`
         name
         price
         discountPrice
+        userPrice
         img
         isDeleted
         saleEndTime
@@ -140,15 +141,15 @@ const Store = () => {
   // 카트의 총액 계산
   const getTotalAmount = () => {
     return cart.reduce((total, item) => {
-      const price = item.product.discountPrice || item.product.price;
+      const price = item.product.userPrice || item.product.price;
       return total + price * item.quantity;
     }, 0);
   };
 
   const getTotalDisount = () => {
     return cart.reduce((total, item) => {
-      const discount = item.product?.discountPrice
-        ? item.product.price - item?.product?.discountPrice
+      const discount = item.product?.userPrice
+        ? item.product.price - item?.product?.userPrice
         : 0;
       return total + discount * item.quantity;
     }, 0);
@@ -364,7 +365,7 @@ const Store = () => {
                       </div>
                       <div className="flex flex-col items-end mt-2">
                         <div className="text-xl text-black font-bold">
-                          {product.discountPrice?.toLocaleString()}원
+                          {product.userPrice?.toLocaleString()}원
                         </div>
                         <div className="text-xs text-[#b6b6b6] line-through">
                           {product.price.toLocaleString()}원

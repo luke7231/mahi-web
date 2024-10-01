@@ -11,6 +11,7 @@ interface Product {
   name: string;
   price: number;
   discountPrice: number;
+  userPrice: number;
   quantity: number;
   description: string;
   saleEndTime: string;
