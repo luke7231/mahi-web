@@ -36,6 +36,7 @@ const GET_STORE = gql(`
         price
         discountPrice
         img
+        isDeleted
         saleEndTime
         quantity
         menus {
@@ -324,49 +325,54 @@ const Store = () => {
             />
           ) : (
             <div className="w-full p-5 pb-20 h-full gap-y-5 relative flex flex-col ">
-              {store?.products?.map((product) => (
-                <div
-                  key={product.id}
-                  className="w-full h-full flex rounded-[0.625rem] border border-[#F9F9F9] bg-white shadow-[0_3px_8px_0_rgba(0,0,0,0.05)]"
-                >
-                  <div className="relative w-1/3 aspect-square">
-                    <ProductImageSlider product={product} />
-                    {product.quantity === 0 && (
-                      <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-l-lg">
-                        <span className="text-white text-xl font-semibold">
-                          품절
+              {store?.products
+                ?.filter(
+                  (product) =>
+                    product.isDeleted === false || product.isDeleted === null
+                )
+                .map((product) => (
+                  <div
+                    key={product.id}
+                    className="w-full h-full flex rounded-[0.625rem] border border-[#F9F9F9] bg-white shadow-[0_3px_8px_0_rgba(0,0,0,0.05)]"
+                  >
+                    <div className="relative w-1/3 aspect-square">
+                      <ProductImageSlider product={product} />
+                      {product.quantity === 0 && (
+                        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-l-lg">
+                          <span className="text-white text-xl font-semibold">
+                            품절
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    <div
+                      onClick={() => onClickProduct(product.id)}
+                      className="w-2/3 p-4 flex flex-col justify-between"
+                    >
+                      <div className="text-black text-lg font-semibold">
+                        {product.name}
+                      </div>
+                      <div className="bg-[#f3f3f3] px-2 pb-1 rounded-md w-fit mt-2">
+                        <span className="text-black text-xs font-bold">
+                          {product.quantity}개
+                        </span>
+                        <span className="text-black text-xs font-normal">
+                          {" "}
+                          남았어요!
                         </span>
                       </div>
-                    )}
-                  </div>
-
-                  <div
-                    onClick={() => onClickProduct(product.id)}
-                    className="w-2/3 p-4 flex flex-col justify-between"
-                  >
-                    <div className="text-black text-lg font-semibold">
-                      {product.name}
-                    </div>
-                    <div className="bg-[#f3f3f3] px-2 pb-1 rounded-md w-fit mt-2">
-                      <span className="text-black text-xs font-bold">
-                        {product.quantity}개
-                      </span>
-                      <span className="text-black text-xs font-normal">
-                        {" "}
-                        남았어요!
-                      </span>
-                    </div>
-                    <div className="flex flex-col items-end mt-2">
-                      <div className="text-xl text-black font-bold">
-                        {product.discountPrice?.toLocaleString()}원
-                      </div>
-                      <div className="text-xs text-[#b6b6b6] line-through">
-                        {product.price.toLocaleString()}원
+                      <div className="flex flex-col items-end mt-2">
+                        <div className="text-xl text-black font-bold">
+                          {product.discountPrice?.toLocaleString()}원
+                        </div>
+                        <div className="text-xs text-[#b6b6b6] line-through">
+                          {product.price.toLocaleString()}원
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           )}
         </>
