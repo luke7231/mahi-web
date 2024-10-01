@@ -99,7 +99,12 @@ const Router = () => {
         <Route path="/auth" element={<KakaoRedirectHandler />} />
         <Route path="/sign-up" element={<SignUp />} />
 
-        <Route path="/admin/home" element={<AdminHome />} />
+        <Route
+          path="/admin/home"
+          element={
+            !isAdminLoggedIn ? <Navigate to="/admin/login" /> : <AdminHome />
+          }
+        />
         <Route path="/admin/pack-create" element={<PackCreate />} />
         <Route path="/admin/pack-create-modal" element={<PackCreateModal />} />
         <Route path="/admin/select-from-menu" element={<SelectFromMenu />} />

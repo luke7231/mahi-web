@@ -103,7 +103,7 @@ const SellerProfilePage: React.FC = () => {
     localStorage.removeItem("sellerToken");
     logoutAdmin();
     changeLastPage();
-    navigate("/admin/login");
+    navigate("/");
   };
 
   if (loading) return <p>로딩중입니다...</p>;

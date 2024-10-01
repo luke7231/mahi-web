@@ -112,7 +112,7 @@ const SellerLoginPage: React.FC = () => {
 
           <div className="mt-6 text-center">
             <div
-              onClick={() => navigate("/login")}
+              onClick={() => navigate("/")}
               className="text-xl underline text-[#757575] hover:text-[#1562fc]"
             >
               그냥 둘러볼게요~!
