@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MenuItem, usePackContext } from "./context/pack"; // 경로 수정
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import Modal from "./modal"; // 모달 컴포넌트 추가
 import Header from "../../components/common/header";
+import { GET_SELLER_STORE } from "./store-management";
 
 const CREATE_PRODUCT = gql`
   mutation CreateProduct($input: CreateProductInput!) {
@@ -18,11 +19,29 @@ const CREATE_PRODUCT = gql`
   }
 `;
 
+type Store = {
+  id: number;
+  img?: string;
+  title: string;
+  address: string;
+  contactNumber: string;
+  closingHours: string;
+  lat: number;
+  lng: number;
+};
+
 const PackCreate: React.FC = () => {
   const navigate = useNavigate();
   const { packs, resetPacks, deletePack } = usePackContext(); // Context에서 packs, resetPacks 및 deletePack 불러오기
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [quantities, setQuantities] = useState<{ [key: number]: number }>({}); // 각 메뉴의 수량 관리
+
+  const [store, setStore] = useState<Store | null>(null);
+  const { data: storeData } = useQuery(GET_SELLER_STORE, {
+    onCompleted: (data) => {
+      setStore(data.getSellerStore);
+    },
+  });
 
   // useMutation 훅을 사용해 createProduct API와 연결
   const [createProduct] = useMutation(CREATE_PRODUCT);
@@ -90,7 +109,20 @@ const PackCreate: React.FC = () => {
       console.error("Error creating product:", error);
     }
   };
-
+  if (!store)
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+        <p className="text-lg mb-6 text-gray-700">
+          매장이 아직 등록되지 않았습니다.
+        </p>
+        <button
+          onClick={() => navigate("/admin/store-management")}
+          className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
+        >
+          매장 추가하러 가기
+        </button>
+      </div>
+    );
   return (
     <div className="min-h-screen bg-white pt-0">
       <Header title="서프라이즈 팩 만들기" showBackButton />
