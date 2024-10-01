@@ -40,7 +40,7 @@ const AdminHome = () => {
             <path d="M8 16v-6"></path>
             <path d="M12 16v-4"></path>
           </svg>
-          <span className="text-sm text-[#1562fc] font-semibold">판매현황</span>
+          <span className="text-lg text-[#1562fc] font-semibold">판매현황</span>
         </button>
 
         {/* 팩 만들기 */}
@@ -67,7 +67,7 @@ const AdminHome = () => {
               strokeWidth="2"
             />
           </svg>
-          <span className="text-sm text-[#1562fc] font-semibold">
+          <span className="text-lg text-[#1562fc] font-semibold">
             팩 만들기
           </span>
         </button>
@@ -78,7 +78,7 @@ const AdminHome = () => {
           className="bg-white text-[#1562fc] py-4 rounded-lg shadow-md hover:bg-blue-50 transition-colors flex flex-col items-center justify-center space-y-2"
         >
           <img src={FoodImg} className="w-[28px] h-[28px]" />
-          <span className="text-sm font-semibold">메뉴관리</span>
+          <span className="text-lg font-semibold">메뉴관리</span>
         </button>
 
         {/* 매장관리 */}
@@ -109,7 +109,7 @@ const AdminHome = () => {
               strokeLinejoin="round"
             />
           </svg>
-          <span className="text-sm text-[#1562fc] font-semibold">매장관리</span>
+          <span className="text-lg text-[#1562fc] font-semibold">매장관리</span>
         </button>
 
         {/* 내정보 */}
@@ -131,7 +131,7 @@ const AdminHome = () => {
             <circle cx="12" cy="8" r="4"></circle>
             <path d="M6 18v-1a6 6 0 0112 0v1"></path>
           </svg>
-          <span className="text-sm text-[#1562fc] font-semibold">내정보</span>
+          <span className="text-lg text-[#1562fc] font-semibold">내정보</span>
         </button>
 
         {/* 고객센터 */}
@@ -153,7 +153,7 @@ const AdminHome = () => {
             <circle cx="12" cy="12" r="10"></circle>
             <path d="M9 12h6"></path>
           </svg>
-          <span className="text-sm text-[#1562fc] font-semibold">고객센터</span>
+          <span className="text-lg text-[#1562fc] font-semibold">고객센터</span>
         </button>
       </div>
     </div>
