@@ -4,6 +4,7 @@ import { useQuery, useMutation, gql, useLazyQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../../components/loading-spinnere";
 import CustomMapMarker2 from "../../../components/custome-map-marker2";
+import Header from "../../../components/common/header";
 
 // GraphQL Query to fetch seller's store
 const GET_SELLER_STORE = gql`
@@ -193,74 +194,70 @@ const StoreManagement: React.FC = () => {
   }
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      {isEditing ? (
-        <StoreEditForm
-          onSave={handleSaveStore}
-          handleOpenModal={handleOpenModal}
-          onCancel={() => setIsEditing(false)}
-          store={store}
-          setLng={setLng}
-          setLat={setLat}
-          lng={lng}
-          lat={lat}
-          handleImageChange={handleImageChange} // 이미지 파일 핸들러 전달
-        />
-      ) : (
-        <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md">
-          <h1 className="text-2xl font-bold mb-6 text-center">매장 정보</h1>
+    <div className="bg-gray-50 min-h-screen">
+      <Header title="매장정보" showBackButton />
+      <div className="p-6">
+        {isEditing ? (
+          <StoreEditForm
+            onSave={handleSaveStore}
+            handleOpenModal={handleOpenModal}
+            onCancel={() => setIsEditing(false)}
+            store={store}
+            setLng={setLng}
+            setLat={setLat}
+            lng={lng}
+            lat={lat}
+            handleImageChange={handleImageChange} // 이미지 파일 핸들러 전달
+          />
+        ) : (
+          <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md">
+            {store?.img && (
+              <div className="mb-6">
+                <img
+                  src={store.img}
+                  alt={`${store?.title} 매장 이미지`}
+                  className="w-full h-auto rounded-lg"
+                />
+              </div>
+            )}
 
-          {store?.img && (
-            <div className="mb-6">
-              <img
-                src={store.img}
-                alt={`${store?.title} 매장 이미지`}
-                className="w-full h-auto rounded-lg"
-              />
+            <div className="mb-4">
+              <p className="font-bold  text-gray-900 text-md mb-1">매장이름</p>
+              <p className="text-black">{store?.title}</p>
             </div>
-          )}
 
-          <div className="mb-4">
-            <p className="font-semibold text-gray-600">
-              이름: <span className="text-black">{store?.title}</span>
-            </p>
-          </div>
+            <div className="mb-4">
+              <p className="font-bold  text-gray-900 text-md mb-1">주소</p>
+              <p className="text-black">{store?.address}</p>
+            </div>
 
-          <div className="mb-4">
-            <p className="font-semibold text-gray-600">
-              주소: <span className="text-black">{store?.address}</span>
-            </p>
-          </div>
+            <div className="mb-4">
+              <p className="font-bold  text-gray-900 text-md mb-1">연락처</p>
+              <p className="text-black">{store?.contactNumber}</p>
+            </div>
 
-          <div className="mb-4">
-            <p className="font-semibold text-gray-600">
-              연락처: <span className="text-black">{store?.contactNumber}</span>
-            </p>
-          </div>
+            <div className="mb-4">
+              <p className="font-bold  text-gray-900 text-md mb-1">영업 시간</p>
+              <p className="text-black">~ {store?.closingHours}</p>
+            </div>
 
-          <div className="mb-4">
-            <p className="font-semibold text-gray-600">
-              영업 시간:{" "}
-              <span className="text-black">~ {store?.closingHours}</span>
-            </p>
+            <button
+              onClick={() => setIsEditing(true)}
+              className="w-full py-3 mt-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
+            >
+              매장 정보 수정
+            </button>
           </div>
-
-          <button
-            onClick={() => setIsEditing(true)}
-            className="w-full py-3 mt-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
-          >
-            매장 정보 수정
-          </button>
-        </div>
-      )}
-      {lat && lng && isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white py-6 rounded-lg shadow-lg w-[80%]">
-            <h2 className="text-xl font-bold mb-4">상세 주소 선택</h2>
-            <Map onSelectAddress={handleSelectAddress} lng={lng} lat={lat} />
+        )}
+        {lat && lng && isModalOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div className="bg-white py-6 rounded-lg shadow-lg w-[80%]">
+              <h2 className="text-xl font-bold mb-4">상세 주소 선택</h2>
+              <Map onSelectAddress={handleSelectAddress} lng={lng} lat={lat} />
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
