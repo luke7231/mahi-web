@@ -99,8 +99,8 @@ const SalesPage: React.FC = () => {
                 key={product.id}
                 className={`p-4 rounded-lg flex justify-between items-center shadow ${
                   product.order && !product.order?.isCanceled
-                    ? "bg-green-500"
-                    : "bg-gray-100"
+                    ? "bg-blue-300"
+                    : "bg-gray-200"
                 }`}
               >
                 <div className="flex w-full flex-col">
@@ -120,10 +120,10 @@ const SalesPage: React.FC = () => {
                     </h2>
                   </div>
                   <div className="mt-4">
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-gray-700 font-semibold text-sm">
                       원가: {product.price.toLocaleString()}원
                     </p>
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-gray-700 font-semibold text-sm">
                       할인가: {product.discountPrice?.toLocaleString()}원
                     </p>
                     <p className="text-gray-900 font-bold">
@@ -139,7 +139,13 @@ const SalesPage: React.FC = () => {
                 </div>
 
                 <div className="flex flex-col items-end w-full h-full justify-between">
-                  <div className="rounded p-1 bg-gray-200">
+                  <div
+                    className={`rounded p-1 ${
+                      product.order && !product.order?.isCanceled
+                        ? "bg-green-500"
+                        : "bg-gray-200"
+                    }`}
+                  >
                     <p
                       className={`text-center text-sm ${
                         product.order ? "text-black" : "font-bold text-red-500"
@@ -187,7 +193,7 @@ const SalesPage: React.FC = () => {
                   {product.order?.isCanceled && (
                     <div className="flex gap-2">
                       <div
-                        className="px-2 py-2 text-red-500 rounded hover:bg-blue-600 text-sm"
+                        className="px-2 py-2 text-red-500 font-bold  rounded hover:bg-blue-600 text-lg"
                         onClick={() => handleCancel(product)}
                       >
                         취소 완료
