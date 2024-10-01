@@ -60,6 +60,7 @@ type Store = {
 
 const SalesPage: React.FC = () => {
   const navigate = useNavigate();
+  const [countdown, setCountdown] = useState(60);
   const [editingProduct, setEditingProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [cancelingProduct, setCancelingProduct] = useState<any>();
@@ -105,6 +106,24 @@ const SalesPage: React.FC = () => {
   const handleReason = (reason: string) => {
     setReason(reason);
   };
+
+  const handleRefresh = () => {
+    window.location.reload(); // 페이지 새로고침
+  };
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      handleRefresh();
+    }, 60000); // 60000ms = 1분
+
+    const countdownId = setInterval(() => {
+      setCountdown((prev) => (prev > 0 ? prev - 1 : 60));
+    }, 1000); // 1초마다 카운트다운
+
+    return () => {
+      clearInterval(intervalId);
+      clearInterval(countdownId); // 컴포넌트가 언마운트될 때 interval 정리
+    };
+  }, []);
   if (!store)
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
@@ -125,7 +144,16 @@ const SalesPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       <Header title="판매 현황" showBackButton />
-      <div className="p-6">
+      <div className="p-6 pt-4">
+        <div className="flex flex-col items-end mb-4 justify-center space-x-4">
+          <button
+            onClick={handleRefresh}
+            className="flex text-md items-center px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            새로고침
+          </button>
+          <p className="text-gray-700 text-md">{countdown}초 후 새로고침</p>
+        </div>
         {data?.productsBySeller?.length > 0 ? (
           <div className="grid grid-cols-1 gap-6">
             {data.productsBySeller.map((product: any) => (
