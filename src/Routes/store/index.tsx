@@ -50,6 +50,26 @@ const GET_STORE = gql(`
           }
         }
       }
+      todaysProducts{
+        id
+        name
+        price
+        discountPrice
+        userPrice
+        img
+        isDeleted
+        saleEndTime
+        quantity
+        menus {
+          id
+          img
+          menu {
+            id
+            name
+            img
+          }
+        }
+      }
       img
       contactNumber
       closingHours
@@ -66,7 +86,7 @@ const Store = () => {
     variables: {
       storeId: Number(id),
     },
-    onCompleted: (data) => console.log(data.store?.products),
+    onCompleted: (data) => console.log(data.store?.todaysProducts),
     fetchPolicy: "network-only",
   });
   const store = data?.store;
@@ -313,7 +333,7 @@ const Store = () => {
 
           <Partition color="light" height="thick" />
 
-          {store.products?.length === 0 ? (
+          {store.todaysProducts?.length === 0 ? (
             <NoProduct
               isLiked={store.isLiked}
               onClickButton={async (e) => {
@@ -326,7 +346,7 @@ const Store = () => {
             />
           ) : (
             <div className="w-full p-5 pb-20 h-full gap-y-5 relative flex flex-col ">
-              {store?.products
+              {store?.todaysProducts
                 ?.filter(
                   (product) =>
                     product.isDeleted === false || product.isDeleted === null

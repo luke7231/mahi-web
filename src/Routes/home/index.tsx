@@ -34,6 +34,15 @@ const GET_STORES = gql(`
         createdAt
         updatedAt
       }
+      todaysProducts {
+        id
+        price
+        discountPrice
+        saleEndTime
+        quantity
+        createdAt
+        updatedAt
+      }
       img
       contactNumber
       closingHours
@@ -326,14 +335,14 @@ const Home = () => {
               <div className="mb-4">
                 <StoreCard
                   title={store?.title as string}
-                  quantity={store?.products?.reduce((total, product) => {
+                  quantity={store?.todaysProducts?.reduce((total, product) => {
                     return total + product.quantity;
                   }, 0)}
                   closingHours={store?.closingHours as string}
                   discountPrice={
-                    (store?.products as Product[])[0]?.discountPrice
+                    (store?.todaysProducts as Product[])[0]?.discountPrice
                   }
-                  price={(store?.products as Product[])[0]?.price}
+                  price={(store?.todaysProducts as Product[])[0]?.price}
                   isLiked={store?.isLiked}
                   img={store?.img as string}
                   onClick={() => onClickStore(store?.id as number)}
