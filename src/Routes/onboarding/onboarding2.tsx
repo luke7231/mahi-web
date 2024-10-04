@@ -1,9 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import IMG from "./bell3.png";
 import FadeInWrapper from "../../components/fade-in-wrapper";
+import { postMessage } from "../../core/message";
 const Onboarding2 = () => {
   const navigate = useNavigate();
   const onClickButton = () => {
+    // TODO: 다음 앱 심사 때 넣어서 나가야함.
+    // postMessage("REQ_NOTIFICATION", "");
     navigate("/welcome");
   };
 
