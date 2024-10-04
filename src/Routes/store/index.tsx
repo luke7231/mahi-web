@@ -157,7 +157,7 @@ const Store = () => {
       제품명: product.name,
       가격: product.userPrice,
     });
-    navigate(`/product/${id}`);
+    navigate(`/product/${product.id}`);
   }
   function onClickPurchage() {
     navigate("/checkout");
