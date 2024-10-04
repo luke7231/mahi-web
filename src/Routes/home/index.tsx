@@ -212,6 +212,7 @@ const Home = () => {
   // // setMsg3("web: ", isWeb());
   return (
     <div className="w-full h-[100vh] flex flex-col bg-white">
+      {/* <div onClick={() => localStorage.clear()}>clear</div> */}
       {/* LOCATION */}
       {/* <a
         className="h-4 ml-2 px-1.5 rounded-3xl text-2xs bg-[#f4f5f7] text-[#969696] mb-4"
