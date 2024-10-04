@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect } from "react";
 // import GlobalStyle from "./global-style";
 import Router from "./router";
 import { AuthProvider } from "./core/auth";
@@ -15,7 +15,7 @@ import { CartProvider } from "./core/cart";
 import AmplitudeContextProvider from "./core/amplitude";
 import { PackProvider } from "./Routes/admin/context/pack";
 import createUploadLink from "apollo-upload-client/createUploadLink.mjs";
-
+import { v4 as uuidv4 } from "uuid";
 // import { createUploadLink } from "apollo-upload-client";
 // import { getResponsiveMaxWidth } from "./utils/layout-util";
 // import { AuthProvider } from "./contexts/auth-provider";
@@ -66,6 +66,14 @@ export const client = new ApolloClient({
 // });
 
 function App() {
+  const initUuid = () => {
+    if (!localStorage.getItem("mahi_uuid")) {
+      localStorage.setItem("mahi_uuid", uuidv4());
+    }
+  };
+  useEffect(() => {
+    initUuid();
+  });
   return (
     <>
       {/* <ToastContainer closeButton={false} /> */}
