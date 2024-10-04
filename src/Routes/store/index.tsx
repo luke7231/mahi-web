@@ -14,6 +14,7 @@ import LoadingDots from "../../components/loading-dots";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { track } from "@amplitude/analytics-browser";
 const GET_STORE = gql(`
   query Store($storeId: Int!) {
     store(id: $storeId) {
@@ -150,7 +151,12 @@ const Store = () => {
     const interval = setInterval(checkStoreStatus, 60000); // 1분마다 상태 확인
     return () => clearInterval(interval);
   }, [store?.closingHours]);
-  function onClickProduct(id: number) {
+  function onClickProduct(product: Product) {
+    track("제품 클릭", {
+      매장명: store?.title as string,
+      제품명: product.name,
+      가격: product.userPrice,
+    });
     navigate(`/product/${id}`);
   }
   function onClickPurchage() {
@@ -368,7 +374,7 @@ const Store = () => {
                     </div>
 
                     <div
-                      onClick={() => onClickProduct(product.id)}
+                      onClick={() => onClickProduct(product as Product)}
                       className="w-2/3 p-4 flex flex-col justify-between"
                     >
                       <div className="text-black text-lg font-semibold">

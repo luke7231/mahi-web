@@ -6,7 +6,7 @@ import { useLocation } from "../../core/location-provider";
 import { gql } from "../../__generated__";
 import { gql as apolloGql } from "@apollo/client";
 import { useAuth } from "../../core/auth";
-import { Product, Store } from "../../__generated__/graphql";
+import { Product, Store, StoresQuery } from "../../__generated__/graphql";
 import BottomTab from "../../components/bottom-tab";
 import { StoreCard } from "../../components/store_card";
 import { NoStore } from "../../components/home/no-store";
@@ -14,6 +14,7 @@ import { postMessage } from "../../core/message";
 import { useCart } from "../../core/cart";
 import LoadingSpinner from "../../components/loading-spinnere";
 import { isAndroidApp, isIOSApp, isWeb } from "../../Lib/user-agent-utils";
+import { track } from "@amplitude/analytics-browser";
 // localStorage.clear();
 const GET_STORES = gql(`
   query Stores($lat: Float, $lng: Float) {
@@ -183,8 +184,11 @@ const Home = () => {
       });
     }
   }
-  function onClickStore(id: number) {
-    navigate(`store/${id}`);
+  function onClickStore(store: Store) {
+    track("매장 클릭", {
+      매장명: store.title,
+    });
+    navigate(`store/${store.id}`);
   }
   function onClickCart() {
     if (!isLoggedIn) {
@@ -346,7 +350,7 @@ const Home = () => {
                   price={(store?.todaysProducts as Product[])[0]?.price}
                   isLiked={store?.isLiked}
                   img={store?.img as string}
-                  onClick={() => onClickStore(store?.id as number)}
+                  onClick={() => onClickStore(store as Store)}
                   onClickHeart={async (e) => {
                     e.stopPropagation(); // Prevents triggering the store click
                     await onClickLike(
