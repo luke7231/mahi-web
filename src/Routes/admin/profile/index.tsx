@@ -104,6 +104,7 @@ const SellerProfilePage: React.FC = () => {
     logoutAdmin();
     changeLastPage();
     navigate("/");
+    window.location.reload();
   };
 
   if (loading) return <p>로딩중입니다...</p>;
