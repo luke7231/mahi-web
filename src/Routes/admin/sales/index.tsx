@@ -26,6 +26,7 @@ const GET_PRODUCTS = gql`
         }
         isCanceled
       }
+      createdAt
     }
   }
 `;
@@ -124,6 +125,21 @@ const SalesPage: React.FC = () => {
       clearInterval(countdownId); // 컴포넌트가 언마운트될 때 interval 정리
     };
   }, []);
+
+  const formatDateToKST = (dateString: string) => {
+    const date = new Date(dateString);
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      timeZone: "Asia/Seoul", // KST (UTC+9)
+    };
+    return new Intl.DateTimeFormat("ko-KR", options).format(date);
+  };
+
   if (!store)
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
@@ -199,6 +215,10 @@ const SalesPage: React.FC = () => {
                               10
                           ).toLocaleString()}
                       원<span className="text-sm text-gray-900">(10%)</span>
+                    </p>
+                    {/* CreatedAt */}
+                    <p className="text-gray-600 text-sm">
+                      등록일: {formatDateToKST(product.createdAt)}
                     </p>
                   </div>
                 </div>
