@@ -129,12 +129,9 @@ const SalesPage: React.FC = () => {
   const formatDateToKST = (dateString: string) => {
     const date = new Date(dateString);
     const options: Intl.DateTimeFormatOptions = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
+      month: "numeric", // 월을 숫자로
+      day: "numeric", // 일을 숫자로
+      weekday: "short", // 요일을 짧은 형태로 (월, 화, 수 등)
       timeZone: "Asia/Seoul", // KST (UTC+9)
     };
     return new Intl.DateTimeFormat("ko-KR", options).format(date);
@@ -218,7 +215,7 @@ const SalesPage: React.FC = () => {
                     </p>
                     {/* CreatedAt */}
                     <p className="text-gray-600 text-sm">
-                      등록일: {formatDateToKST(product.createdAt)}
+                      {formatDateToKST(product.createdAt)}
                     </p>
                   </div>
                 </div>
