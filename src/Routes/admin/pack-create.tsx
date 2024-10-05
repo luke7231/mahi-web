@@ -69,7 +69,8 @@ const PackCreate: React.FC = () => {
 
   const handleComplete = async () => {
     setIsModalOpen(true); // 완료하기 버튼 클릭 시 모달 열기
-
+  };
+  const onConfirm = async () => {
     try {
       // 각 팩을 createProduct로 전송
       for (const pack of packs) {
@@ -239,9 +240,7 @@ const PackCreate: React.FC = () => {
           <Modal
             title="게시 확인"
             message="정말로 게시하시겠어요? 소비자에게 노출됩니다."
-            onConfirm={() => {
-              setIsModalOpen(false); // 모달 닫기
-            }}
+            onConfirm={onConfirm}
             onCancel={() => setIsModalOpen(false)} // 모달 취소
           />
         )}
