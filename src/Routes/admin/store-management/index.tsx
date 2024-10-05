@@ -73,8 +73,11 @@ const CREATE_STORE = gql`
       closingHours: $closingHours
       img: $img
     ) {
-      ok
-      error
+      id
+      title
+      address
+      contactNumber
+      closingHours
     }
   }
 `;
@@ -102,6 +105,7 @@ type Store = {
 const StoreManagement: React.FC = () => {
   const navigate = useNavigate();
   const [store, setStore] = useState<Store | null>(null);
+  console.log(store);
   const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
   const [lat, setLat] = useState(0);
