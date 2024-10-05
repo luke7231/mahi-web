@@ -5,6 +5,7 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 import Modal from "./modal"; // 모달 컴포넌트 추가
 import Header from "../../components/common/header";
 import { GET_SELLER_STORE } from "./store-management";
+import { track } from "@amplitude/analytics-browser";
 
 const CREATE_PRODUCT = gql`
   mutation CreateProduct($input: CreateProductInput!) {
@@ -100,6 +101,16 @@ const PackCreate: React.FC = () => {
               img, // 이미지가 없어도 서버에서 알아서 처리함.
             },
           },
+        });
+        track("제품 생성", {
+          방식: pack[0].id !== 0 ? "메뉴 선택" : "직접 입력",
+          할인가격: calculateDiscountedPrice(pack),
+          할인율: Math.floor(
+            ((calculateTotalPrice(pack) - calculateDiscountedPrice(pack)) /
+              calculateTotalPrice(pack)) *
+              100
+          ),
+          매장명: store?.title,
         });
       }
 

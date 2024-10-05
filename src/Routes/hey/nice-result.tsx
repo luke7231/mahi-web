@@ -1,4 +1,5 @@
-import React from "react";
+import { track } from "@amplitude/analytics-browser";
+import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const NiceResult = () => {
@@ -11,7 +12,13 @@ const NiceResult = () => {
   const ok = queryParams.get("ok"); // 예: ?paramName=value
   const message = queryParams.get("message"); // 예: ?paramName=value
   const amount = queryParams.get("amount"); // 예: ?paramName=value
-
+  useEffect(() => {
+    if (ok) {
+      track("결제 완료", {
+        amount,
+      });
+    }
+  }, [ok]);
   return ok == "1" ? (
     <PaymentCompleted amount={amount} />
   ) : (
