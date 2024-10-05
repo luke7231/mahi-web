@@ -237,7 +237,7 @@ const StoreManagement: React.FC = () => {
             </div>
 
             <div className="mb-4">
-              <p className="font-bold  text-gray-900 text-md mb-1">연락처</p>
+              <p className="font-bold  text-gray-900 text-md mb-1">매장번호</p>
               <p className="text-black">{store?.contactNumber}</p>
             </div>
 
@@ -299,7 +299,14 @@ const StoreEditForm: React.FC<StoreEditFormProps> = ({
   const [isSpecificSet, setIsSpecificSet] = useState(false);
   const [closingHours, setClosingHours] = useState(store?.closingHours || "");
   const [getCoordsFromAddress] = useLazyQuery(GET_COORDS);
+
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const handleSubmit = () => {
+    // 폼 필드가 모두 채워져 있는지 확인
+    if (!title || !address || !contactNumber || !closingHours || !lat || !lng) {
+      setErrorMessage("필수 항목들을 입력해주세요. (*표시 항목들)"); // 에러 메시지 설정
+      return; // 필드가 비어있다면 저장을 실행하지 않음
+    }
     onSave({
       id: store?.id || 0,
       title,
@@ -309,6 +316,8 @@ const StoreEditForm: React.FC<StoreEditFormProps> = ({
       lng,
       lat,
     });
+
+    setErrorMessage(null); // 에러 메시지 초기화
   };
 
   // const openPostCode = useDaumPostcodePopup(
@@ -343,8 +352,9 @@ const StoreEditForm: React.FC<StoreEditFormProps> = ({
   return (
     <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-6 text-center">매장 정보 수정</h2>
+
       <div className="mb-4">
-        <label className="block text-gray-700 font-semibold">매장 이름</label>
+        <label className="block text-gray-700 font-semibold">*매장 이름</label>
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -353,7 +363,7 @@ const StoreEditForm: React.FC<StoreEditFormProps> = ({
       </div>
 
       <div className="mb-4">
-        <label className="block text-gray-700 font-semibold">매장 주소</label>
+        <label className="block text-gray-700 font-semibold">*매장 주소</label>
         <div
           onClick={handleAddressClick}
           className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-400 transition duration-200"
@@ -369,7 +379,7 @@ const StoreEditForm: React.FC<StoreEditFormProps> = ({
       )}
       <div className="flex flex-col mb-4">
         <label className="block text-gray-700 font-semibold">
-          지도에서 한 번 더 설정
+          *지도에서 한 번 더 설정
         </label>
         <div className="flex gap-2">
           <div
@@ -382,24 +392,23 @@ const StoreEditForm: React.FC<StoreEditFormProps> = ({
       </div>
 
       <div className="mb-4">
-        <label className="block text-gray-700 font-semibold">연락처</label>
+        <label className="block text-gray-700 font-semibold">*매장번호</label>
         <input
           value={contactNumber}
           onChange={(e) => setContactNumber(e.target.value)}
+          placeholder="000-0000-0000"
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-400 transition duration-200"
         />
       </div>
 
       <div className="mb-4">
-        <div className="flex items-center">
-          <label className="block text-gray-700 font-semibold">
-            영업 종료 시간
-          </label>
-          <span className="text-gray-500 text-sm">(ex. 21:00)</span>
-        </div>
+        <label className="block text-gray-700 font-semibold">
+          *영업 종료 시간
+        </label>
         <input
           value={closingHours}
           onChange={(e) => setClosingHours(e.target.value)}
+          placeholder="21:00"
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-400 transition duration-200"
         />
       </div>
@@ -413,6 +422,10 @@ const StoreEditForm: React.FC<StoreEditFormProps> = ({
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-400 transition duration-200"
         />
       </div>
+
+      {errorMessage && (
+        <div className="text-red-500 text-sm mb-4">{errorMessage}</div>
+      )}
 
       <div className="flex justify-between mt-6">
         <button
