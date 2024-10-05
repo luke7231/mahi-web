@@ -439,6 +439,7 @@ const ProductImageSlider: React.FC<{ product: any }> = ({ product }) => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    arrows: false,
     afterChange: (current: number) => setCurrentSlide(current), // 슬라이드 변경 후 상태 업데이트
   };
 
