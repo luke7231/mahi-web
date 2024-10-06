@@ -70,6 +70,15 @@ query JustStores {
       createdAt
       updatedAt
     }
+    todaysProducts {
+      id
+      price
+      discountPrice
+      saleEndTime
+      quantity
+      createdAt
+      updatedAt
+    }
     address
     img
     contactNumber
