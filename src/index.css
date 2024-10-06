@@ -34,7 +34,6 @@ body {
   height: 100%;
   box-sizing: border-box;
   background-color: #ffffff; /* 배경 색상 설정 (선택적) */
-  border-radius: 8px; /* 선택적: 모서리 둥글게 설정 */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 선택적: 그림자 설정 */
   overflow-y: scroll; /* 스크롤 활성화 */
   scrollbar-width: none; /* Firefox */
