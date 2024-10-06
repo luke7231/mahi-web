@@ -11,6 +11,7 @@ interface IProp {
   price: number;
   isLiked: boolean | undefined | null;
   img: string;
+  distance?: number | null;
 }
 
 export const StoreCard = ({
@@ -23,6 +24,7 @@ export const StoreCard = ({
   onClickHeart,
   img,
   isLiked,
+  distance,
 }: IProp): JSX.Element => {
   const calculateTimeLeft = () => {
     const now = new Date();
@@ -92,7 +94,9 @@ export const StoreCard = ({
                   <span className="font-medium text-base">
                     {closingHours}까지
                   </span>{" "}
-                  <span className="text-[#b6b6b6]">{calculateTimeLeft()}</span>
+                  <span className="text-[#b6b6b6]">
+                    {distance?.toFixed(2) + "km"}
+                  </span>
                 </p>
               </div>
               <div className="text-xs text-gray-400 line-through">

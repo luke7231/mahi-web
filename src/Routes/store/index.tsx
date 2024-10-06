@@ -296,8 +296,7 @@ const Store = () => {
                   <span className="font-medium text-base">
                     {store.closingHours}까지
                   </span>{" "}
-                  <span className="text-[#b6b6b6]">픽업 &middot; 도보</span> 약
-                  8분
+                  <span className="text-[#b6b6b6]">영업</span>
                 </p>
               </div>
             </div>

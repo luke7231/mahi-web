@@ -26,6 +26,7 @@ const GET_STORES = gql(`
       createdAt
       updatedAt
       isLiked
+      distance
       products {
         id
         price
@@ -349,6 +350,7 @@ const Home = () => {
                   }
                   price={(store?.todaysProducts as Product[])[0]?.price}
                   isLiked={store?.isLiked}
+                  distance={store?.distance}
                   img={store?.img as string}
                   onClick={() => onClickStore(store as Store)}
                   onClickHeart={async (e) => {
