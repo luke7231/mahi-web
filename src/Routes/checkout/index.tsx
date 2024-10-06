@@ -145,8 +145,7 @@ const CheckoutPage: React.FC = () => {
                 <div className="text-center text-black text-6xl font-semibold">
                   {cart[0]?.store?.closingHours}
                 </div>
-
-                {/* Notification Box */}
+                {/* Notification Box
                 <div className="flex justify-center mt-1">
                   <div className="w-44 h-16 bg-white rounded-lg flex items-center justify-center shadow-md">
                     <p className="text-xs text-[#1562fc] leading-tight text-center">
@@ -155,7 +154,7 @@ const CheckoutPage: React.FC = () => {
                       문앞 픽업이 가능한 매장이에요!
                     </p>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
             <h2 className="text-xl font-semibold ml-6 mb-4 mt-6">
