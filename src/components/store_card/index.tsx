@@ -95,7 +95,7 @@ export const StoreCard = ({
                     {closingHours}까지
                   </span>{" "}
                   <span className="text-[#b6b6b6]">
-                    {distance?.toFixed(2) + "km"}
+                    {distance ? distance?.toFixed(2) + "km" : ""}
                   </span>
                 </p>
               </div>
