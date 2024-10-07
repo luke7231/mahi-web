@@ -184,7 +184,7 @@ const Product = () => {
 
           {/* Business Information */}
           <div className={`w-full h-80 bg-[#F4F5F7]`} />
-          <div className="bg-[#F4F5F7] p-6 mt-8 pb-20">
+          <div className="bg-[#F4F5F7] p-6 pb-20">
             <h2 className="text-md font-semibold text-gray-800 mb-4">
               사업자 정보
             </h2>

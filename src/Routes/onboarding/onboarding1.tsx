@@ -36,17 +36,6 @@ const Onboarding1 = () => {
             </div>
           </div>
         </div>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="33"
-          height="7"
-          viewBox="0 0 33 7"
-          fill="none"
-          className="mb-7  pl-2"
-        >
-          <circle cx="3.5" cy="3.5" r="3.5" fill="#1562FC" />
-          <circle cx="16.5" cy="3.5" r="3.5" fill="#D9D9D9" />
-        </svg>
         <button
           className="text-white font-semibold h-[60px] bg-[#1562fc] w-full"
           onClick={onClickButton}

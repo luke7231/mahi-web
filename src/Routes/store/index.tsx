@@ -14,6 +14,7 @@ import LoadingDots from "../../components/loading-dots";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { track } from "@amplitude/analytics-browser";
 const GET_STORE = gql(`
   query Store($storeId: Int!) {
     store(id: $storeId) {
@@ -150,8 +151,13 @@ const Store = () => {
     const interval = setInterval(checkStoreStatus, 60000); // 1분마다 상태 확인
     return () => clearInterval(interval);
   }, [store?.closingHours]);
-  function onClickProduct(id: number) {
-    navigate(`/product/${id}`);
+  function onClickProduct(product: Product) {
+    track("제품 클릭", {
+      매장명: store?.title as string,
+      제품명: product.name,
+      가격: product.userPrice,
+    });
+    navigate(`/product/${product.id}`);
   }
   function onClickPurchage() {
     navigate("/checkout");
@@ -290,8 +296,7 @@ const Store = () => {
                   <span className="font-medium text-base">
                     {store.closingHours}까지
                   </span>{" "}
-                  <span className="text-[#b6b6b6]">픽업 &middot; 도보</span> 약
-                  8분
+                  <span className="text-[#b6b6b6]">영업</span>
                 </p>
               </div>
             </div>
@@ -368,7 +373,7 @@ const Store = () => {
                     </div>
 
                     <div
-                      onClick={() => onClickProduct(product.id)}
+                      onClick={() => onClickProduct(product as Product)}
                       className="w-2/3 p-4 flex flex-col justify-between"
                     >
                       <div className="text-black text-lg font-semibold">
@@ -433,6 +438,7 @@ const ProductImageSlider: React.FC<{ product: any }> = ({ product }) => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    arrows: false,
     afterChange: (current: number) => setCurrentSlide(current), // 슬라이드 변경 후 상태 업데이트
   };
 

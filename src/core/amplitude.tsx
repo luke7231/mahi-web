@@ -1,4 +1,3 @@
-"use client";
 import { useEffect, createContext } from "react";
 import { init, track } from "@amplitude/analytics-browser";
 
@@ -17,10 +16,11 @@ const AmplitudeContextProvider = ({
 }) => {
   useEffect(() => {
     if (!AMPLITUDE_API_KEY) return;
-
-    init(AMPLITUDE_API_KEY, undefined, {
+    console.log(localStorage.getItem("mahi_uuid"));
+    init(AMPLITUDE_API_KEY, localStorage.getItem("mahi_uuid") || undefined, {
       defaultTracking: {
         sessions: true,
+        pageViews: true,
       },
     });
   }, []);

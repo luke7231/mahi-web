@@ -152,7 +152,7 @@ const SellerProfilePage: React.FC = () => {
               {/* 연락처 */}
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700">
-                  연락처
+                  연락처(로그인 ID)
                 </label>
                 <input
                   type="text"
@@ -221,7 +221,7 @@ const SellerProfilePage: React.FC = () => {
 
               <div className="mb-4">
                 <label className="block text-md  text-gray-900 mb-1 font-bold">
-                  연락처
+                  연락처(로그인 ID)
                 </label>
                 <p className="text-lg">{seller.contactNumber || "비공개"}</p>
               </div>

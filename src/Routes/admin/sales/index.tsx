@@ -86,10 +86,6 @@ const SalesPage: React.FC = () => {
     }
   };
 
-  const handleEdit = (product: any) => {
-    setEditingProduct(product);
-  };
-
   const handleCancel = (product: any) => {
     setCancelingProduct(product);
     setIsModalOpen(true);
@@ -261,12 +257,6 @@ const SalesPage: React.FC = () => {
                   {!product.order?.isCanceled && !product.order && (
                     <div className="flex gap-2">
                       <button
-                        className="px-2 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
-                        onClick={() => handleEdit(product as any)}
-                      >
-                        편집
-                      </button>
-                      <button
                         className="px-2 py-2 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
                         onClick={() => handleDelete(product.id)}
                       >
@@ -292,16 +282,6 @@ const SalesPage: React.FC = () => {
           <p>판매 중인 제품이 없습니다.</p>
         )}
 
-        {/* Product Edit Modal (if necessary) */}
-        {editingProduct && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-xl font-semibold">상품 편집</h2>
-              <p>상품 수정 작업을 여기에 구현하세요.</p>
-              <button onClick={() => setEditingProduct(null)}>닫기</button>
-            </div>
-          </div>
-        )}
         {isModalOpen && (
           <CancelModal
             title="취소환불 처리"

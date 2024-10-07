@@ -5,6 +5,7 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 import Modal from "./modal"; // 모달 컴포넌트 추가
 import Header from "../../components/common/header";
 import { GET_SELLER_STORE } from "./store-management";
+import { track } from "@amplitude/analytics-browser";
 
 const CREATE_PRODUCT = gql`
   mutation CreateProduct($input: CreateProductInput!) {
@@ -68,7 +69,8 @@ const PackCreate: React.FC = () => {
 
   const handleComplete = async () => {
     setIsModalOpen(true); // 완료하기 버튼 클릭 시 모달 열기
-
+  };
+  const onConfirm = async () => {
     try {
       // 각 팩을 createProduct로 전송
       for (const pack of packs) {
@@ -100,6 +102,16 @@ const PackCreate: React.FC = () => {
               img, // 이미지가 없어도 서버에서 알아서 처리함.
             },
           },
+        });
+        track("제품 생성", {
+          방식: pack[0].id !== 0 ? "메뉴 선택" : "직접 입력",
+          할인가격: calculateDiscountedPrice(pack),
+          할인율: Math.floor(
+            ((calculateTotalPrice(pack) - calculateDiscountedPrice(pack)) /
+              calculateTotalPrice(pack)) *
+              100
+          ),
+          매장명: store?.title,
         });
       }
 
@@ -228,9 +240,7 @@ const PackCreate: React.FC = () => {
           <Modal
             title="게시 확인"
             message="정말로 게시하시겠어요? 소비자에게 노출됩니다."
-            onConfirm={() => {
-              setIsModalOpen(false); // 모달 닫기
-            }}
+            onConfirm={onConfirm}
             onCancel={() => setIsModalOpen(false)} // 모달 취소
           />
         )}
