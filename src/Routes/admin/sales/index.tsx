@@ -25,6 +25,7 @@ const GET_PRODUCTS = gql`
           name
         }
         isCanceled
+        isApproved
       }
       createdAt
     }
@@ -169,7 +170,9 @@ const SalesPage: React.FC = () => {
               <div
                 key={product.id}
                 className={`p-4 rounded-lg flex justify-between items-center shadow ${
-                  product.order && !product.order?.isCanceled
+                  product.order &&
+                  !product.order?.isCanceled &&
+                  product.order?.isApproved
                     ? "bg-blue-300"
                     : "bg-gray-200"
                 }`}
@@ -219,21 +222,27 @@ const SalesPage: React.FC = () => {
                 <div className="flex flex-col items-end w-full h-full justify-between">
                   <div
                     className={`rounded p-1 ${
-                      product.order && !product.order?.isCanceled
+                      product.order &&
+                      !product.order?.isCanceled &&
+                      product.order?.isApproved
                         ? "bg-green-500"
                         : "bg-gray-200"
                     }`}
                   >
                     <p
                       className={`text-center text-sm ${
-                        product.order
+                        product.order && product.order?.isApproved
                           ? "text-black"
                           : "font-bold text-green-500"
                       }`}
                     >
-                      {product.order ? "결제 완료" : "소비자 노출중"}
+                      {product.order &&
+                      !product.order?.isCanceled &&
+                      product.order?.isApproved
+                        ? "결제 완료"
+                        : "소비자 노출중"}
                     </p>
-                    {product.order?.user && (
+                    {product.order?.user && product.order?.isApproved && (
                       <p className="text-md">
                         구매자:{" "}
                         <span className="text-black font-bold">
@@ -244,17 +253,19 @@ const SalesPage: React.FC = () => {
                     {/* Payment status based on order existence */}
                   </div>
                   {/* Action buttons */}
-                  {!product.order?.isCanceled && product.order && (
-                    <div className="flex gap-2">
-                      <button
-                        className="px-2 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
-                        onClick={() => handleCancel(product)}
-                      >
-                        결제 취소
-                      </button>
-                    </div>
-                  )}
-                  {!product.order?.isCanceled && !product.order && (
+                  {!product.order?.isCanceled &&
+                    product.order &&
+                    product.order?.isApproved && (
+                      <div className="flex gap-2">
+                        <button
+                          className="px-2 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
+                          onClick={() => handleCancel(product)}
+                        >
+                          결제 취소
+                        </button>
+                      </div>
+                    )}
+                  {!product.order?.isCanceled && !product.order?.isApproved && (
                     <div className="flex gap-2">
                       <button
                         className="px-2 py-2 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
