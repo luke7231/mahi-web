@@ -69,6 +69,8 @@ const GET_STORE = gql(`
             name
             img
           }
+         quantity
+
         }
       }
       img
@@ -146,6 +148,7 @@ const Store = () => {
     };
 
     checkStoreStatus();
+    console.log(store?.todaysProducts);
 
     // 상태 업데이트를 위해 주기적으로 확인 (선택 사항)
     const interval = setInterval(checkStoreStatus, 60000); // 1분마다 상태 확인
@@ -359,9 +362,9 @@ const Store = () => {
                 .map((product) => (
                   <div
                     key={product.id}
-                    className="w-full h-full flex rounded-[0.625rem] border border-[#F9F9F9] bg-white shadow-[0_3px_8px_0_rgba(0,0,0,0.05)]"
+                    className="w-full flex rounded-[0.625rem] overflow-hidden border border-[#F9F9F9] bg-white shadow-[0_3px_8px_0_rgba(0,0,0,0.05)]"
                   >
-                    <div className="relative w-1/3">
+                    <div className="relative min-w-[110px] max-w-[120px]">
                       <ProductImageSlider product={product} />
                       {product.quantity === 0 && (
                         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-l-lg">
@@ -374,7 +377,7 @@ const Store = () => {
 
                     <div
                       onClick={() => onClickProduct(product as Product)}
-                      className="w-2/3 p-4 flex flex-col justify-between"
+                      className="p-4 w-full h-full flex flex-col justify-between"
                     >
                       <div className="text-black text-lg font-semibold">
                         {product.name}
@@ -388,7 +391,7 @@ const Store = () => {
                           남았어요!
                         </span>
                       </div>
-                      <div className="flex flex-col items-end mt-2">
+                      <div className="w-full flex flex-col items-end justify-end">
                         <div className="text-xl text-black font-bold">
                           {product.userPrice?.toLocaleString()}원
                         </div>
@@ -454,26 +457,39 @@ const ProductImageSlider: React.FC<{ product: any }> = ({ product }) => {
           src={menuImages[0] || product.img}
           alt="Menu"
         />
+        <div className="absolute bottom-2 right-1.5 rounded-md bg-black opacity-80 text-white p-1 px-2">
+          <p className="text-md font-semibold">
+            x{product.menus?.[0].quantity}
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="h-full relative">
-      <Slider {...settings}>
-        {menuImages.map((img: string, index: number) => (
-          <div key={index} className="flex">
-            <img
-              className="w-full h-full object-cover rounded-lg"
-              src={img || product.img}
-              alt={`Menu ${index + 1}`}
-            />
+    <div className="w-full h-full relative">
+      <Slider className="w-full h-full relative" {...settings}>
+        {product.menus?.map((menu: any, index: number) => (
+          <div className="relative">
+            <div key={index} className="flex w-full h-full justify-center">
+              <img
+                className="h-full object-cover rounded-lg"
+                src={menu.img || product.img}
+                alt={`Menu ${index + 1}`}
+              />
+            </div>
+            <div className="absolute bottom-2 right-1.5 rounded-md bg-black text-white p-1 px-2">
+              <p className="text-md font-semibold">x{menu.quantity}</p>
+            </div>
           </div>
         ))}
       </Slider>
 
+      {/* <div className="absolute bottom-0 right-0 bg-black text-white z-50 p-2 px-2.5">
+        <p className="text-base">{}개 남았어요!</p>
+      </div> */}
       {/* Custom Dots */}
-      <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 flex space-x-2">
+      <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {menuImages.map((_: any, index: number) => (
           <div
             key={index}

@@ -29,6 +29,7 @@ const GET_PRODUCT = gql`
       menus {
         id
         img
+        quantity
       }
     }
   }
@@ -77,6 +78,7 @@ const Product = () => {
       setQuantity(0);
     }
   }, [product?.quantity]);
+  console.log(product);
   return (
     <div className="container h-[100vh] mx-auto bg-[#F4F5F7]">
       {loading ? <LoadingDots /> : null}
@@ -95,10 +97,14 @@ const Product = () => {
                 {product.menus ? (
                   <>
                     {product.menus.map((menu: { id: number; img: string }) => (
-                      <img
-                        src={menu.img}
-                        className=" rounded m-4 h-56 aspect-square"
-                      />
+                      <div className="relative">
+                        <img src={menu.img} className="h-60 aspect-auto" />
+                        <div className="absolute bottom-2 right-1.5 rounded-md opacity-80 bg-black text-white p-2 px-2.5">
+                          <p className="text-lg font-semibold">
+                            x{product.menus?.[0].quantity}
+                          </p>
+                        </div>
+                      </div>
                     ))}
                   </>
                 ) : (
