@@ -28,6 +28,7 @@ const GET_PRODUCTS = gql`
         isApproved
       }
       createdAt
+      isToday
     }
   }
 `;
@@ -79,7 +80,6 @@ const SalesPage: React.FC = () => {
       setStore(data.getSellerStore);
     },
   });
-
   const handleDelete = (id: number) => {
     if (window.confirm("정말로 삭제하시겠습니까?")) {
       deleteProduct({ variables: { id } });
@@ -240,7 +240,9 @@ const SalesPage: React.FC = () => {
                       !product.order?.isCanceled &&
                       product.order?.isApproved
                         ? "결제 완료"
-                        : "소비자 노출중"}
+                        : product.isToday
+                        ? "소비자 노출중"
+                        : ""}
                     </p>
                     {product.order?.user && product.order?.isApproved && (
                       <p className="text-md">
@@ -265,16 +267,18 @@ const SalesPage: React.FC = () => {
                         </button>
                       </div>
                     )}
-                  {!product.order?.isCanceled && !product.order?.isApproved && (
-                    <div className="flex gap-2">
-                      <button
-                        className="px-2 py-2 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
-                        onClick={() => handleDelete(product.id)}
-                      >
-                        삭제
-                      </button>
-                    </div>
-                  )}
+                  {!product.order?.isCanceled &&
+                    !product.order?.isApproved &&
+                    product.isToday && (
+                      <div className="flex gap-2">
+                        <button
+                          className="px-2 py-2 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
+                          onClick={() => handleDelete(product.id)}
+                        >
+                          삭제
+                        </button>
+                      </div>
+                    )}
                   {product.order?.isCanceled && (
                     <div className="flex gap-2">
                       <div
