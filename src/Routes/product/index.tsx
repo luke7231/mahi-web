@@ -95,10 +95,7 @@ const Product = () => {
                 {product.menus ? (
                   <>
                     {product.menus.map((menu: { id: number; img: string }) => (
-                      <img
-                        src={menu.img}
-                        className=" rounded m-4 h-56 aspect-square"
-                      />
+                      <img src={menu.img} className="h-60 aspect-auto" />
                     ))}
                   </>
                 ) : (

@@ -359,9 +359,9 @@ const Store = () => {
                 .map((product) => (
                   <div
                     key={product.id}
-                    className="w-full h-full flex rounded-[0.625rem] border border-[#F9F9F9] bg-white shadow-[0_3px_8px_0_rgba(0,0,0,0.05)]"
+                    className="w-full flex rounded-[0.625rem] overflow-hidden border border-[#F9F9F9] bg-white shadow-[0_3px_8px_0_rgba(0,0,0,0.05)]"
                   >
-                    <div className="relative w-1/3">
+                    <div className="relative min-w-[110px] max-w-[120px]">
                       <ProductImageSlider product={product} />
                       {product.quantity === 0 && (
                         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-l-lg">
@@ -374,7 +374,7 @@ const Store = () => {
 
                     <div
                       onClick={() => onClickProduct(product as Product)}
-                      className="w-2/3 p-4 flex flex-col justify-between"
+                      className="p-4 w-full h-full flex flex-col justify-between"
                     >
                       <div className="text-black text-lg font-semibold">
                         {product.name}
@@ -388,7 +388,7 @@ const Store = () => {
                           남았어요!
                         </span>
                       </div>
-                      <div className="flex flex-col items-end mt-2">
+                      <div className="w-full flex flex-col items-end justify-end">
                         <div className="text-xl text-black font-bold">
                           {product.userPrice?.toLocaleString()}원
                         </div>
@@ -459,12 +459,12 @@ const ProductImageSlider: React.FC<{ product: any }> = ({ product }) => {
   }
 
   return (
-    <div className="h-full relative">
-      <Slider {...settings}>
+    <div className="w-full h-full relative">
+      <Slider className="w-full h-full relative" {...settings}>
         {menuImages.map((img: string, index: number) => (
-          <div key={index} className="flex">
+          <div key={index} className="flex w-full h-full justify-center">
             <img
-              className="w-full h-full object-cover rounded-lg"
+              className="h-full object-cover rounded-lg"
               src={img || product.img}
               alt={`Menu ${index + 1}`}
             />
@@ -473,7 +473,7 @@ const ProductImageSlider: React.FC<{ product: any }> = ({ product }) => {
       </Slider>
 
       {/* Custom Dots */}
-      <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 flex space-x-2">
+      <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {menuImages.map((_: any, index: number) => (
           <div
             key={index}
