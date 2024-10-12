@@ -69,6 +69,8 @@ const GET_STORE = gql(`
             name
             img
           }
+         quantity
+
         }
       }
       img
@@ -146,6 +148,7 @@ const Store = () => {
     };
 
     checkStoreStatus();
+    console.log(store?.todaysProducts);
 
     // 상태 업데이트를 위해 주기적으로 확인 (선택 사항)
     const interval = setInterval(checkStoreStatus, 60000); // 1분마다 상태 확인
@@ -454,6 +457,11 @@ const ProductImageSlider: React.FC<{ product: any }> = ({ product }) => {
           src={menuImages[0] || product.img}
           alt="Menu"
         />
+        <div className="absolute bottom-2 right-1.5 rounded-md bg-black opacity-80 text-white p-1 px-2">
+          <p className="text-md font-semibold">
+            x{product.menus?.[0].quantity}
+          </p>
+        </div>
       </div>
     );
   }
@@ -461,17 +469,25 @@ const ProductImageSlider: React.FC<{ product: any }> = ({ product }) => {
   return (
     <div className="w-full h-full relative">
       <Slider className="w-full h-full relative" {...settings}>
-        {menuImages.map((img: string, index: number) => (
-          <div key={index} className="flex w-full h-full justify-center">
-            <img
-              className="h-full object-cover rounded-lg"
-              src={img || product.img}
-              alt={`Menu ${index + 1}`}
-            />
+        {product.menus?.map((menu: any, index: number) => (
+          <div className="relative">
+            <div key={index} className="flex w-full h-full justify-center">
+              <img
+                className="h-full object-cover rounded-lg"
+                src={menu.img || product.img}
+                alt={`Menu ${index + 1}`}
+              />
+            </div>
+            <div className="absolute bottom-2 right-1.5 rounded-md bg-black text-white p-1 px-2">
+              <p className="text-md font-semibold">x{menu.quantity}</p>
+            </div>
           </div>
         ))}
       </Slider>
 
+      {/* <div className="absolute bottom-0 right-0 bg-black text-white z-50 p-2 px-2.5">
+        <p className="text-base">{}개 남았어요!</p>
+      </div> */}
       {/* Custom Dots */}
       <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {menuImages.map((_: any, index: number) => (
