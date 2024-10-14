@@ -1,5 +1,5 @@
 import { useEffect, createContext } from "react";
-import { init, track } from "@amplitude/analytics-browser";
+import { Identify, identify, init, track } from "@amplitude/analytics-browser";
 
 const AMPLITUDE_API_KEY = process.env.REACT_APP_AMPLITUDE_API_KEY;
 
@@ -16,13 +16,24 @@ const AmplitudeContextProvider = ({
 }) => {
   useEffect(() => {
     if (!AMPLITUDE_API_KEY) return;
-    console.log(localStorage.getItem("mahi_uuid"));
-    init(AMPLITUDE_API_KEY, localStorage.getItem("mahi_uuid") || undefined, {
+
+    const mahiUUID = localStorage.getItem("mahi_uuid");
+    const sellerToken = localStorage.getItem("sellerToken");
+
+    init(AMPLITUDE_API_KEY, mahiUUID || undefined, {
       defaultTracking: {
         sessions: true,
         pageViews: true,
       },
     });
+
+    // sellerToken이 있는 경우 identify로 사용자 속성 추가
+    if (sellerToken) {
+      const identifyUser = new Identify().set("isSeller", true);
+      identify(identifyUser); // 사용자 속성 설정
+    }
+
+    console.log(mahiUUID);
   }, []);
 
   const trackAmplitudeEvent = (eventName: string, eventProperties: any) => {
