@@ -345,7 +345,7 @@ const Home = () => {
       ) : null}
       {isList ? (
         data?.stores?.length !== 0 ? (
-          <div className="pt-8 mb-12 p-4 flex-1 overflow-y-auto">
+          <div className="pt-8 mb-20 p-4 flex-1 overflow-y-auto">
             {data?.stores?.map((store) => (
               <div className="mb-4">
                 <StoreCard
@@ -372,11 +372,20 @@ const Home = () => {
                 />
               </div>
             ))}
+            <div className="mx-auto w-32 h-10 mt-8 bg-white rounded-md border border-solid shadow-lg border-[#dddddd] flex justify-center items-center cursor-pointer">
+              <a
+                href="https://forms.gle/PXmEvzq4LsNDC1Gj9"
+                className="text-[#5b5b5b] text-sm font-semibold"
+              >
+                매장 추천하기
+              </a>
+            </div>
           </div>
         ) : (
           <NoStore />
         )
       ) : null}
+
       {/* BOTTOM TAB */}
       <BottomTab />
       <img
