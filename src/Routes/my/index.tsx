@@ -98,6 +98,7 @@ const My = () => {
 
       <div className="pb-24">
         {/* 메뉴   */}
+        <Menu title="매장 추천하기" to="https://forms.gle/PXmEvzq4LsNDC1Gj9" />
         <Menu title="문의하기" to="/customer-service" />
         <Menu title="약관 및 정책" to="/policy" />
         <Menu title="비밀번호 재설정" to="/change-password" />
