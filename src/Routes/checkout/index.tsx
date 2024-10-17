@@ -81,7 +81,7 @@ const CheckoutPage: React.FC = () => {
     const remainingCount = cart.length - 1;
 
     // 최종 결과 생성
-    const goodsName = `${firstProductName} 그 외 ${remainingCount}개`;
+    const goodsName = `마감히어로 팩`;
 
     const serverAuth = () => {
       window.AUTHNICE.requestPay({
