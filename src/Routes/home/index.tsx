@@ -118,7 +118,7 @@ const Home = () => {
       lng: hasLastLo ? getLocationFromStorage().lng : null,
     },
     // onCompleted: (data) => console.log(data),
-    fetchPolicy: "network-only",
+    fetchPolicy: "no-cache",
   });
   const { data: justData } = useQuery(JUST_STORES, {
     // onCompleted: (data) => console.log(data),
