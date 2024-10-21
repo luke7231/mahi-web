@@ -208,6 +208,10 @@ const Product = () => {
                 329-49-00934
               </p>
               <p className="mb-2">
+                <span className="font-bold">통신판매신고: </span>
+                2024-성남수정-0892호
+              </p>
+              <p className="mb-2">
                 <span className="font-bold">사업장 주소: </span>
                 경기도 성남시 수정구 성남대로 1342, 6층 617호 (복정동)
               </p>
