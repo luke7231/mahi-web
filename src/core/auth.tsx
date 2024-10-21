@@ -60,6 +60,11 @@ const SET_TOKEN_TO_USER = gql`
     setTokenToUser(push_token: $push_token)
   }
 `;
+const SET_TOKEN_TO_SELLER = gql`
+  mutation SetTokenToSeller($push_token: String!) {
+    setTokenToSeller(push_token: $push_token)
+  }
+`;
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(processIsLoggedIn);
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(
@@ -71,7 +76,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   );
   const [createToken] = useMutation(CREATE_PUSH_TOKEN);
   const [setTokenToUser] = useMutation(SET_TOKEN_TO_USER);
-
+  const [setTokenToSeller] = useMutation(SET_TOKEN_TO_SELLER);
   const login = () => {
     // 로그인 로직 구현 (예: 사용자 인증)
     setIsLoggedIn(true);
@@ -122,6 +127,15 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const push_token = localStorage.getItem("expo_push_token");
     const jwt = localStorage.getItem("jwt");
     // const isServerSet = localStorage.getItem("isServerSet");
+    const current = localStorage.getItem("lastPage");
+
+    if (push_token && current === "seller") {
+      setTokenToSeller({
+        variables: {
+          push_token,
+        },
+      });
+    }
     if (push_token && jwt) {
       //  로그인하고 푸시토큰 했으면 무조건 보내는 건?
       setTokenToUser({
