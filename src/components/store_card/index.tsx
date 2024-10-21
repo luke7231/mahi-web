@@ -26,25 +26,6 @@ export const StoreCard = ({
   isLiked,
   distance,
 }: IProp): JSX.Element => {
-  const calculateTimeLeft = () => {
-    const now = new Date();
-    const [closingHour, closingMinute] = closingHours.split(":").map(Number);
-
-    const closingTime = new Date();
-    closingTime.setHours(closingHour, closingMinute, 0, 0); // closingHours 설정
-
-    const difference = closingTime.getTime() - now.getTime(); // 밀리초로 시간 차 계산
-
-    if (difference > 0) {
-      const hoursLeft = Math.floor(difference / (1000 * 60 * 60));
-      const minutesLeft = Math.floor(
-        (difference % (1000 * 60 * 60)) / (1000 * 60)
-      );
-      return `${hoursLeft}시간 ${minutesLeft}분 남음`;
-    } else {
-      return "마감되었습니다.";
-    }
-  };
   return (
     <div className="w-full h-52" onClick={onClick}>
       <div className="w-full h-full">
