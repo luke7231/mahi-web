@@ -240,7 +240,7 @@ function Map({ stores }: { stores: Store[] }) {
                 closingHours={clickedStore?.closingHours as string}
                 discountPrice={
                   (clickedStore?.todaysProducts as Product[])[0]
-                    ?.discountPrice as number
+                    ?.userPrice as number
                 }
                 price={(clickedStore?.todaysProducts as Product[])[0]?.price}
                 isLiked={clickedStore?.isLiked}

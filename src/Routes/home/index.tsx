@@ -75,6 +75,7 @@ query JustStores {
       id
       price
       discountPrice
+      userPrice
       saleEndTime
       quantity
       createdAt
