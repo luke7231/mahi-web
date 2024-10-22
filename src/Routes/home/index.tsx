@@ -40,6 +40,7 @@ const GET_STORES = gql(`
         id
         price
         discountPrice
+        userPrice
         saleEndTime
         quantity
         createdAt
@@ -355,7 +356,7 @@ const Home = () => {
                   }, 0)}
                   closingHours={store?.closingHours as string}
                   discountPrice={
-                    (store?.todaysProducts as Product[])[0]?.discountPrice
+                    (store?.todaysProducts as Product[])[0]?.userPrice
                   }
                   price={(store?.todaysProducts as Product[])[0]?.price}
                   isLiked={store?.isLiked}
