@@ -1,7 +1,7 @@
 import { gql, useLazyQuery, useMutation } from "@apollo/client";
 import React, { useState } from "react";
 import { useAuth } from "../../core/auth";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import BackArrow from "../../components/common/back-arrow";
 import { isIOSApp, isWeb } from "../../Lib/user-agent-utils";
 
@@ -43,6 +43,7 @@ const APPLE_LOGIN = gql`
 
 const Login: React.FC = () => {
   const { login: authLogin } = useAuth();
+  const location = useLocation();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -69,7 +70,13 @@ const Login: React.FC = () => {
           localStorage.setItem("jwt", jwt);
           authLogin();
           // TODO: 원래 있던 곳으로 보낸다.
-          navigate("/");
+          // 로그인 성공 시 리디렉션 경로가 있으면 해당 경로로 이동
+          const redirect = new URLSearchParams(location.search).get("redirect");
+          if (redirect) {
+            navigate(redirect);
+          } else {
+            navigate("/"); // 리디렉션 경로가 없으면 기본 경로로 이동
+          }
         }
       },
       onError: (e) => {

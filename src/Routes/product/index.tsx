@@ -62,7 +62,8 @@ const Product = () => {
   const product = data?.product;
   function onClickButton() {
     if (!isLoggedIn) {
-      navigate("/login");
+      // 현재 페이지 경로를 쿼리 파라미터로 추가
+      navigate(`/login?redirect=${window.location.pathname}`);
       return;
     }
 
