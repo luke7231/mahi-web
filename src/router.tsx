@@ -44,6 +44,7 @@ import SellerLoginPage from "./Routes/admin/auth/seller-login";
 import SellerSignUpPage from "./Routes/admin/auth/seller-signup";
 import SalesPage from "./Routes/admin/sales";
 import AdminSupport from "./Routes/admin/support";
+import SettlementInfoForm from "./Routes/admin/banking";
 
 const Router = () => {
   const { isFirst, isLoggedIn, isAdminLoggedIn, lastPage } = useAuth();
@@ -125,6 +126,7 @@ const Router = () => {
 
         <Route path="/admin/sales" element={<SalesPage />} />
         <Route path="/admin/support" element={<AdminSupport />} />
+        <Route path="/admin/settlement" element={<SettlementInfoForm />} />
       </Routes>
     </BrowserRouter>
   );

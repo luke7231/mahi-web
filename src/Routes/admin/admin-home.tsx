@@ -155,6 +155,35 @@ const AdminHome = () => {
           </svg>
           <span className="text-lg text-[#1562fc] font-semibold">고객센터</span>
         </button>
+
+        {/* 정산정보 */}
+        <button
+          onClick={() => navigate("/admin/settlement")}
+          className="bg-white text-[#444] py-4 rounded-lg shadow-md hover:bg-blue-50 transition-colors flex flex-col items-center justify-center space-y-2"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            {/* 카드 바깥 테두리 */}
+            <rect x="3" y="5" width="18" height="14" rx="2" ry="2"></rect>
+            {/* 카드 상단 가로 줄 */}
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+            {/* 카드 하단 세부 가로 줄 */}
+            <line x1="7" y1="15" x2="10" y2="15"></line>
+            <line x1="14" y1="15" x2="17" y2="15"></line>
+          </svg>
+          <span className="text-lg text-[#1562fc] font-semibold">
+            정산정보 입력
+          </span>
+        </button>
       </div>
     </div>
   );
