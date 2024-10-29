@@ -11,7 +11,6 @@ import BottomTab from "../../components/bottom-tab";
 import { StoreCard } from "../../components/store_card";
 import { NoStore } from "../../components/home/no-store";
 import { useCart } from "../../core/cart";
-import { isAndroidApp, isIOSApp, isWeb } from "../../Lib/user-agent-utils";
 import { track } from "@amplitude/analytics-browser";
 
 const GET_STORES = gql(`
@@ -143,9 +142,6 @@ const Home = () => {
     ],
   });
   const [cancelLike] = useMutation(CANCEL_LIKE, {
-    // onCompleted: (data) => {
-    //   console.log(data.cancelLike.storeId, "id..");
-    // },
     onError: (error) => console.error(error),
     refetchQueries: [
       // 흠... 이거 캐시로 수정해야해 ㅠㅠ 일단 이렇게 하긴하는데 불필요한 네트워크 요청이 넘 만을 것 같다. 이거부터 청산해야할 듯. 출시후에
@@ -161,9 +157,6 @@ const Home = () => {
       },
     ],
   });
-  function onClickLocation() {
-    //
-  }
   function onClickTab(type: string) {
     if (type === "LIST") {
       setIsList(true);
@@ -207,20 +200,6 @@ const Home = () => {
     }
     navigate("/checkout");
   }
-  const [msg1, setMsg1] = useState("");
-  // const [msg2, setMsg2] = useState("");
-  // const [msg3, setMsg3] = useState("");
-  useEffect(() => {
-    if (isAndroidApp()) {
-      setMsg1("android");
-    }
-    if (isIOSApp()) {
-      setMsg1("ios");
-    }
-    if (isWeb()) {
-      setMsg1("web");
-    }
-  }, []);
 
   return (
     <div className="w-full h-[100vh] flex flex-col bg-white">
@@ -305,13 +284,6 @@ const Home = () => {
       </div>
       <div className="h-[0.0625rem] w-full bg-[#F4F5F7]" />
       {/* LIST */}
-      {/* {isList && loading ? (
-        <div className="flex space-x-2">
-          <div className="w-3 h-3 bg-[#1562fc] rounded-full animate-bounce-sequence"></div>
-          <div className="w-3 h-3 bg-[#1562fc] rounded-full animate-bounce-sequence animation-delay-200"></div>
-          <div className="w-3 h-3 bg-[#1562fc] rounded-full animate-bounce-sequence animation-delay-400"></div>
-        </div>
-      ) : null} */}
       {!isList && data && data.stores ? (
         <Map stores={justData?.justStores as Store[]} />
       ) : null}
