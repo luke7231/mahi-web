@@ -16,10 +16,6 @@ function Map({ stores }: { stores: Store[] }) {
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const mapElement = useRef<HTMLDivElement | null>(null);
-  // const [searchKeyword, setSearchKeyword] = useState(
-  //   "안성시 공도읍 서동대로 4060-5, 효성해링턴플레이스 202동 306호 "
-  // );
-
   const [AddressY, setAddressY] = useState<number>(
     Number(getAddressY()) || 37.3595704
   );
@@ -27,29 +23,6 @@ function Map({ stores }: { stores: Store[] }) {
     Number(getAddressX()) || 127.105399
   );
   const [clickedStore, setClickedStore] = useState<Store | null>(null);
-  // useEffect(() => {
-  //   if (searchKeyword) {
-  //     naver.maps.Service?.geocode(
-  //       { query: searchKeyword },
-  //       function (status, res) {
-  //         if (res.v2.addresses.length === 0) {
-  //           // 요청실패 (searchKeyword에 대한 응답이 없을 경우) 에러 핸들링
-  //           console.log("hi");
-  //         } else {
-  //           console.log("hi");
-  //           // 요청 성공에 대한 핸들링
-  //           // 검색된 주소에 해당하는 위도, 경도를 숫자로 변환후 상태 저장
-  //           const resAddress = res.v2.addresses[0];
-  //           const x = parseFloat(resAddress.x);
-  //           const y = parseFloat(resAddress.y);
-  //           setAddressX(x);
-  //           setAddressY(y);
-  //         }
-  //       }
-  //     );
-  //   }
-  // }, [searchKeyword]);
-
   const { naver } = window;
   let map: naver.maps.Map;
   // 지도가 이동하였을 때 가려진 부분의 마커는 숨기고
@@ -132,37 +105,10 @@ function Map({ stores }: { stores: Store[] }) {
     } catch (e) {}
   };
 
-  // [현재 뷰포트를 상태로 저장]
-  // const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
-
-  // [리사이즈 시 view port를 변경하는 이펙트]
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     setViewportWidth(window.innerWidth);
-  //   };
-
-  //   window.addEventListener("resize", handleResize);
-
-  //   return () => {
-  //     window.removeEventListener("resize", handleResize);
-  //   };
-  // }, []);
-
   const [sortedData, setSortedData] = useState<IData[] | []>();
 
   const resetListHandler = () => {
     if (!newMap) return;
-
-    // 미터 실험
-    // const tA = newMap.getCenter();
-    // console.log(tA);
-    // const test1 = DATA[0];
-    // const tA = new naver.maps.LatLng(test1.lat, test1.lng);
-    // const test = DATA[4];
-    // const tB = new naver.maps.LatLng(test.lat, test.lng);
-    // console.log(tB);
-    // const projection = newMap.getProjection();
-    // const dis = projection.getDistance(tA, tB);
 
     const newArray = [...DATA].sort((a, b) => {
       const currentCenterLatLng = newMap.getCenter();
