@@ -12,6 +12,8 @@ import { StoreCard } from "../../components/store_card";
 import { NoStore } from "../../components/home/no-store";
 import { useCart } from "../../core/cart";
 import { track } from "@amplitude/analytics-browser";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const GET_STORES = gql(`
   query Stores($lat: Float, $lng: Float) {
@@ -283,9 +285,20 @@ const Home = () => {
         </div>
       </div>
       <div className="h-[0.0625rem] w-full bg-[#F4F5F7]" />
+
       {/* LIST */}
+
       {!isList && data && data.stores ? (
         <Map stores={justData?.justStores as Store[]} />
+      ) : null}
+      {loading ? (
+        <div className="pt-8 px-4 z-0">
+          <Skeleton
+            count={3}
+            style={{ height: 208, marginBottom: 16 }}
+            borderRadius={"10px"}
+          />
+        </div>
       ) : null}
       {isList ? (
         data?.stores?.length !== 0 ? (
