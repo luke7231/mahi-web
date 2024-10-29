@@ -153,6 +153,14 @@ function Map({ stores }: { stores: Store[] }) {
       // });
     }
   }
+  useEffect(() => {
+    if (newMap) {
+      // 지도 드래그가 시작될 때 clickedStore를 초기화합니다.
+      naver.maps.Event.addListener(newMap, "dragstart", () => {
+        setClickedStore(null);
+      });
+    }
+  }, [newMap]);
   function onClickStore(id: number) {
     navigate(`/store/${id}`);
   }
