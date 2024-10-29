@@ -205,22 +205,7 @@ function Map({ stores }: { stores: Store[] }) {
         ) : null}
       </div>
       <div className="flex items-center justify-center">
-        <div>
-          {/* <div
-            className="bg-orange-400 p-2 rounded-md mt-4"
-            // onClick={() => clickButton()}
-            onClick={() => window.location.reload()}
-          >
-            reload
-          </div>
-          <div
-            className="bg-orange-400 p-2 rounded-md mt-4"
-            // onClick={() => clickButton()}
-            onClick={() => navigate("/like")}
-          >
-            go to like
-          </div> */}
-        </div>
+        <div></div>
       </div>
     </div>
   );
