@@ -15,6 +15,8 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { track } from "@amplitude/analytics-browser";
+import Skeleton from "react-loading-skeleton";
+
 const GET_STORE = gql(`
   query Store($storeId: Int!) {
     store(id: $storeId) {
@@ -240,45 +242,57 @@ const Store = () => {
         console.error("복사 실패:", err);
       });
   }
-
   return (
     <div className="container mx-auto bg-[#f6f6f6]">
-      {store ? (
-        <>
-          <div className="relative w-full mx-auto bg-white overflow-hidden">
-            <div className="relative w-full">
-              <img
-                src={BACK_IMG}
-                onClick={() => navigate(-1)}
-                className="absolute top-5 left-5 w-[40px] h-[40px]"
-                alt="back"
-              />
-              <img
-                className="w-full h-56 object-cover"
-                alt="Store"
-                src={store.img as string}
-              />
+      <>
+        <div className="relative w-full mx-auto bg-white overflow-hidden">
+          <div className="relative w-full">
+            {loading ? (
+              <Skeleton style={{ height: 224, lineHeight: 2 }} />
+            ) : (
+              <>
+                <img
+                  src={BACK_IMG}
+                  onClick={() => navigate(-1)}
+                  className="absolute top-5 left-5 w-[40px] h-[40px]"
+                  alt="back"
+                />
+                <img
+                  className="w-full h-56 object-cover"
+                  alt="Store"
+                  src={store?.img as string}
+                />
+              </>
+            )}
+          </div>
+
+          <div className="px-4 py-3">
+            <div className="flex justify-between mb-3 ">
+              {loading ? (
+                <Skeleton style={{ height: 30, width: 80 }} />
+              ) : (
+                <h2 className="text-3xl font-semibold text-black">
+                  {store?.title}
+                </h2>
+              )}
+
+              <div className="flex items-center">
+                <HeartBlackBorder
+                  isLiked={store?.isLiked}
+                  onClick={async (e) => {
+                    e.stopPropagation();
+                    await onClickLike(
+                      store?.id as number,
+                      store?.isLiked as boolean
+                    );
+                  }}
+                />
+              </div>
             </div>
 
-            <div className="px-4 py-3">
-              <div className="flex justify-between mb-3 ">
-                <h2 className="text-3xl font-semibold text-black">
-                  {store.title}
-                </h2>
-                <div className="flex items-center">
-                  <HeartBlackBorder
-                    isLiked={store.isLiked}
-                    onClick={async (e) => {
-                      e.stopPropagation();
-                      await onClickLike(
-                        store?.id as number,
-                        store?.isLiked as boolean
-                      );
-                    }}
-                  />
-                </div>
-              </div>
-
+            {loading ? (
+              <Skeleton style={{ height: 18, width: 120 }} />
+            ) : (
               <div className="flex items-center text-md">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -297,115 +311,124 @@ const Store = () => {
                 </svg>
                 <p className="text-sm text-gray-600">
                   <span className="font-medium text-base">
-                    {store.closingHours}까지
+                    {store?.closingHours}까지
                   </span>{" "}
                   <span className="text-[#b6b6b6]">영업</span>
                 </p>
               </div>
-            </div>
+            )}
           </div>
+        </div>
 
-          <Partition />
+        <Partition />
 
-          <div className="w-full p-4 bg-white">
-            <div className="flex flex-col text-sm leading-[21px] space-y-1">
-              <div className="flex">
-                <span className="text-gray-600">가게 위치</span>
-                <span className="text-black ml-2">{store.address}</span>
-                <div
-                  className="ml-2 px-1.5 rounded-3xl text-2xs bg-[#f4f5f7] text-[#969696]"
-                  onClick={() => copyToClipboard(store.address as string)}
-                >
-                  복사하기
-                </div>
-              </div>
-
-              <div className="flex">
-                <span className="text-gray-600">영업 시간</span>
-                <span className="text-black ml-2">
-                  ~{store?.closingHours}까지{" "}
-                  <span className="font-bold">
-                    {isOpen ? "영업중" : "영업종료"}
-                  </span>
-                </span>
-              </div>
-
-              <div className="flex">
-                <span className="text-gray-600">매장 번호</span>
-                <span className="text-black ml-2">
-                  {store?.contactNumber || "비공개"}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <Partition color="light" height="thick" />
-
-          {store.todaysProducts?.length === 0 ? (
-            <NoProduct
-              isLiked={store.isLiked}
-              onClickButton={async (e) => {
-                e.stopPropagation();
-                await onClickLike(
-                  store?.id as number,
-                  store?.isLiked as boolean
-                );
-              }}
-            />
-          ) : (
-            <div className="w-full p-5 pb-20 h-full gap-y-5 relative flex flex-col ">
-              {store?.todaysProducts
-                ?.filter(
-                  (product) =>
-                    product.isDeleted === false || product.isDeleted === null
-                )
-                .map((product) => (
+        <div className="w-full p-4 bg-white">
+          <div className="flex flex-col text-sm leading-[21px] space-y-1">
+            {/* <Skeleton style={{ height: 17 }} /> */}
+            {loading ? (
+              <>
+                <Skeleton style={{ height: 17 }} />
+                <Skeleton style={{ height: 17 }} />
+                <Skeleton style={{ height: 17 }} />
+              </>
+            ) : (
+              <>
+                <div className="flex">
+                  <span className="text-gray-600">가게 위치</span>
+                  <span className="text-black ml-2">{store?.address}</span>
                   <div
-                    key={product.id}
-                    className="w-full flex rounded-[0.625rem] overflow-hidden border border-[#F9F9F9] bg-white shadow-[0_3px_8px_0_rgba(0,0,0,0.05)]"
+                    className="ml-2 px-1.5 rounded-3xl text-2xs bg-[#f4f5f7] text-[#969696]"
+                    onClick={() => copyToClipboard(store?.address as string)}
                   >
-                    <div className="relative min-w-[110px] max-w-[120px]">
-                      <ProductImageSlider product={product} />
-                      {product.quantity === 0 && (
-                        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-l-lg">
-                          <span className="text-white text-xl font-semibold">
-                            품절
-                          </span>
-                        </div>
-                      )}
-                    </div>
+                    복사하기
+                  </div>
+                </div>
 
-                    <div
-                      onClick={() => onClickProduct(product as Product)}
-                      className="p-4 w-full h-full flex flex-col justify-between"
-                    >
-                      <div className="text-black text-lg font-semibold">
-                        {product.name}
-                      </div>
-                      <div className="bg-[#f3f3f3] px-2 pb-1 rounded-md w-fit mt-2">
-                        <span className="text-black text-xs font-bold">
-                          {product.quantity}개
+                <div className="flex">
+                  <span className="text-gray-600">영업 시간</span>
+                  <span className="text-black ml-2">
+                    ~{store?.closingHours}까지{" "}
+                    <span className="font-bold">
+                      {isOpen ? "영업중" : "영업종료"}
+                    </span>
+                  </span>
+                </div>
+
+                <div className="flex">
+                  <span className="text-gray-600">매장 번호</span>
+                  <span className="text-black ml-2">
+                    {store?.contactNumber || "비공개"}
+                  </span>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+
+        <Partition color="light" height="thick" />
+
+        {store?.todaysProducts?.length === 0 ? (
+          <NoProduct
+            isLiked={store.isLiked}
+            onClickButton={async (e) => {
+              e.stopPropagation();
+              await onClickLike(store?.id as number, store?.isLiked as boolean);
+            }}
+          />
+        ) : (
+          <div className="w-full p-5 pb-20 h-full gap-y-5 relative flex flex-col ">
+            {store?.todaysProducts
+              ?.filter(
+                (product) =>
+                  product.isDeleted === false || product.isDeleted === null
+              )
+              .map((product) => (
+                <div
+                  key={product.id}
+                  className="w-full flex rounded-[0.625rem] overflow-hidden border border-[#F9F9F9] bg-white shadow-[0_3px_8px_0_rgba(0,0,0,0.05)]"
+                >
+                  <div className="relative min-w-[110px] max-w-[120px]">
+                    <ProductImageSlider product={product} />
+                    {product.quantity === 0 && (
+                      <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-l-lg">
+                        <span className="text-white text-xl font-semibold">
+                          품절
                         </span>
-                        <span className="text-black text-xs font-normal">
-                          {" "}
-                          남았어요!
-                        </span>
                       </div>
-                      <div className="w-full flex flex-col items-end justify-end">
-                        <div className="text-xl text-black font-bold">
-                          {product.userPrice?.toLocaleString()}원
-                        </div>
-                        <div className="text-xs text-[#b6b6b6] line-through">
-                          {product.price.toLocaleString()}원
-                        </div>
+                    )}
+                  </div>
+
+                  <div
+                    onClick={() => onClickProduct(product as Product)}
+                    className="p-4 w-full h-full flex flex-col justify-between"
+                  >
+                    <div className="text-black text-lg font-semibold">
+                      {product.name}
+                    </div>
+                    <div className="bg-[#f3f3f3] px-2 pb-1 rounded-md w-fit mt-2">
+                      <span className="text-black text-xs font-bold">
+                        {product.quantity}개
+                      </span>
+                      <span className="text-black text-xs font-normal">
+                        {" "}
+                        남았어요!
+                      </span>
+                    </div>
+                    <div className="w-full flex flex-col items-end justify-end">
+                      <div className="text-xl text-black font-bold">
+                        {product.userPrice?.toLocaleString()}원
+                      </div>
+                      <div className="text-xs text-[#b6b6b6] line-through">
+                        {product.price.toLocaleString()}원
                       </div>
                     </div>
                   </div>
-                ))}
-            </div>
-          )}
-        </>
-      ) : null}
+                </div>
+              ))}
+          </div>
+        )}
+      </>
+
       {cart.length > 0 && (
         <div
           onClick={() => onClickPurchage()}

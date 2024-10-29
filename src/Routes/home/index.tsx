@@ -13,7 +13,6 @@ import { NoStore } from "../../components/home/no-store";
 import { useCart } from "../../core/cart";
 import { track } from "@amplitude/analytics-browser";
 import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 
 const GET_STORES = gql(`
   query Stores($lat: Float, $lng: Float) {

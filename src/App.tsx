@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 // import GlobalStyle from "./global-style";
+import "react-loading-skeleton/dist/skeleton.css";
+import "./index.css";
 import Router from "./router";
 import { AuthProvider } from "./core/auth";
 import { LocationProvider } from "./core/location-provider";
