@@ -6,16 +6,14 @@ import { useLocation } from "../../core/location-provider";
 import { gql } from "../../__generated__";
 import { gql as apolloGql } from "@apollo/client";
 import { useAuth } from "../../core/auth";
-import { Product, Store, StoresQuery } from "../../__generated__/graphql";
+import { Product, Store } from "../../__generated__/graphql";
 import BottomTab from "../../components/bottom-tab";
 import { StoreCard } from "../../components/store_card";
 import { NoStore } from "../../components/home/no-store";
-import { postMessage } from "../../core/message";
 import { useCart } from "../../core/cart";
-import LoadingSpinner from "../../components/loading-spinnere";
 import { isAndroidApp, isIOSApp, isWeb } from "../../Lib/user-agent-utils";
 import { track } from "@amplitude/analytics-browser";
-// localStorage.clear();
+
 const GET_STORES = gql(`
   query Stores($lat: Float, $lng: Float) {
     stores(lat: $lat, lng: $lng) {
@@ -226,6 +224,7 @@ const Home = () => {
   // // setMsg1("android: ", isAndroidApp());
   // // setMsg2("ios: ", isIOSApp());
   // // setMsg3("web: ", isWeb());
+
   return (
     <div className="w-full h-[100vh] flex flex-col bg-white">
       {/* <div onClick={() => localStorage.clear()}>clear</div> */}
