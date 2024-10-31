@@ -1,5 +1,6 @@
 import React from "react";
 import HeartIcon from "../common/heart";
+import AlarmButton from "../common/alram-button";
 
 interface IProp {
   onClick: () => void;
@@ -49,9 +50,7 @@ export const StoreCard = ({
             <div className="flex justify-between items-center mt-1">
               <p className="font-semibold text-black text-lg">{title}</p>
               <p className="font-bold text-black text-xl">
-                {discountPrice
-                  ? `~${discountPrice?.toLocaleString()}원`
-                  : "준비중"}
+                {discountPrice ? `~${discountPrice?.toLocaleString()}원` : null}
               </p>
             </div>
             <div className="flex justify-between items-center">
@@ -80,9 +79,13 @@ export const StoreCard = ({
                   </span>
                 </p>
               </div>
-              <div className="text-xs text-gray-400 line-through">
-                {price ? `~${price?.toLocaleString()}원` : "준비중"}
-              </div>
+              {price ? (
+                <div className="text-xs text-gray-400 line-through">
+                  ~{price?.toLocaleString()}원
+                </div>
+              ) : (
+                <AlarmButton onClick={onClickHeart} isLiked={isLiked} />
+              )}
             </div>
           </div>
         </div>

@@ -13,6 +13,7 @@ import { NoStore } from "../../components/home/no-store";
 import { useCart } from "../../core/cart";
 import { track } from "@amplitude/analytics-browser";
 import Skeleton from "react-loading-skeleton";
+import { postMessage } from "../../core/message";
 
 const GET_STORES = gql(`
   query Stores($lat: Float, $lng: Float) {
@@ -118,7 +119,7 @@ const Home = () => {
       lng: hasLastLo ? getLocationFromStorage().lng : null,
     },
     // onCompleted: (data) => console.log(data),
-    fetchPolicy: "no-cache",
+    fetchPolicy: "network-only",
   });
   const { data: justData } = useQuery(JUST_STORES, {
     // onCompleted: (data) => console.log(data),
@@ -181,6 +182,11 @@ const Home = () => {
       });
     } else {
       // createLike
+      const isNotified = localStorage.getItem("isNotified");
+      if (isNotified !== "true") {
+        alert("알람 설정이 안 되어 있다면 [설정]앱에서 바꿀 수 있습니다!");
+        localStorage.setItem("isNotified", "true");
+      }
       likeStore({
         variables: {
           storeId,
