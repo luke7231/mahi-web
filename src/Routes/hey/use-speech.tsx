@@ -4,11 +4,11 @@ let recognition: any = null;
 if ("webkitSpeechRecognition" in window) {
   recognition = new webkitSpeechRecognition();
   recognition.continuous = true;
+  recognition.lang = "ko-KR"; // 언어를 한국어로 설정
 }
 const useSpeech = () => {
   const [text, setText] = useState("");
   const [isListening, setIsListening] = useState(false);
-  //   const [is];
 
   useEffect(() => {
     if (!recognition) return;

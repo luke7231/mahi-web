@@ -346,6 +346,7 @@ const SelectFromMenu: React.FC = () => {
             >
               <FiMic size={28} />
             </button>
+            {isListening ? <div className="mt-4">듣는 중이에요</div> : null}
             <p className="text-black text-xl p-6 bg-gray-100 rounded-xl text-center mt-8">
               {text}
             </p>
