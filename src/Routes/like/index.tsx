@@ -9,7 +9,7 @@ import { Product } from "../../__generated__/graphql";
 import { useNavigate } from "react-router-dom";
 import NoLikedStore from "../../components/home/no-liked-store";
 import Header from "../../components/common/header";
-import LoadingSpinner from "../../components/loading-spinnere";
+import { track } from "@amplitude/analytics-browser";
 const GET_LIKED_STORES = gql(`
   query LikedStores {
     likedStores {
@@ -104,6 +104,7 @@ const Like = () => {
     navigate(`/store/${id}`);
   }
   async function onClickLike(storeId: number, isLiked: boolean | null) {
+    track(isLiked ? "좋아요취소 클릭" : "좋아요 클릭");
     // 토글처리
     if (isLiked) {
       // deleteLike
@@ -114,6 +115,35 @@ const Like = () => {
       });
     } else {
       // createLike
+      const isNotified = localStorage.getItem("isNotified");
+      if (isNotified !== "true") {
+        alert("알람 설정이 안 되어 있다면 [설정]앱에서 바꿀 수 있습니다!");
+        localStorage.setItem("isNotified", "true");
+      }
+      likeStore({
+        variables: {
+          storeId,
+        },
+      });
+    }
+  }
+  async function onClickNoti(storeId: number, isLiked: boolean | null) {
+    track(isLiked ? "알림취소 클릭" : "알림받기 클릭");
+    // 토글처리
+    if (isLiked) {
+      // deleteLike
+      cancelLike({
+        variables: {
+          storeId,
+        },
+      });
+    } else {
+      // createLike
+      const isNotified = localStorage.getItem("isNotified");
+      if (isNotified !== "true") {
+        alert("알람 설정이 안 되어 있다면 [설정]앱에서 바꿀 수 있습니다!");
+        localStorage.setItem("isNotified", "true");
+      }
       likeStore({
         variables: {
           storeId,
@@ -154,6 +184,13 @@ const Like = () => {
                 onClickHeart={async (e) => {
                   e.stopPropagation(); // Prevents triggering the store click
                   await onClickLike(
+                    store?.id as number,
+                    store?.isLiked as boolean
+                  );
+                }}
+                onClickNoti={async (e) => {
+                  e.stopPropagation(); // Prevents triggering the store click
+                  await onClickNoti(
                     store?.id as number,
                     store?.isLiked as boolean
                   );

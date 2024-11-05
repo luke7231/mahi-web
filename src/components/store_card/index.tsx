@@ -5,6 +5,7 @@ import AlarmButton from "../common/alram-button";
 interface IProp {
   onClick: () => void;
   onClickHeart: (e: React.MouseEvent) => void;
+  onClickNoti?: (e: React.MouseEvent) => void;
   quantity: number | undefined;
   title: string;
   closingHours: string;
@@ -24,6 +25,7 @@ export const StoreCard = ({
   price,
   onClick,
   onClickHeart,
+  onClickNoti,
   img,
   isLiked,
   distance,
@@ -90,7 +92,7 @@ export const StoreCard = ({
               ) : (
                 <>
                   {!disableLike && (
-                    <AlarmButton onClick={onClickHeart} isLiked={isLiked} />
+                    <AlarmButton onClick={onClickNoti} isLiked={isLiked} />
                   )}
                 </>
               )}

@@ -172,6 +172,36 @@ const Home = () => {
       return;
       // TODO: 로그인 페이지로 보낸다.
     }
+    track(isLiked ? "좋아요취소 클릭" : "좋아요 클릭");
+    // 토글처리
+    if (isLiked) {
+      // deleteLike
+      cancelLike({
+        variables: {
+          storeId,
+        },
+      });
+    } else {
+      // createLike
+      const isNotified = localStorage.getItem("isNotified");
+      if (isNotified !== "true") {
+        alert("알람 설정이 안 되어 있다면 [설정]앱에서 바꿀 수 있습니다!");
+        localStorage.setItem("isNotified", "true");
+      }
+      likeStore({
+        variables: {
+          storeId,
+        },
+      });
+    }
+  }
+  async function onClickNoti(storeId: number, isLiked: boolean | null) {
+    if (!isLoggedIn) {
+      navigate("/login");
+      return;
+      // TODO: 로그인 페이지로 보낸다.
+    }
+    track(isLiked ? "알림취소 클릭" : "알림받기 클릭");
     // 토글처리
     if (isLiked) {
       // deleteLike
@@ -327,6 +357,13 @@ const Home = () => {
                   onClickHeart={async (e) => {
                     e.stopPropagation(); // Prevents triggering the store click
                     await onClickLike(
+                      store?.id as number,
+                      store?.isLiked as boolean
+                    );
+                  }}
+                  onClickNoti={async (e) => {
+                    e.stopPropagation(); // Prevents triggering the store click
+                    await onClickNoti(
                       store?.id as number,
                       store?.isLiked as boolean
                     );
