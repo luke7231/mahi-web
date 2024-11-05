@@ -406,6 +406,7 @@ const StoreEditForm: React.FC<StoreEditFormProps> = ({
           *영업 종료 시간
         </label>
         <input
+          type="time"
           value={closingHours}
           onChange={(e) => setClosingHours(e.target.value)}
           placeholder="21:00"
