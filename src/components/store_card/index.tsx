@@ -13,6 +13,7 @@ interface IProp {
   isLiked: boolean | undefined | null;
   img: string;
   distance?: number | null;
+  disableLike?: boolean;
 }
 
 export const StoreCard = ({
@@ -26,6 +27,7 @@ export const StoreCard = ({
   img,
   isLiked,
   distance,
+  disableLike = false,
 }: IProp): JSX.Element => {
   return (
     <div className="w-full h-52" onClick={onClick}>
@@ -42,7 +44,9 @@ export const StoreCard = ({
               </div>
             )}
             {/* Heart Icon */}
-            <HeartIcon onClick={onClickHeart} isLiked={isLiked} />
+            {!disableLike && (
+              <HeartIcon onClick={onClickHeart} isLiked={isLiked} />
+            )}
           </div>
 
           {/* Lower Box */}
@@ -84,7 +88,11 @@ export const StoreCard = ({
                   ~{price?.toLocaleString()}원
                 </div>
               ) : (
-                <AlarmButton onClick={onClickHeart} isLiked={isLiked} />
+                <>
+                  {!disableLike && (
+                    <AlarmButton onClick={onClickHeart} isLiked={isLiked} />
+                  )}
+                </>
               )}
             </div>
           </div>

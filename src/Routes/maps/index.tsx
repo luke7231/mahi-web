@@ -197,6 +197,7 @@ function Map({ stores }: { stores: Store[] }) {
                     ?.userPrice as number
                 }
                 price={(clickedStore?.todaysProducts as Product[])[0]?.price}
+                disableLike
                 isLiked={clickedStore?.isLiked}
                 img={clickedStore?.img as string}
                 onClick={() => onClickStore(clickedStore?.id as number)}
