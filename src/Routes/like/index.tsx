@@ -33,6 +33,7 @@ const GET_LIKED_STORES = gql(`
         id
         price
         discountPrice
+        userPrice
         saleEndTime
         quantity
         createdAt
@@ -174,8 +175,7 @@ const Like = () => {
                 }, 0)}
                 closingHours={store?.closingHours as string}
                 discountPrice={
-                  (store?.todaysProducts as Product[])[0]
-                    ?.discountPrice as number
+                  (store?.todaysProducts as Product[])[0]?.userPrice as number
                 }
                 price={(store?.todaysProducts as Product[])[0]?.price}
                 isLiked={store?.isLiked}
