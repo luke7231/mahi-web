@@ -181,7 +181,9 @@ const SalesPage: React.FC = () => {
           Object.keys(groupedProducts).map((date) => (
             <div key={date} className="mb-8">
               {/* 날짜 섹션 헤더 */}
-              <h3 className="text-lg font-bold text-gray-900 mb-4">{date}</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-4 bg-blue-300 rounded-md p-2">
+                {date}
+              </h3>
               <div className="grid grid-cols-1 gap-6">
                 {/* 해당 날짜에 속하는 제품들 렌더링 */}
                 {groupedProducts[date].map((product: any) => (
