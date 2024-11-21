@@ -108,20 +108,20 @@ const SalesPage: React.FC = () => {
   const handleRefresh = () => {
     window.location.reload(); // 페이지 새로고침
   };
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      handleRefresh();
-    }, 60000); // 60000ms = 1분
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     handleRefresh();
+  //   }, 60000); // 60000ms = 1분
 
-    const countdownId = setInterval(() => {
-      setCountdown((prev) => (prev > 0 ? prev - 1 : 60));
-    }, 1000); // 1초마다 카운트다운
+  //   const countdownId = setInterval(() => {
+  //     setCountdown((prev) => (prev > 0 ? prev - 1 : 60));
+  //   }, 1000); // 1초마다 카운트다운
 
-    return () => {
-      clearInterval(intervalId);
-      clearInterval(countdownId); // 컴포넌트가 언마운트될 때 interval 정리
-    };
-  }, []);
+  //   return () => {
+  //     clearInterval(intervalId);
+  //     clearInterval(countdownId); // 컴포넌트가 언마운트될 때 interval 정리
+  //   };
+  // }, []);
 
   const formatDateToKST = (dateString: string) => {
     const date = new Date(dateString);
@@ -175,7 +175,6 @@ const SalesPage: React.FC = () => {
           >
             새로고침
           </button>
-          <p className="text-gray-700 text-md">{countdown}초 후 새로고침</p>
         </div>
         {data?.productsBySeller?.length > 0 ? (
           Object.keys(groupedProducts).map((date) => (
