@@ -86,7 +86,7 @@ const CheckoutPage: React.FC = () => {
     const serverAuth = () => {
       window.AUTHNICE.requestPay({
         clientId: process.env.REACT_APP_NICE_PAY_CLIENT_KEY,
-        method: "card",
+        method: "cardAndEasyPay",
         orderId,
         amount: getTotalAmount(),
         appScheme: "mahi://",
