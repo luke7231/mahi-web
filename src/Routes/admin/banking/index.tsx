@@ -117,12 +117,15 @@ const SettlementInfoForm = () => {
         <h2 className="text-2xl font-bold mb-6 text-center">정산 정보 입력</h2>
 
         {/* 안내 문구 추가 */}
-        <p className="text-md text-gray-600 mb-4">
+        <p className="text-md text-gray-600">
           * 정산받을 계좌는{" "}
           <span className="text-red-600">
             반드시 사업자 등록증의 명의와 동일해야
           </span>{" "}
           합니다.
+        </p>
+        <p className="text-md text-gray-600 mb-4">
+          * 정산금액에 대해서는 직접 부가가치세 신고를 하셔야 합니다.
         </p>
 
         <div className="mb-4">
