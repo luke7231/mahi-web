@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLazyQuery } from "@apollo/client";
 import { gql } from "../../__generated__";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../core/auth";
 
 const KAKAO_LOGIN = gql(`
@@ -27,6 +27,7 @@ const KAKAO_LOGIN = gql(`
 
 const KakaoRedirectHandler = () => {
   const { login: authLogin } = useAuth();
+  const location = useLocation();
   const navigate = useNavigate();
   const [kakaoLogin, { loading, error, data }] = useLazyQuery(KAKAO_LOGIN, {
     onCompleted: (data) => {
@@ -37,7 +38,14 @@ const KakaoRedirectHandler = () => {
 
         authLogin();
         // TODO: 원래 있던 곳으로 보낸다.
-        navigate("/");
+        const redirect = localStorage.getItem("redirect");
+
+        if (redirect) {
+          localStorage.removeItem("redirect");
+          navigate(redirect);
+        } else {
+          navigate("/"); // 리디렉션 경로가 없으면 기본 경로로 이동
+        }
       }
     },
   });

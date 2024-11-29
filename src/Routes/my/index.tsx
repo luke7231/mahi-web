@@ -10,6 +10,7 @@ import Menu from "../../components/my/menu";
 import { GET_ORDERS } from "../order";
 import Modal from "../../components/common/modal";
 import Header from "../../components/common/header";
+import { useCart } from "../../core/cart";
 
 const My = () => {
   // const [isOpenModal, setIsOpenModal] = useState(true);
@@ -18,7 +19,7 @@ const My = () => {
   const [totalAmount, setTotalAmount] = useState(0);
   const navigate = useNavigate();
   const { logout } = useAuth();
-
+  const { clearCart } = useCart();
   // const toggleModal = () => {
   //   setIsOpenModal(!isOpenModal);
   // };
@@ -45,6 +46,7 @@ const My = () => {
     }
   }, [data?.orders]);
   function onClickLogout() {
+    clearCart();
     localStorage.removeItem("jwt");
     logout();
     navigate("/");

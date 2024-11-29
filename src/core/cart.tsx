@@ -41,6 +41,7 @@ interface CartContextType {
   cart: CartItem[];
   addToCart: (product: Product, quantity: number, store: Store) => void;
   removeFromCart: (productId: number) => void;
+  clearCart: () => void;
 }
 
 // CartContext 생성
@@ -108,9 +109,15 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
       prevCart.filter((item) => item.product.id !== productId)
     );
   };
+  const clearCart = () => {
+    setCart([]);
+    localStorage.removeItem("cart");
+  };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+    <CartContext.Provider
+      value={{ cart, addToCart, removeFromCart, clearCart }}
+    >
       {children}
     </CartContext.Provider>
   );

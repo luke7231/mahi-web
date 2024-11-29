@@ -8,6 +8,8 @@ import BACK_IMG from "../../components/common/back-img.png";
 
 import Skeleton from "react-loading-skeleton";
 import BusinessInfo from "./business-info";
+import LoginBottomSheet from "./login-bottom-sheet";
+import { calculateDiscountRate } from "../../Lib/calc-util";
 
 const GET_PRODUCT = gql`
   query Product($productId: Int!) {
@@ -66,7 +68,7 @@ const Product = () => {
   function onClickButton() {
     if (!isLoggedIn) {
       // 현재 페이지 경로를 쿼리 파라미터로 추가
-      navigate(`/login?redirect=${window.location.pathname}`);
+      setIsSheetOpen(true);
       return;
     }
 
@@ -82,6 +84,12 @@ const Product = () => {
       setQuantity(0);
     }
   }, [product?.quantity]);
+
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  const handleCloseSheet = () => {
+    setIsSheetOpen(false);
+  };
 
   return (
     <div className="container h-[100vh] mx-auto bg-[#F4F5F7]">
@@ -246,6 +254,11 @@ const Product = () => {
           </div>
         </div>
       ) : null}
+      <LoginBottomSheet
+        discountRate={calculateDiscountRate(product?.price, product?.userPrice)}
+        isOpen={isSheetOpen}
+        onClose={handleCloseSheet}
+      />
     </div>
   );
 };
