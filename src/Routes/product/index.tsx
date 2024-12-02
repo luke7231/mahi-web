@@ -112,16 +112,21 @@ const Product = () => {
               {product?.menus ? (
                 <>
                   {!loading &&
-                    product.menus.map((menu: { id: number; img: string }) => (
-                      <div className="relative">
-                        <img src={menu.img} className="h-60 aspect-auto" />
-                        <div className="absolute bottom-2 right-1.5 rounded-md opacity-80 bg-black text-white p-2 px-2.5">
-                          <p className="text-lg font-semibold">
-                            x{product.menus?.[0].quantity}
-                          </p>
+                    product.menus.map(
+                      (
+                        menu: { id: number; img: string; quantity: number },
+                        index: number
+                      ) => (
+                        <div className="relative">
+                          <img src={menu.img} className="h-60 aspect-auto" />
+                          <div className="absolute bottom-2 right-1.5 rounded-md opacity-80 bg-black text-white p-2 px-2.5">
+                            <p className="text-lg font-semibold">
+                              x{product.menus?.[index].quantity}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      )
+                    )}
                 </>
               ) : (
                 <img
