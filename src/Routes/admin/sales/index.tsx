@@ -170,10 +170,10 @@ const SalesPage: React.FC = () => {
     <div className="min-h-screen bg-white">
       <Header title="판매 현황" showBackButton />
       <div className="pt-4">
-        <div className="flex flex-col items-center mb-4 justify-center space-x-4">
+        <div className="sticky top-4 z-10 flex flex-col px-4 items-center mb-4 justify-center space-x-4">
           <button
             onClick={handleRefresh}
-            className="flex text-md items-center px-8 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="flex text-md items-center justify-center  py-4 w-full bg-blue-500 text-white rounded-xl hover:bg-blue-600"
           >
             새로고침
           </button>
