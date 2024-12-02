@@ -18,6 +18,7 @@ const GET_PRODUCTS = gql`
       menus {
         id
         img
+        quantity
       }
       order {
         id
@@ -83,7 +84,8 @@ const SalesPage: React.FC = () => {
   const handleDelete = (id: number) => {
     if (window.confirm("정말로 삭제하시겠습니까?")) {
       deleteProduct({ variables: { id } });
-      refetch(); // 삭제 후 데이터 새로고침
+      // refetch(); // 삭제 후 데이터 새로고침
+      window.location.reload();
     }
   };
 
@@ -165,82 +167,93 @@ const SalesPage: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-white">
       <Header title="판매 현황" showBackButton />
-      <div className="p-6 pt-4">
-        <div className="flex flex-col items-end mb-4 justify-center space-x-4">
+      <div className="pt-4">
+        <div className="flex flex-col items-center mb-4 justify-center space-x-4">
           <button
             onClick={handleRefresh}
-            className="flex text-md items-center px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="flex text-md items-center px-8 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
             새로고침
           </button>
         </div>
+
         {data?.productsBySeller?.length > 0 ? (
           Object.keys(groupedProducts).map((date) => (
             <div key={date} className="mb-8">
               {/* 날짜 섹션 헤더 */}
-              <h3 className="text-lg font-bold text-gray-900 mb-4 bg-blue-300 rounded-md p-2">
+              <h3 className="text-2xl font-bold text-gray-900 rounded-md pl-4">
                 {date}
               </h3>
-              <div className="grid grid-cols-1 gap-6">
+              <div className="bg-black h-[2px] w-full rounded-xl" />
+
+              <div className="px-4 overflow-scroll">
                 {/* 해당 날짜에 속하는 제품들 렌더링 */}
                 {groupedProducts[date].map((product: any) => (
                   <div
                     key={product.id}
-                    className={`p-4 rounded-lg flex justify-between items-center shadow ${
-                      product.order &&
-                      !product.order?.isCanceled &&
-                      product.order?.isApproved
-                        ? "bg-blue-300"
-                        : "bg-gray-200"
-                    }`}
+                    className={`flex overflow-scroll flex-col bg-white mt-6`}
                   >
-                    <div className="flex w-full flex-col">
-                      {/* 제품 이미지 */}
-                      <div className="flex">
-                        <img
-                          src={
-                            product.img ||
-                            product?.menus[0].img ||
-                            "https://via.placeholder.com/100"
-                          }
-                          alt={product.name}
-                          className="w-20 h-20 object-cover rounded-lg mr-4"
-                        />
-                        <h2 className="text-lg break-keep font-semibold">
-                          {product.name}
-                        </h2>
-                      </div>
-                      <div className="mt-4">
-                        <p className="text-gray-700 font-semibold text-sm">
-                          원가: {product.price.toLocaleString()}원
-                        </p>
-                        <p className="text-gray-700 font-semibold text-sm">
-                          할인가: {product.discountPrice?.toLocaleString()}원
-                        </p>
-                        <p className="text-gray-900 font-bold">
-                          소비자가:{" "}
-                          {product?.userPrice
-                            ? Math.floor(product.userPrice).toLocaleString()
-                            : Math.floor(
-                                ((product.discountPrice +
-                                  product.discountPrice * 0.1) /
-                                  10) *
-                                  10
-                              ).toLocaleString()}
-                          원<span className="text-sm text-gray-900">(10%)</span>
-                        </p>
-                        {/* CreatedAt */}
-                        <p className="text-gray-600 text-sm">
-                          {formatDateToKST(product.createdAt)}
-                        </p>
+                    <div className="flex overflow-x-scroll">
+                      <div className="flex gap-1">
+                        {[...product?.menus]
+                          .reverse()
+                          .map((menu: any, index: number) => {
+                            return (
+                              <div className="relative w-32 h-32">
+                                <img
+                                  src={menu.img}
+                                  className="w-32 h-32 rounded-md object-cover"
+                                />
+                                <div className="absolute bottom-1 right-1.5 rounded-md opacity-80 bg-black text-white p-0.5 px-1.5">
+                                  <p className="text-md font-semibold">
+                                    x{product.menus?.[index].quantity}
+                                  </p>
+                                </div>
+                              </div>
+                            );
+                          })}
                       </div>
                     </div>
 
-                    <div className="flex flex-col items-end w-full h-full justify-between">
+                    <div className="flex w-full flex-col">
+                      {/* 제품 이미지 */}
+                      <div className="flex">
+                        <div className="text-xl break-keep font-semibold mt-2 max-w-48">
+                          {product.name}
+                        </div>
+                      </div>
+                      <div className="mt-1">
+                        <div className="flex justify-between items-center">
+                          <div className="flex">
+                            <p className="text-gray-400 text-base">
+                              원가: {product.price.toLocaleString()}
+                            </p>
+                            <p className="text-gray-400 text-base ml-1">
+                              할인가: {product.discountPrice?.toLocaleString()}
+                            </p>
+                          </div>
+                          <div className="flex justify-end">
+                            <p className="text-xl text-gray-900 font-bold">
+                              {product?.userPrice
+                                ? Math.floor(product.userPrice).toLocaleString()
+                                : Math.floor(
+                                    ((product.discountPrice +
+                                      product.discountPrice * 0.1) /
+                                      10) *
+                                      10
+                                  ).toLocaleString()}
+                              원<span className="text-sm text-gray-900"></span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-2 flex items-end w-full h-full justify-between">
                       <div
-                        className={`rounded p-1 ${
+                        className={`rounded ${
                           product.order &&
                           !product.order?.isCanceled &&
                           product.order?.isApproved
@@ -257,14 +270,16 @@ const SalesPage: React.FC = () => {
                         >
                           {product.order &&
                           !product.order?.isCanceled &&
-                          product.order?.isApproved
-                            ? "결제 완료"
-                            : product.isToday
-                            ? "소비자 노출중"
-                            : ""}
+                          product.order?.isApproved ? (
+                            <div className="pt-1">{"결제 완료"}</div>
+                          ) : product.isToday ? (
+                            <div className="p-2">{"소비자 노출중"}</div>
+                          ) : (
+                            ""
+                          )}
                         </p>
                         {product.order?.user && product.order?.isApproved && (
-                          <p className="text-md">
+                          <p className="text-md px-2 pb-1">
                             구매자:{" "}
                             <span className="text-black font-bold">
                               {product.order.user.name}
@@ -308,6 +323,7 @@ const SalesPage: React.FC = () => {
                         </div>
                       )}
                     </div>
+                    <div className="w-full bg-gray-200 h-[1px] mt-4" />
                   </div>
                 ))}
               </div>
