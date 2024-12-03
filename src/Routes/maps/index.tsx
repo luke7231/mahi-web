@@ -196,6 +196,7 @@ function Map({ stores }: { stores: Store[] }) {
         const coords = appData.data.coords;
         const latLng = new naver.maps.LatLng(coords.latitude, coords.longitude);
         // 지도 이동
+        newMap?.setZoom(15);
         newMap?.panTo(latLng, {
           duration: 0,
         });

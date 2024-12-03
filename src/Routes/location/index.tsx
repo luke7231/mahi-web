@@ -104,6 +104,7 @@ function Location() {
         setCurrentLat(coords.latitude);
         setCurrentLng(coords.longitude);
 
+        newMap?.setZoom(16);
         newMap?.panTo(
           new naver.maps.LatLng(coords.latitude, coords.longitude),
           {
