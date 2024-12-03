@@ -1,14 +1,31 @@
-import React from "react";
+import {
+  FaUserFriends,
+  FaMoneyBillWave,
+  FaLeaf,
+  FaHeart,
+} from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import FoodImg from "./food.png";
+import { gql, useQuery } from "@apollo/client";
+
+const GET_SELLER_REPORT = gql`
+  query GetSellerReport {
+    getSellerReport {
+      totalCustomerCount
+      totalDiscountPrice
+      totalLikeCount
+      totalCarbonEmission
+    }
+  }
+`;
 
 const AdminHome = () => {
   const navigate = useNavigate();
-
+  const { data: sellerReportData } = useQuery(GET_SELLER_REPORT);
   return (
     <div className="min-h-screen bg-[#f4f5f7] p-6 flex flex-col items-center">
       {/* Title Section */}
-      <h2 className="text-4xl font-bold text-center mb-8 text-gray-800">
+      <h2 className="text-4xl font-bold text-center mb-2 text-gray-800">
         <span className="bg-gradient-to-r from-[#1562fc] to-[#00c6ff] bg-clip-text text-transparent">
           마감히어로
         </span>
@@ -16,6 +33,38 @@ const AdminHome = () => {
           사장님 홈
         </div>
       </h2>
+      {/* Report */}
+      {sellerReportData?.getSellerReport ? (
+        <button
+          onClick={() => navigate("/admin/report")}
+          className="mt-6 bg-white text-[#444] rounded-lg shadow-md hover:bg-blue-50 flex items-center py-2 px-4 mb-4 gap-3"
+        >
+          <div>
+            <FaUserFriends className="text-blue-500 w-4 h-4 inline mb-0.5 mr-1" />
+            <span className="font-semibold text-md">
+              {sellerReportData?.getSellerReport?.totalCustomerCount}
+            </span>
+          </div>
+          <div>
+            <FaMoneyBillWave className="text-green-600 w-4 h-4 inline mb-0.5 mr-1" />
+            <span className="font-semibold text-md">
+              {sellerReportData?.getSellerReport?.totalDiscountPrice.toLocaleString()}
+            </span>
+          </div>
+          <div>
+            <FaHeart className="text-red-500 w-4 h-4 inline mb-0.5 mr-1" />
+            <span className="font-semibold text-md">
+              {sellerReportData?.getSellerReport?.totalLikeCount}
+            </span>
+          </div>
+          <div>
+            <FaLeaf className="text-green-500 w-4 h-4 inline mb-0.5 mr-1" />
+            <span className="font-semibold text-md">
+              {sellerReportData?.getSellerReport?.totalCarbonEmission}
+            </span>
+          </div>
+        </button>
+      ) : null}
 
       {/* Button Grid */}
       <div className="grid grid-cols-2 gap-6 w-full max-w-md">
@@ -184,6 +233,21 @@ const AdminHome = () => {
             정산정보 입력
           </span>
         </button>
+
+        {/* <button
+          onClick={() => navigate("/admin/report")}
+          className="bg-white text-[#444] py-4 rounded-lg shadow-md hover:bg-blue-50 transition-colors flex flex-col items-center justify-center space-y-2"
+        >
+          <div className="flex gap-0.5 mb-0.5">
+            <FaUserFriends className="text-blue-500 w-4 h-4 inline" />
+            <FaMoneyBillWave className="text-green-500 w-4 h-4 inline" />
+            <FaLeaf className="text-green-600 w-4 h-4 inline" />
+            <FaHeart className="text-red-500 w-4 h-4 inline" />
+          </div>
+          <div className="text-lg text-[#1562fc] font-semibold">
+            우리 매장은?
+          </div>
+        </button> */}
       </div>
     </div>
   );
