@@ -100,7 +100,7 @@ const Product = () => {
             <img
               src={BACK_IMG}
               onClick={() => navigate(-1)}
-              className="absolute top-5 left-5 w-[40px] h-[40px]"
+              className="absolute top-5 left-5 w-[40px] h-[40px] z-10"
             />
 
             <div className="flex overflow-scroll">
@@ -110,24 +110,29 @@ const Product = () => {
                 />
               )}
               {product?.menus ? (
-                <>
+                <div className="flex p-2 gap-2">
                   {!loading &&
-                    product.menus.map(
-                      (
-                        menu: { id: number; img: string; quantity: number },
-                        index: number
-                      ) => (
-                        <div className="relative">
-                          <img src={menu.img} className="h-60 aspect-auto" />
-                          <div className="absolute bottom-2 right-1.5 rounded-md opacity-80 bg-black text-white p-2 px-2.5">
-                            <p className="text-lg font-semibold">
-                              x{product.menus?.[index].quantity}
-                            </p>
+                    [...product.menus]
+                      .reverse()
+                      .map(
+                        (
+                          menu: { id: number; img: string; quantity: number },
+                          index: number
+                        ) => (
+                          <div className="relative w-60 h-60 rounded-lg overflow-hidden">
+                            <img
+                              src={menu.img}
+                              className="w-60 h-60 object-cover"
+                            />
+                            <div className="absolute bottom-2 right-1.5 rounded-md opacity-80 bg-black text-white p-2 px-2.5">
+                              <p className="text-lg font-semibold">
+                                x{product.menus?.[index].quantity}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      )
-                    )}
-                </>
+                        )
+                      )}
+                </div>
               ) : (
                 <img
                   className="object-cover w-full h-56"
