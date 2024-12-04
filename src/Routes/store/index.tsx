@@ -387,7 +387,7 @@ const Store = () => {
                   key={product.id}
                   className="w-full flex rounded-[0.625rem] overflow-hidden border border-[#F9F9F9] bg-white shadow-[0_3px_8px_0_rgba(0,0,0,0.05)]"
                 >
-                  <div className="relative min-w-[110px] max-w-[120px]">
+                  <div className="relative w-[137px] h-[137px]">
                     <ProductImageSlider product={product} />
                     {product.quantity === 0 && (
                       <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-l-lg">
@@ -474,9 +474,9 @@ const ProductImageSlider: React.FC<{ product: any }> = ({ product }) => {
   // 메뉴가 1개일 경우 슬라이더 대신 단일 이미지로 표시
   if (menuImages.length === 1) {
     return (
-      <div>
+      <div className="w-[137px] h-[137px]">
         <img
-          className="w-full h-full object-cover rounded-lg"
+          className="w-[137px] h-[137px] object-cover rounded-lg"
           src={menuImages[0] || product.img}
           alt="Menu"
         />
@@ -492,11 +492,11 @@ const ProductImageSlider: React.FC<{ product: any }> = ({ product }) => {
   return (
     <div className="w-full h-full relative">
       <Slider className="w-full h-full relative" {...settings}>
-        {product.menus?.map((menu: any, index: number) => (
+        {[...product.menus].reverse()?.map((menu: any, index: number) => (
           <div className="relative">
             <div key={index} className="flex w-full h-full justify-center">
               <img
-                className="h-full object-cover rounded-lg"
+                className="w-[137px] h-[137px] object-cover rounded-lg"
                 src={menu.img || product.img}
                 alt={`Menu ${index + 1}`}
               />
