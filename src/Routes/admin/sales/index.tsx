@@ -83,7 +83,6 @@ const SalesPage: React.FC = () => {
   const handleDelete = (id: number) => {
     if (window.confirm("정말로 삭제하시겠습니까?")) {
       deleteProduct({ variables: { id } });
-      window.location.reload();
     }
   };
 
