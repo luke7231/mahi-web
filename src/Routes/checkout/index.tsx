@@ -75,11 +75,6 @@ const CheckoutPage: React.FC = () => {
       onCompleted: (data) => console.log(data), // TODO: 여러번 클릭되지 않도록? 조치해야할듯 디바운스
     });
 
-    const firstProductName = cart[0].product.name;
-
-    // 남은 개수 계산
-    const remainingCount = cart.length - 1;
-
     // 최종 결과 생성
     const goodsName = `마감히어로 팩`;
 
@@ -145,16 +140,6 @@ const CheckoutPage: React.FC = () => {
                 <div className="text-center text-black text-6xl font-semibold">
                   {cart[0]?.store?.closingHours}
                 </div>
-                {/* Notification Box
-                <div className="flex justify-center mt-1">
-                  <div className="w-44 h-16 bg-white rounded-lg flex items-center justify-center shadow-md">
-                    <p className="text-xs text-[#1562fc] leading-tight text-center">
-                      이 매장은 마감시간 이후에도
-                      <br />
-                      문앞 픽업이 가능한 매장이에요!
-                    </p>
-                  </div>
-                </div> */}
               </div>
             </div>
             <h2 className="text-xl font-semibold ml-6 mb-4 mt-6">
