@@ -69,7 +69,9 @@ const SalesPage: React.FC = () => {
   const [reason, setReason] = useState("");
   const { loading, error, data } = useQuery(GET_PRODUCTS);
 
-  const [deleteProduct] = useMutation(DELETE_PRODUCT);
+  const [deleteProduct] = useMutation(DELETE_PRODUCT, {
+    onCompleted: () => window.location.reload(),
+  });
   const [cancelPayment] = useMutation(CANCEL_PAYMENT);
 
   const [store, setStore] = useState<Store | null>(null);
