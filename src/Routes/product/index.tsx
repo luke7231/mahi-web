@@ -126,7 +126,7 @@ const Product = () => {
                             />
                             <div className="absolute bottom-2 right-1.5 rounded-md opacity-80 bg-black text-white p-2 px-2.5">
                               <p className="text-lg font-semibold">
-                                x{product.menus?.[index].quantity}
+                                x{menu.quantity}
                               </p>
                             </div>
                           </div>

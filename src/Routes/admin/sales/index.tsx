@@ -196,7 +196,7 @@ const SalesPage: React.FC = () => {
                                   />
                                   <div className="absolute bottom-1 right-1.5 rounded-md opacity-80 bg-black text-white p-0.5 px-1.5">
                                     <p className="text-md font-semibold">
-                                      x{product.menus?.[index].quantity}
+                                      x{menu.quantity}
                                     </p>
                                   </div>
                                 </div>
