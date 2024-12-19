@@ -27,6 +27,11 @@ const LoginBottomSheet: React.FC<LoginBottomSheetProps> = ({
     });
   };
 
+  const handleEmailLoginClick = () => {
+    localStorage.setItem("redirect", window.location.pathname);
+    navigate("/login");
+  };
+
   return (
     <>
       {/* 오버레이 추가 */}
@@ -73,7 +78,7 @@ const LoginBottomSheet: React.FC<LoginBottomSheetProps> = ({
               </button>
               <div className="mt-4 text-center">
                 <div
-                  onClick={() => navigate("/login")}
+                  onClick={handleEmailLoginClick}
                   className="text-sm underline text-[#757575] hover:text-[#1562fc]"
                 >
                   다른 방법으로 가입하기

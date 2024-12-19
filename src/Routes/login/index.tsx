@@ -71,8 +71,9 @@ const Login: React.FC = () => {
           authLogin();
           // TODO: 원래 있던 곳으로 보낸다.
           // 로그인 성공 시 리디렉션 경로가 있으면 해당 경로로 이동
-          const redirect = new URLSearchParams(location.search).get("redirect");
+          const redirect = localStorage.getItem("redirect");
           if (redirect) {
+            localStorage.removeItem("redirect");
             navigate(redirect);
           } else {
             navigate("/"); // 리디렉션 경로가 없으면 기본 경로로 이동
