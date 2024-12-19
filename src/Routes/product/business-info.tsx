@@ -5,7 +5,7 @@ const BusinessInfo = () => {
       <div className="text-gray-700 text-xs">
         <p className="mb-2">
           <span className="font-bold">상호명: </span>
-          육각형
+          주식회사 마히
         </p>
         <p className="mb-2">
           <span className="font-bold">대표자명: </span>
@@ -13,11 +13,7 @@ const BusinessInfo = () => {
         </p>
         <p className="mb-2">
           <span className="font-bold">사업자등록번호: </span>
-          329-49-00934
-        </p>
-        <p className="mb-2">
-          <span className="font-bold">통신판매신고: </span>
-          2024-성남수정-0892호
+          567-81-03232
         </p>
         <p className="mb-2">
           <span className="font-bold">사업장 주소: </span>
