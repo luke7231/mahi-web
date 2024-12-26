@@ -16,6 +16,10 @@ const BusinessInfo = () => {
           567-81-03232
         </p>
         <p className="mb-2">
+          <span className="font-bold">통신판매신고: </span>
+          2024-성남수정-1048호
+        </p>
+        <p className="mb-2">
           <span className="font-bold">사업장 주소: </span>
           경기도 성남시 수정구 성남대로 1342, 6층 617호 (복정동)
         </p>
