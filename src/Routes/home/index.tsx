@@ -14,6 +14,7 @@ import { useCart } from "../../core/cart";
 import { track } from "@amplitude/analytics-browser";
 import Skeleton from "react-loading-skeleton";
 import { postMessage } from "../../core/message";
+import BusinessInfoWhiteBg from "../product/business-info-white-bg";
 
 const GET_STORES = gql(`
   query Stores($lat: Float, $lng: Float) {
@@ -371,7 +372,7 @@ const Home = () => {
                 />
               </div>
             ))}
-            <div className="mx-auto w-32 h-10 mt-8 bg-white rounded-md border border-solid shadow-lg border-[#dddddd] flex justify-center items-center cursor-pointer">
+            <div className="mx-auto w-32 h-10 mt-8 mb-14 bg-white rounded-md border border-solid shadow-lg border-[#dddddd] flex justify-center items-center cursor-pointer">
               <a
                 href="https://forms.gle/PXmEvzq4LsNDC1Gj9"
                 className="text-[#5b5b5b] text-sm font-semibold"
@@ -379,6 +380,7 @@ const Home = () => {
                 매장 추천하기
               </a>
             </div>
+            <BusinessInfoWhiteBg />
           </div>
         ) : (
           <NoStore />
