@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 
 interface ModalProps {
   title: string;
   message: string;
-  onConfirm: () => void; // Accepts reason
+  onConfirm: (reason: string) => void; // Accepts reason
   onCancel: () => void;
   reason: string;
   handleReason: (reason: string) => void;
@@ -17,8 +17,16 @@ const CancelModal: React.FC<ModalProps> = ({
   reason,
   handleReason,
 }) => {
+  const [error, setError] = useState<string>(""); // 에러 메시지 상태 추가
+
   const handleConfirm = () => {
-    onConfirm(); // Pass the reason when confirming
+    if (!reason.trim()) {
+      // 사유가 비어 있으면 에러 메시지 설정
+      setError("취소 사유를 입력해주세요.");
+      return;
+    }
+    setError(""); // 에러 메시지 초기화
+    onConfirm(reason); // 사유 전달
   };
 
   return (
@@ -36,9 +44,14 @@ const CancelModal: React.FC<ModalProps> = ({
             type="text"
             value={reason}
             onChange={(e) => handleReason(e.target.value)}
-            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
+            className={`w-full px-3 py-2 border rounded-lg focus:outline-none ${
+              error
+                ? "border-red-500 focus:ring-red-500"
+                : "focus:ring focus:ring-blue-500"
+            }`}
             placeholder="사유를 입력하세요"
           />
+          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
         </div>
 
         <div className="flex justify-end space-x-4">
