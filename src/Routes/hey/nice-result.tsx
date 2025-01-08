@@ -1,6 +1,16 @@
 import { track } from "@amplitude/analytics-browser";
+import { gql, useQuery } from "@apollo/client";
 import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+
+const SEND_ORDER_COMPLETION_NOTIFICATION = gql(`
+  query SendOrderCompletionNotification($orderId: String) {
+    sendOrderCompletionNotification(orderId: $orderId) {
+      ok
+      error
+    }
+  }
+`);
 
 const NiceResult = () => {
   const location = useLocation();
@@ -12,6 +22,7 @@ const NiceResult = () => {
   const ok = queryParams.get("ok"); // 예: ?paramName=value
   const message = queryParams.get("message"); // 예: ?paramName=value
   const amount = queryParams.get("amount"); // 예: ?paramName=value
+  const orderId = queryParams.get("orderId"); // 예: ?paramName=value
   useEffect(() => {
     if (ok) {
       track("결제 완료", {
@@ -20,13 +31,22 @@ const NiceResult = () => {
     }
   }, [ok]);
   return ok == "1" ? (
-    <PaymentCompleted amount={amount} />
+    <PaymentCompleted amount={amount} orderId={orderId} />
   ) : (
     <PaymentFailed message={message} />
   );
 };
-const PaymentCompleted = ({ amount }: { amount: string | null }) => {
+const PaymentCompleted = ({
+  amount,
+  orderId,
+}: {
+  amount: string | null;
+  orderId: string | null;
+}) => {
   const navigate = useNavigate();
+  useQuery(SEND_ORDER_COMPLETION_NOTIFICATION, {
+    variables: { orderId },
+  });
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white p-4">
