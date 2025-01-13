@@ -172,10 +172,18 @@ const Home = () => {
     if (type === "LIST") {
       setIsList(true);
     } else {
+      if (isWeb()) {
+        setIsSheetOpen(true);
+        return;
+      }
       setIsList(false);
     }
   }
   async function onClickLike(storeId: number, isLiked: boolean | null) {
+    if (isWeb()) {
+      setIsSheetOpen(true);
+      return;
+    }
     if (!isLoggedIn) {
       navigate("/login");
       return;
@@ -243,6 +251,13 @@ const Home = () => {
     });
     navigate(`store/${store.id}`);
   }
+  function onClickLocation() {
+    if (isWeb()) {
+      setIsSheetOpen(true);
+      return;
+    }
+    navigate("/location");
+  }
   function onClickCart() {
     if (!isLoggedIn) {
       navigate("/login");
@@ -295,7 +310,7 @@ const Home = () => {
         {/* LOCATION */}
         {/* <div>{window.navigator.userAgent}</div> */}
         <div className="py-3 pl-5 bg-white flex items-center cursor-pointer justify-between">
-          <div className="flex" onClick={() => navigate("/location")}>
+          <div className="flex" onClick={() => onClickLocation()}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="21"
