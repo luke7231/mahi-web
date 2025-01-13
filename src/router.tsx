@@ -46,6 +46,7 @@ import SalesPage from "./Routes/admin/sales";
 import AdminSupport from "./Routes/admin/support";
 import SettlementInfoForm from "./Routes/admin/banking";
 import AdminReport from "./Routes/admin/report";
+import { isWeb } from "./Lib/user-agent-utils";
 
 const Router = () => {
   const { isFirst, isLoggedIn, isAdminLoggedIn, lastPage } = useAuth();
@@ -56,7 +57,7 @@ const Router = () => {
         <Route
           path="/"
           element={
-            isFirst ? (
+            isFirst && !isWeb() ? (
               <Navigate to="/onboarding1" />
             ) : isAdminLoggedIn && lastPage === "seller" ? (
               <Navigate to="/admin/home" />
