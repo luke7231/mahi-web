@@ -6,18 +6,22 @@ import AppLogo from "./mahi-download-logo-512.png"; // 앱 로고 이미지 경�
 interface AppDownloadBottomSheetProps {
   isOpen: boolean;
   onClose: () => void;
+  showOverlay?: boolean;
 }
 
 const AppDownloadBottomSheet: React.FC<AppDownloadBottomSheetProps> = ({
   isOpen,
   onClose,
+  showOverlay = true,
 }) => {
   return (
     <>
       {/* 오버레이 */}
-      {isOpen && (
+      {isOpen && showOverlay && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity"
+          className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity ${
+            isOpen ? "overlay-enter" : "overlay-exit"
+          }`}
           onClick={onClose}
         />
       )}
