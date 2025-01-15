@@ -34,7 +34,7 @@ export const StoreCard = ({
 }: IProp): JSX.Element => {
   return (
     <TransitionWrapper
-      scale={0.95}
+      scale={0.9}
       opacity={0.8}
       className="w-full h-52"
       onClick={onClick}

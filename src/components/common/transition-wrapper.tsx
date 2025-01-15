@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 const TransitionWrapper = ({
   children,
@@ -13,16 +14,20 @@ const TransitionWrapper = ({
   scale?: number;
   opacity?: boolean | number;
 }) => {
-  const scalePercent = scale * 100;
   const opacityValue = typeof opacity === "number" ? opacity : 0.8;
-  const opacityClass = opacity ? `active:opacity-${opacityValue * 100}` : "";
+
   return (
-    <div
-      className={`transition-transform duration-50 ease-in-out transform active:scale-${scalePercent} ${opacityClass} ${className}`}
+    <motion.div
+      className={className}
       onClick={onClick}
+      whileTap={{
+        scale: scale,
+        opacity: opacityValue,
+      }}
+      transition={{ duration: 0.15, ease: "easeInOut" }}
     >
       {children}
-    </div>
+    </motion.div>
   );
 };
 
