@@ -8,6 +8,7 @@ import NoCart from "../../components/checkout/no-cart";
 import { nanoid } from "nanoid";
 import { gql } from "../../__generated__";
 import { useMutation } from "@apollo/client";
+import TransitionWrapper from "../../components/common/transition-wrapper";
 
 const CREATE_ORDER = gql(`
 mutation CreateOrder($input: CreateOrderInput!) {
@@ -220,7 +221,9 @@ const CheckoutPage: React.FC = () => {
 
             <Partition height="thick" color="light" />
             <div className="px-5 py-4 w-full sticky bottom-0 bg-white">
-              <div
+              <TransitionWrapper
+                scale={0.95}
+                opacity={0.8}
                 onClick={() => onClickProceed()}
                 className="w-full h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border"
               >
@@ -230,7 +233,7 @@ const CheckoutPage: React.FC = () => {
                     결제하고 가지러가기
                   </span>
                 </div>
-              </div>
+              </TransitionWrapper>
             </div>
           </div>
 

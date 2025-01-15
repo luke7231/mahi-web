@@ -16,6 +16,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { track } from "@amplitude/analytics-browser";
 import Skeleton from "react-loading-skeleton";
+import TransitionWrapper from "../../components/common/transition-wrapper";
 
 const GET_STORE = gql(`
   query Store($storeId: Int!) {
@@ -383,12 +384,17 @@ const Store = () => {
                   product.isDeleted === false || product.isDeleted === null
               )
               .map((product) => (
-                <div
+                <TransitionWrapper
+                  scale={0.95}
+                  opacity={0.8}
                   key={product.id}
                   className="w-full flex rounded-[0.625rem] overflow-hidden border border-[#F9F9F9] bg-white shadow-[0_3px_8px_0_rgba(0,0,0,0.05)]"
                 >
                   <div className="relative w-[137px] h-[137px]">
-                    <ProductImageSlider product={product} />
+                    <ProductImageSlider
+                      onClick={() => onClickProduct(product as Product)}
+                      product={product}
+                    />
                     {product.quantity === 0 && (
                       <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-l-lg">
                         <span className="text-white text-xl font-semibold">
@@ -423,7 +429,7 @@ const Store = () => {
                       </div>
                     </div>
                   </div>
-                </div>
+                </TransitionWrapper>
               ))}
           </div>
         )}
@@ -440,7 +446,11 @@ const Store = () => {
             </span>{" "}
             할인받았어요!
           </div>
-          <div className="w-full h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border">
+          <TransitionWrapper
+            scale={0.95}
+            opacity={0.8}
+            className="w-full h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border"
+          >
             <div className="text-center flex items-center space-x-1">
               <span className="text-white font-bold leading-snug">
                 {getTotalAmount().toLocaleString()}원
@@ -449,7 +459,7 @@ const Store = () => {
                 구매하기
               </span>
             </div>
-          </div>
+          </TransitionWrapper>
         </div>
       )}
     </div>
@@ -458,7 +468,10 @@ const Store = () => {
 
 export default Store;
 
-const ProductImageSlider: React.FC<{ product: any }> = ({ product }) => {
+const ProductImageSlider: React.FC<{ product: any; onClick: () => void }> = ({
+  product,
+  onClick,
+}) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const settings = {
     speed: 500,
@@ -474,7 +487,7 @@ const ProductImageSlider: React.FC<{ product: any }> = ({ product }) => {
   // 메뉴가 1개일 경우 슬라이더 대신 단일 이미지로 표시
   if (menuImages.length === 1) {
     return (
-      <div className="w-[137px] h-[137px]">
+      <div className="w-[137px] h-[137px]" onClick={onClick}>
         <img
           className="w-[137px] h-[137px] object-cover rounded-lg"
           src={menuImages[0] || product.img}
@@ -490,7 +503,7 @@ const ProductImageSlider: React.FC<{ product: any }> = ({ product }) => {
   }
 
   return (
-    <div className="w-full h-full relative">
+    <div className="w-full h-full relative" onClick={onClick}>
       <Slider className="w-full h-full relative" {...settings}>
         {[...product.menus].reverse()?.map((menu: any, index: number) => (
           <div className="relative">

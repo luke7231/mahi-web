@@ -10,6 +10,7 @@ import Skeleton from "react-loading-skeleton";
 import BusinessInfo from "./business-info";
 import LoginBottomSheet from "./login-bottom-sheet";
 import { calculateDiscountRate } from "../../Lib/calc-util";
+import TransitionWrapper from "../../components/common/transition-wrapper";
 
 const GET_PRODUCT = gql`
   query Product($productId: Int!) {
@@ -248,7 +249,11 @@ const Product = () => {
             {(product?.price - product?.userPrice).toLocaleString()}원{" "}
             할인받았어요!
           </div>
-          <div className=" w-full h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border">
+          <TransitionWrapper
+            scale={0.95}
+            opacity={0.8}
+            className=" w-full h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border"
+          >
             {/* Button Content */}
             <div className="text-center flex items-center space-x-1">
               <span className="text-white text-base font-semibold leading-snug">
@@ -261,7 +266,7 @@ const Product = () => {
                 담기
               </span>
             </div>
-          </div>
+          </TransitionWrapper>
         </div>
       ) : null}
       <LoginBottomSheet

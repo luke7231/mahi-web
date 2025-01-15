@@ -1,6 +1,7 @@
 import React from "react";
 import HeartIcon from "../common/heart";
 import AlarmButton from "../common/alram-button";
+import TransitionWrapper from "../common/transition-wrapper";
 
 interface IProp {
   onClick: () => void;
@@ -32,7 +33,12 @@ export const StoreCard = ({
   disableLike = false,
 }: IProp): JSX.Element => {
   return (
-    <div className="w-full h-52" onClick={onClick}>
+    <TransitionWrapper
+      scale={0.95}
+      opacity={0.8}
+      className="w-full h-52"
+      onClick={onClick}
+    >
       <div className="w-full h-full">
         <div className="relative w-full h-full bg-white rounded-[10px] overflow-hidden shadow-[0px_3px_8px_#0000000d]">
           {/* Upper Box */}
@@ -100,6 +106,6 @@ export const StoreCard = ({
           </div>
         </div>
       </div>
-    </div>
+    </TransitionWrapper>
   );
 };

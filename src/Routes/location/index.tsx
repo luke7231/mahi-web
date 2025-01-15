@@ -7,6 +7,7 @@ import { gql } from "../../__generated__";
 import { useLazyQuery } from "@apollo/client";
 import CustomMapMarker2 from "../../components/custome-map-marker2";
 import LoadingSpinner from "../../components/loading-spinnere";
+import TransitionWrapper from "../../components/common/transition-wrapper";
 
 const GET_LOCAL_ADDRESS = gql(`
 query GetLocalAddress($lat: Float!, $lng: Float!, $pushToken: String) {
@@ -171,7 +172,9 @@ function Location() {
         id="map"
         style={{ width: "100%", height: mapHeight }}
       >
-        <div
+        <TransitionWrapper
+          scale={0.95}
+          opacity={0.8}
           className="bg-[#1562fc] rounded-md w-10 h-10 absolute bottom-6 right-6 z-50 text-center flex justify-center items-center text-white"
           onClick={() => clickButton()}
         >
@@ -193,7 +196,7 @@ function Location() {
             <path d="M2 12h2"></path>
             <path d="M20 12h2"></path>
           </svg>
-        </div>
+        </TransitionWrapper>
       </div>
 
       {/* 완료 버튼 */}
@@ -215,14 +218,18 @@ function Location() {
           {/* {(product?.price - product?.discountPrice).toLocaleString()}원{" "} */}
           5km 내 매장을 찾아드려요!
         </div>
-        <div className=" w-full h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border">
+        <TransitionWrapper
+          scale={0.95}
+          opacity={0.8}
+          className=" w-full h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border"
+        >
           {/* Button Content */}
           <div className="text-center flex items-center space-x-1">
             <span className="text-white text-base font-semibold leading-snug">
               완료
             </span>
           </div>
-        </div>
+        </TransitionWrapper>
       </div>
       {/* <BottomTab /> */}
     </div>

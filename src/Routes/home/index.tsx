@@ -19,6 +19,7 @@ import { getDownloadLink } from "../../Lib/app-download-link-utils";
 import AppDownloadBottomSheet from "../../components/app-download/app-download-bottom-sheet";
 import { isWeb } from "../../Lib/user-agent-utils";
 import Logo from "./img/mahi-download-logo-512.png";
+import TransitionWrapper from "../../components/common/transition-wrapper";
 const GET_STORES = gql(`
   query Stores($lat: Float, $lng: Float) {
     stores(lat: $lat, lng: $lng) {
