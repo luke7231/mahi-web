@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Map from "../maps";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client";
@@ -13,13 +13,11 @@ import { NoStore } from "../../components/home/no-store";
 import { useCart } from "../../core/cart";
 import { track } from "@amplitude/analytics-browser";
 import Skeleton from "react-loading-skeleton";
-import { postMessage } from "../../core/message";
 import BusinessInfoWhiteBg from "../product/business-info-white-bg";
 import { getDownloadLink } from "../../Lib/app-download-link-utils";
 import AppDownloadBottomSheet from "../../components/app-download/app-download-bottom-sheet";
 import { isWeb } from "../../Lib/user-agent-utils";
 import Logo from "./img/mahi-download-logo-512.png";
-import TransitionWrapper from "../../components/common/transition-wrapper";
 const GET_STORES = gql(`
   query Stores($lat: Float, $lng: Float) {
     stores(lat: $lat, lng: $lng) {
@@ -123,7 +121,7 @@ const Home = () => {
 
   const { hasLastLo, getLocationFromStorage } = useLocation();
   const navigate = useNavigate();
-  const { data, loading, error } = useQuery(GET_STORES, {
+  const { data, loading } = useQuery(GET_STORES, {
     variables: {
       lat: hasLastLo ? getLocationFromStorage().lat : null,
       lng: hasLastLo ? getLocationFromStorage().lng : null,
@@ -281,7 +279,7 @@ const Home = () => {
           className="fixed top-0 left-0 w-full bg-[#1692fc] text-white flex items-center justify-center text-center py-2 z-50"
           style={{ height: `${BANNER_HEIGHT}px` }}
         >
-          <img src={Logo} className="w-10 h-10" />
+          <img src={Logo} className="w-10 h-10" alt="마히 다운로드 로고" />
           <p className="ml-2 text-lg font-semibold">
             앱에서 평생 마감할인 알림 받기
           </p>
