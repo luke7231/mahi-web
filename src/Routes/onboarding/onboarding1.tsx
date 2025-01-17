@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import IMG from "./location.png";
 import FadeInWrapper from "../../components/fade-in-wrapper";
+import TransitionWrapper from "../../components/common/transition-wrapper";
 const Onboarding1 = () => {
   const navigate = useNavigate();
   const onClickButton = () => {
@@ -36,12 +37,18 @@ const Onboarding1 = () => {
             </div>
           </div>
         </div>
-        <button
-          className="text-white font-semibold h-[60px] bg-[#1562fc] w-full"
-          onClick={onClickButton}
-        >
-          다음
-        </button>
+        <div className="p-4 inline w-full">
+          <TransitionWrapper
+            scale={0.9}
+            opacity={0.8}
+            onClick={onClickButton}
+            className="w-full h-[60px] flex items-center justify-center bg-[#1562fc] rounded-3xl border"
+          >
+            <div className="text-center flex items-center space-x-1">
+              <span className="text-white font-bold leading-snug">다음</span>
+            </div>
+          </TransitionWrapper>
+        </div>
       </div>
     </div>
   );

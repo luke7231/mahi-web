@@ -3,6 +3,7 @@ import { useAuth } from "../../core/auth";
 import IMG from "./Vector.png";
 import { postMessage } from "../../core/message";
 import FadeInWrapper from "../../components/fade-in-wrapper";
+import TransitionWrapper from "../../components/common/transition-wrapper";
 const Welcome = () => {
   const navigate = useNavigate();
   const { doneOnboarding } = useAuth();
@@ -42,12 +43,18 @@ const Welcome = () => {
           </div>
         </div>
 
-        <button
-          className="text-white font-semibold h-[60px] bg-[#1562fc] w-full"
-          onClick={onClickButton}
-        >
-          GO!
-        </button>
+        <div className="p-4 inline w-full">
+          <TransitionWrapper
+            scale={0.9}
+            opacity={0.8}
+            onClick={onClickButton}
+            className="w-full h-[60px] flex items-center justify-center bg-[#C2FC8E] rounded-3xl border"
+          >
+            <div className="text-center flex items-center space-x-1">
+              <span className="text-black font-bold leading-snug">GO!</span>
+            </div>
+          </TransitionWrapper>
+        </div>
       </div>
     </div>
   );
