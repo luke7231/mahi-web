@@ -1,19 +1,26 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { postMessage } from "../../core/message";
 import { useLocation } from "../../core/location-provider";
-import { gql } from "../../__generated__";
-import { useLazyQuery } from "@apollo/client";
+
+import { gql, useLazyQuery } from "@apollo/client";
 import CustomMapMarker2 from "../../components/custome-map-marker2";
 import LoadingSpinner from "../../components/loading-spinnere";
 import TransitionWrapper from "../../components/common/transition-wrapper";
+import { Identify, identify } from "@amplitude/analytics-browser";
 
-const GET_LOCAL_ADDRESS = gql(`
-query GetLocalAddress($lat: Float!, $lng: Float!, $pushToken: String) {
-  getLocalAddress(lat: $lat, lng: $lng, push_token: $pushToken)
-}
-`);
+const GET_LOCAL_ADDRESS = gql`
+  query GetLocalAddress($lat: Float!, $lng: Float!, $pushToken: String) {
+    getLocalAddressV2(lat: $lat, lng: $lng, push_token: $pushToken) {
+      loadAddr
+      area1
+      area2
+      area3
+      area4
+    }
+  }
+`;
 
 const 판교주소_LAT = 37.3595704;
 const 판교주소_LNG = 127.105399;
@@ -22,7 +29,7 @@ function Location() {
   const [loading, setLoading] = useState(false);
   const { hasLastLo, getLocationFromStorage, setLocationToStorage } =
     useLocation();
-  const [getLocalAddress, { data }] = useLazyQuery(GET_LOCAL_ADDRESS);
+  const [getLocalAddress] = useLazyQuery(GET_LOCAL_ADDRESS);
   const navigate = useNavigate();
   const mapElement = useRef<HTMLDivElement | null>(null);
 
@@ -125,33 +132,29 @@ function Location() {
     };
 
     receiver.addEventListener("message", listener);
-
-    // WEB
-    // newMap?.panTo(new naver.maps.LatLng(36.99502164866016, 127.1596148737739), {
-    //   // 안성
-    //   duration: 0,
-    // });
-
-    // // TODO: 센터 마커도 같이 이동해야함.
-    // newMarker?.setPosition(
-    //   new naver.maps.LatLng(36.99502164866016, 127.1596148737739) // 안성
-    // );
-    // newMarker?.setMap(newMap);
   };
 
   async function onComplete() {
     if (!newMap) return;
     const center = newMap.getCenter();
-    // const res = await getAddressFromCoords({ lat: center.y, lng: center.x }); // 서버로 해야할듯
     await getLocalAddress({
       variables: {
         lat: center.y,
         lng: center.x,
         pushToken: localStorage.getItem("expo_push_token"),
+        // responseFormat: "object",
       },
       onCompleted: (data) => {
-        if (data.getLocalAddress) {
-          localStorage.setItem("loadAddr", data.getLocalAddress);
+        if (data.getLocalAddressV2) {
+          localStorage.setItem("loadAddr", data.getLocalAddressV2.loadAddr);
+
+          // Amplitude Identify 객체를 사용하여 사용자 속성 업데이트
+          const identifyUser = new Identify()
+            .set("area1", data.getLocalAddressV2.area1)
+            .set("area2", data.getLocalAddressV2.area2)
+            .set("area3", data.getLocalAddressV2.area3)
+            .set("area4", data.getLocalAddressV2.area4);
+          identify(identifyUser);
         }
       },
       onError: () => localStorage.setItem("loadAddr", ""),
@@ -160,9 +163,6 @@ function Location() {
     setLocationToStorage(center.y, center.x);
     navigate("/");
   }
-  // curl "https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc?request=coordsToaddr&coords=129.1133567,35.2982640&sourcecrs=epsg:4326&output=json&orders=legalcode,admcode" \
-  // -H "X-NCP-APIGW-API-KEY-ID: {애플리케이션 등록 시 발급받은 client id값}" \
-  // -H "X-NCP-APIGW-API-KEY: {애플리케이션 등록 시 발급받은 client secret값}" -v
   const mapHeight = window.innerHeight - 92; // 1. 위치설정 바 2. 탭 3. 바텀탭
   return (
     <div className="w-[100%] h-full">
@@ -199,15 +199,6 @@ function Location() {
         </TransitionWrapper>
       </div>
 
-      {/* 완료 버튼 */}
-      {/* <div className="pl-2 pr-2 mt-2">
-        <div
-          className="bg-gray-800 rounded-xl font-bold text-white p-3 text-lg text-center shadow-md"
-          onClick={() => onComplete()}
-        >
-          선택한 위치로 설정
-        </div>
-      </div> */}
       <div>{currentLng ? currentLat : null}</div>
       <div>{currentLng ? currentLng : null}</div>
       <div
@@ -215,7 +206,6 @@ function Location() {
         className="max-w-[742px] px-5 py-3 w-full fixed bottom-0 z-50 bg-white rounded-tl-[10px] rounded-tr-[10px]"
       >
         <div className="absolute left-0 top-[-1.3rem] w-full h-[24px] bg-[#282828] rounded-tl-[10px] rounded-tr-[10px] text-white text-xs font-semibold flex justify-center items-center">
-          {/* {(product?.price - product?.discountPrice).toLocaleString()}원{" "} */}
           5km 내 매장을 찾아드려요!
         </div>
         <TransitionWrapper
@@ -231,7 +221,6 @@ function Location() {
           </div>
         </TransitionWrapper>
       </div>
-      {/* <BottomTab /> */}
     </div>
   );
 }
