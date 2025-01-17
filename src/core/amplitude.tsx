@@ -32,8 +32,6 @@ const AmplitudeContextProvider = ({
       const identifyUser = new Identify().set("isSeller", true);
       identify(identifyUser); // 사용자 속성 설정
     }
-
-    console.log(mahiUUID);
   }, []);
 
   const trackAmplitudeEvent = (eventName: string, eventProperties: any) => {
