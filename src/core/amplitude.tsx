@@ -1,10 +1,11 @@
 import { useEffect, createContext } from "react";
 import { Identify, identify, init, track } from "@amplitude/analytics-browser";
+import { isAndroidApp, isIOSApp, isWeb } from "../Lib/user-agent-utils";
 
 const AMPLITUDE_API_KEY = process.env.REACT_APP_AMPLITUDE_API_KEY;
 
 interface Context {
-  trackAmplitudeEvent: (evenName: string, eventProperties: any) => void;
+  trackAmplitudeEvent: (eventName: string, eventProperties: any) => void;
 }
 
 export const AmplitudeContext = createContext<Context>({} as Context);
@@ -27,11 +28,29 @@ const AmplitudeContextProvider = ({
       },
     });
 
-    // sellerToken이 있는 경우 identify로 사용자 속성 추가
-    if (sellerToken) {
-      const identifyUser = new Identify().set("isSeller", true);
-      identify(identifyUser); // 사용자 속성 설정
+    // 사용자 속성 설정
+    const identifyUser = new Identify();
+
+    const isAppDownloaded = isAndroidApp() || isIOSApp();
+    if (isAppDownloaded) {
+      identifyUser.set("isAppDownloaded", true);
+    } else {
+      identifyUser.set("isAppDownloaded", false);
     }
+
+    if (isAndroidApp()) {
+      identifyUser.set("mahi_platform", "Android App");
+    } else if (isIOSApp()) {
+      identifyUser.set("mahi_platform", "iOS App");
+    } else if (isWeb()) {
+      identifyUser.set("mahi_platform", "Web");
+    }
+
+    if (sellerToken) {
+      identifyUser.set("isSeller", true);
+    }
+
+    identify(identifyUser);
   }, []);
 
   const trackAmplitudeEvent = (eventName: string, eventProperties: any) => {

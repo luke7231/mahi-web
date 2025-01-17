@@ -2,6 +2,7 @@ import { gql, useMutation } from "@apollo/client";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../core/auth";
+import { identify, Identify } from "@amplitude/analytics-browser";
 
 const PURE_SIGNUP = gql`
   mutation PureSignup(
@@ -35,6 +36,11 @@ const SignUp: React.FC = () => {
       setIsSubmitting(false);
       const jwt = data.pureSignup.token;
       if (jwt) {
+        const updateUserPropertiesAfterSignup = () => {
+          const identifyUser = new Identify().set("isRegisteredUser", true);
+          identify(identifyUser);
+        };
+        updateUserPropertiesAfterSignup();
         localStorage.setItem("jwt", jwt);
         authLogin();
         navigate("/");
