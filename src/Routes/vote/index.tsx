@@ -20,6 +20,7 @@ const GET_UNCONTRACTED_STORES = gql`
       createdAt
       updatedAt
       voteCount
+      isVoted
     }
   }
 `;
@@ -118,6 +119,7 @@ const VotePage = () => {
               mainMemuImg1={store.mainMenuImg1 || ""}
               mainMemuImg2={store.mainMenuImg2 || ""}
               voteCount={store.voteCount}
+              isVoted={store.isVoted || false}
             />
           </div>
         )
@@ -155,12 +157,15 @@ export const StoreCard = ({
   mainMemuImg1,
   mainMemuImg2,
   voteCount,
-}: IProp & { voteCount: number }): JSX.Element => {
+  isVoted,
+}: IProp & { voteCount: number; isVoted: boolean }): JSX.Element => {
   const [isSelected, setIsSelected] = useState(false);
 
   const handleCardClick = () => {
-    setIsSelected(!isSelected);
-    onClick();
+    if (!isVoted) {
+      setIsSelected(!isSelected);
+      onClick();
+    }
   };
 
   return (
@@ -217,6 +222,11 @@ export const StoreCard = ({
           <div className="absolute flex flex-row justify-between w-full bottom-5 left-0 px-4">
             <div className="flex justify-between items-center">
               <p className="font-bold text-black text-lg">{title}</p>
+              {isVoted && (
+                <span className="ml-2 text-sm text-green-500 font-semibold">
+                  투표완료
+                </span>
+              )}
             </div>
 
             <div className="flex flex-row items-center">
