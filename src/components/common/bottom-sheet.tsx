@@ -48,7 +48,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
             {children}
             {buttonText && (
               <button
-                className="mt-4 mb-4 mx-4 bg-blue-500 text-white py-2 px-4 rounded"
+                className="mt-4 mb-4 mx-4 bg-blue-500 text-white font-bold py-4 px-4 rounded-xl"
                 onClick={onButtonClick}
               >
                 {buttonText}
