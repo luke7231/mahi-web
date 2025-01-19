@@ -1,11 +1,16 @@
 import React from "react";
 import { Sheet } from "react-modal-sheet";
+import FadeInWrapper from "../fade-in-wrapper";
 
 interface BottomSheetProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
   showOverlay?: boolean;
+  mainText?: string;
+  subText?: string;
+  buttonText?: string;
+  onButtonClick?: () => void;
 }
 
 const BottomSheet: React.FC<BottomSheetProps> = ({
@@ -13,6 +18,10 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
   onClose,
   children,
   showOverlay = true,
+  mainText,
+  subText,
+  buttonText,
+  onButtonClick,
 }) => {
   return (
     <>
@@ -25,7 +34,27 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
       <Sheet isOpen={isOpen} onClose={onClose} detent="content-height">
         <Sheet.Container className="z-50">
           <Sheet.Header />
-          <Sheet.Content>{children}</Sheet.Content>
+          <Sheet.Content>
+            {mainText && (
+              <FadeInWrapper>
+                <h1 className="ml-4 text-2xl font-bold">{mainText}</h1>
+              </FadeInWrapper>
+            )}
+            {subText && (
+              <FadeInWrapper>
+                <p className="ml-4 text-md text-gray-500">{subText}</p>
+              </FadeInWrapper>
+            )}
+            {children}
+            {buttonText && (
+              <button
+                className="mt-4 mb-4 mx-4 bg-blue-500 text-white py-2 px-4 rounded"
+                onClick={onButtonClick}
+              >
+                {buttonText}
+              </button>
+            )}
+          </Sheet.Content>
         </Sheet.Container>
       </Sheet>
     </>
