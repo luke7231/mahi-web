@@ -80,7 +80,7 @@ const VotePage = () => {
         },
       });
       setBottomSheetOpen(false);
-      navigate("/vote/completed");
+      navigate("/vote-completed");
     } catch (error) {
       console.error("Error voting:", error);
     }
