@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import TransitionWrapper from "../../components/common/transition-wrapper";
 
 const VoteCompleted = () => {
   const navigate = useNavigate();
@@ -28,24 +29,32 @@ const VoteCompleted = () => {
 
       {/* Vote Success Message */}
       <h2 className="text-2xl font-semibold text-black mb-2">
-        투표가 완료되었습니다!
+        투표가 완료되었어요!
       </h2>
-      <p className="text-gray-600 mb-6">투표에 참여해주셔서 감사합니다.</p>
+      <p className="text-gray-600 mb-6 text-center">
+        백현동에 더 많은
+        <br />
+        매장이 생길 거예요!
+      </p>
 
       {/* Action Buttons */}
-      <div className="space-y-3 w-full max-w-sm">
-        <button
-          onClick={() => navigate("/")}
-          className="w-full py-3 bg-[#1562fc] text-white rounded-md hover:bg-[#124ab7] transition duration-150"
-        >
-          홈으로 가기
-        </button>
-        <button
-          onClick={() => navigate("/vote")}
-          className="w-full py-3 border border-[#1562fc] text-[#1562fc] rounded-md hover:bg-[#f0f8ff] transition duration-150"
-        >
-          다른 투표 보기
-        </button>
+      <div className="space-y-3 w-full max-w-sm fixed bottom-8 mx-auto px-4">
+        <TransitionWrapper>
+          <button
+            onClick={() => navigate("/")}
+            className="w-full py-3 bg-[#1562fc] text-white rounded-xl hover:bg-[#124ab7] transition duration-150"
+          >
+            홈으로 가기
+          </button>
+        </TransitionWrapper>
+        <TransitionWrapper>
+          <button
+            onClick={() => navigate("/vote")}
+            className="w-full py-3 border border-[#1562fc] text-[#1562fc] rounded-xl hover:bg-[#f0f8ff] transition duration-150"
+          >
+            다른 투표 보기
+          </button>
+        </TransitionWrapper>
       </div>
     </div>
   );
