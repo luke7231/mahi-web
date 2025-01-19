@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery, gql, useMutation } from "@apollo/client";
 import TransitionWrapper from "../../components/common/transition-wrapper";
 import FadeInWrapper from "../../components/fade-in-wrapper";
 import VoteBottomSheet from "./vote-bottom-sheet";
 import { UncontractedStore } from "../../__generated__/graphql";
+import { useAuth } from "../../core/auth";
+import { useNavigate } from "react-router-dom";
 
 // GraphQL 쿼리 정의
 const GET_UNCONTRACTED_STORES = gql`
@@ -22,7 +24,24 @@ const GET_UNCONTRACTED_STORES = gql`
   }
 `;
 
+const VOTE_FOR_STORES = gql`
+  mutation VoteForStores($uncontractedStoreIds: [Int!]!) {
+    voteForStores(uncontractedStoreIds: $uncontractedStoreIds) {
+      id
+      user {
+        id
+      }
+      uncontractedStore {
+        id
+        name
+      }
+    }
+  }
+`;
+
 const VotePage = () => {
+  const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
   const [checklist, setChecklist] = useState<{ id: number; name: string }[]>(
     []
   );
@@ -30,6 +49,8 @@ const VotePage = () => {
 
   // GraphQL 쿼리 실행
   const { loading, error, data } = useQuery(GET_UNCONTRACTED_STORES);
+
+  const [voteForStores] = useMutation(VOTE_FOR_STORES);
 
   const handleStoreClick = (store: { id: number; name: string }) => {
     setChecklist((prev) => {
@@ -42,11 +63,26 @@ const VotePage = () => {
   };
 
   const handleVoteClick = () => {
-    setBottomSheetOpen(true);
+    if (isLoggedIn) {
+      setBottomSheetOpen(true);
+    } else {
+      localStorage.setItem("redirect", window.location.pathname);
+      navigate("/login");
+    }
   };
 
-  const handleVoteConfirmClick = () => {
-    // setBottomSheetOpen(false);
+  const handleVoteConfirmClick = async () => {
+    try {
+      const { data } = await voteForStores({
+        variables: {
+          uncontractedStoreIds: checklist.map((store) => store.id),
+        },
+      });
+      console.log("Vote successful:", data);
+      setBottomSheetOpen(false);
+    } catch (error) {
+      console.error("Error voting:", error);
+    }
   };
 
   const handleCloseBottomSheet = () => {
