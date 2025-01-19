@@ -6,7 +6,7 @@ interface VoteBottomSheetProps {
   onClose: () => void;
   showOverlay?: boolean;
   onButtonClick: () => void;
-  checklist: string[];
+  checklist: { id: number; name: string }[];
 }
 
 const VoteBottomSheet: React.FC<VoteBottomSheetProps> = ({
@@ -29,7 +29,7 @@ const VoteBottomSheet: React.FC<VoteBottomSheetProps> = ({
       <div className="p-6 flex flex-col items-center gap-4">
         {checklist.map((store, index) => (
           <p key={index} className="text-lg font-medium">
-            {store}
+            {store.name}
           </p>
         ))}
       </div>

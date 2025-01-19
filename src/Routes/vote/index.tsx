@@ -23,18 +23,20 @@ const GET_UNCONTRACTED_STORES = gql`
 `;
 
 const VotePage = () => {
-  const [checklist, setChecklist] = useState<string[]>([]);
+  const [checklist, setChecklist] = useState<{ id: number; name: string }[]>(
+    []
+  );
   const [isBottomSheetOpen, setBottomSheetOpen] = useState(false);
 
   // GraphQL 쿼리 실행
   const { loading, error, data } = useQuery(GET_UNCONTRACTED_STORES);
 
-  const handleStoreClick = (title: string) => {
+  const handleStoreClick = (store: { id: number; name: string }) => {
     setChecklist((prev) => {
-      if (prev.includes(title)) {
-        return prev.filter((item) => item !== title);
+      if (prev.some((item) => item.id === store.id)) {
+        return prev.filter((item) => item.id !== store.id);
       } else {
-        return [...prev, title];
+        return [...prev, { id: store.id, name: store.name }];
       }
     });
   };
@@ -73,7 +75,9 @@ const VotePage = () => {
           <div className="w-full h-full mb-6" key={store.id}>
             <StoreCard
               title={store.name}
-              onClick={() => handleStoreClick(store.name)}
+              onClick={() =>
+                handleStoreClick({ id: store.id, name: store.name })
+              }
               img={store.img || ""}
               mainMemuImg1={store.mainMenuImg1 || ""}
               mainMemuImg2={store.mainMenuImg2 || ""}
