@@ -1,11 +1,34 @@
 import React, { useState } from "react";
+import { useQuery, gql } from "@apollo/client";
 import TransitionWrapper from "../../components/common/transition-wrapper";
 import FadeInWrapper from "../../components/fade-in-wrapper";
 import VoteBottomSheet from "./vote-bottom-sheet";
+import { UncontractedStore } from "../../__generated__/graphql";
+
+// GraphQL 쿼리 정의
+const GET_UNCONTRACTED_STORES = gql`
+  query GetUncontractedStores {
+    getUncontractedStores {
+      id
+      name
+      img
+      mainMenuImg1
+      mainMenuImg2
+      priceRange
+      createdAt
+      updatedAt
+      voteCount
+    }
+  }
+`;
 
 const VotePage = () => {
   const [checklist, setChecklist] = useState<string[]>([]);
   const [isBottomSheetOpen, setBottomSheetOpen] = useState(false);
+
+  // GraphQL 쿼리 실행
+  const { loading, error, data } = useQuery(GET_UNCONTRACTED_STORES);
+
   const handleStoreClick = (title: string) => {
     setChecklist((prev) => {
       if (prev.includes(title)) {
@@ -28,93 +51,8 @@ const VotePage = () => {
     setBottomSheetOpen(false);
   };
 
-  const stores = [
-    {
-      quantity: 5,
-      title: "플링크 판교",
-      closingHours: "10:00 PM",
-      discountPrice: 5000,
-      price: 10000,
-      isLiked: true,
-      mainMemuImg1:
-        "https://mahi-img.s3.ap-northeast-2.amazonaws.com/1728046910070-7.%ED%94%BC%EB%84%9B%EB%B2%84%ED%84%B0.jpg",
-      mainMemuImg2:
-        "https://mahi-img.s3.ap-northeast-2.amazonaws.com/1728046928534-8.%EB%94%B8%EA%B8%B0%EC%9E%BC%ED%81%AC%EB%9F%BC%EB%B8%94.jpg",
-      img: "https://mahi-img.s3.ap-northeast-2.amazonaws.com/1735802717710-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%281%29.jpg",
-      distance: 1.2,
-    },
-    {
-      quantity: 0,
-      title: "기욤 판교 아브뉴프랑점",
-      closingHours: "9:00 PM",
-      discountPrice: null,
-      price: 8000,
-      isLiked: false,
-      mainMemuImg1:
-        "https://mahi-img.s3.ap-northeast-2.amazonaws.com/1734065556183-KakaoTalk_20241213_135156314.jpg",
-      mainMemuImg2:
-        "https://mahi-img.s3.ap-northeast-2.amazonaws.com/1734065556183-KakaoTalk_20241213_135156314.jpg",
-      img: "https://mahi-img.s3.ap-northeast-2.amazonaws.com/1734065556183-KakaoTalk_20241213_135156314.jpg",
-      distance: 2.5,
-    },
-    {
-      quantity: 5,
-      title: "플링크 판교2",
-      closingHours: "10:00 PM",
-      discountPrice: 5000,
-      price: 10000,
-      isLiked: true,
-      mainMemuImg1:
-        "https://mahi-img.s3.ap-northeast-2.amazonaws.com/1728046910070-7.%ED%94%BC%EB%84%9B%EB%B2%84%ED%84%B0.jpg",
-      mainMemuImg2:
-        "https://mahi-img.s3.ap-northeast-2.amazonaws.com/1728046928534-8.%EB%94%B8%EA%B8%B0%EC%9E%BC%ED%81%AC%EB%9F%BC%EB%B8%94.jpg",
-      img: "https://mahi-img.s3.ap-northeast-2.amazonaws.com/1735802717710-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%281%29.jpg",
-      distance: 1.2,
-    },
-    {
-      quantity: 0,
-      title: "기욤 판교 아브뉴프랑점2",
-      closingHours: "9:00 PM",
-      discountPrice: null,
-      price: 8000,
-      isLiked: false,
-      mainMemuImg1:
-        "https://mahi-img.s3.ap-northeast-2.amazonaws.com/1734065556183-KakaoTalk_20241213_135156314.jpg",
-      mainMemuImg2:
-        "https://mahi-img.s3.ap-northeast-2.amazonaws.com/1734065556183-KakaoTalk_20241213_135156314.jpg",
-      img: "https://mahi-img.s3.ap-northeast-2.amazonaws.com/1734065556183-KakaoTalk_20241213_135156314.jpg",
-      distance: 2.5,
-    },
-    {
-      quantity: 5,
-      title: "플링크 판교3",
-      closingHours: "10:00 PM",
-      discountPrice: 5000,
-      price: 10000,
-      isLiked: true,
-      mainMemuImg1:
-        "https://mahi-img.s3.ap-northeast-2.amazonaws.com/1728046910070-7.%ED%94%BC%EB%84%9B%EB%B2%84%ED%84%B0.jpg",
-      mainMemuImg2:
-        "https://mahi-img.s3.ap-northeast-2.amazonaws.com/1728046928534-8.%EB%94%B8%EA%B8%B0%EC%9E%BC%ED%81%AC%EB%9F%BC%EB%B8%94.jpg",
-      img: "https://mahi-img.s3.ap-northeast-2.amazonaws.com/1735802717710-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%281%29.jpg",
-      distance: 1.2,
-    },
-    {
-      quantity: 0,
-      title: "기욤 판교 아브뉴프랑점",
-      closingHours: "9:00 PM",
-      discountPrice: null,
-      price: 8000,
-      isLiked: false,
-      mainMemuImg1:
-        "https://mahi-img.s3.ap-northeast-2.amazonaws.com/1734065556183-KakaoTalk_20241213_135156314.jpg",
-      mainMemuImg2:
-        "https://mahi-img.s3.ap-northeast-2.amazonaws.com/1734065556183-KakaoTalk_20241213_135156314.jpg",
-      img: "https://mahi-img.s3.ap-northeast-2.amazonaws.com/1734065556183-KakaoTalk_20241213_135156314.jpg",
-      distance: 2.5,
-    },
-    // ... more stores ...
-  ];
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   return (
     <div className="bg-white min-h-screen p-4">
@@ -130,32 +68,20 @@ const VotePage = () => {
         이 투표는 백현동 한정 진행되는 이벤트입니다!
       </p>
 
-      {stores.map((store, index) => (
-        <div className="w-full h-full mb-6" key={index}>
-          <StoreCard
-            quantity={store.quantity}
-            title={store.title}
-            closingHours={store.closingHours}
-            discountPrice={store.discountPrice}
-            price={store.price}
-            onClick={() => handleStoreClick(store.title)}
-            onClickHeart={(e) => {
-              e.stopPropagation();
-              console.log(`${store.title} heart clicked`);
-            }}
-            onClickNoti={(e) => {
-              e.stopPropagation();
-              console.log(`${store.title} notification clicked`);
-            }}
-            img={store.img}
-            isLiked={store.isLiked}
-            distance={store.distance}
-            disableLike={false}
-            mainMemuImg1={store.mainMemuImg1}
-            mainMemuImg2={store.mainMemuImg2}
-          />
-        </div>
-      ))}
+      {data.getUncontractedStores.map(
+        (store: UncontractedStore, index: number) => (
+          <div className="w-full h-full mb-6" key={store.id}>
+            <StoreCard
+              title={store.name}
+              onClick={() => handleStoreClick(store.name)}
+              img={store.img || ""}
+              mainMemuImg1={store.mainMenuImg1 || ""}
+              mainMemuImg2={store.mainMenuImg2 || ""}
+              voteCount={store.voteCount}
+            />
+          </div>
+        )
+      )}
       <button
         className="fixed bottom-4 z-50 left-1/2 transform -translate-x-1/2 bg-[#1692fc] text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-[#1177cc] transition-all duration-200 w-[calc(100%-2rem)] max-w-[90%]"
         onClick={handleVoteClick}
@@ -176,37 +102,20 @@ export default VotePage;
 
 interface IProp {
   onClick: () => void;
-  onClickHeart: (e: React.MouseEvent) => void;
-  onClickNoti?: (e: React.MouseEvent) => void;
-  quantity: number | undefined;
   title: string;
-  closingHours: string;
-  discountPrice?: number | null | undefined;
-  price: number;
-  isLiked: boolean | undefined | null;
   img: string;
-  distance?: number | null;
-  disableLike?: boolean;
   mainMemuImg1?: string;
   mainMemuImg2?: string;
 }
 
 export const StoreCard = ({
-  quantity,
   title,
-  closingHours,
-  discountPrice,
-  price,
   onClick,
-  onClickHeart,
-  onClickNoti,
   img,
-  isLiked,
-  distance,
-  disableLike = false,
   mainMemuImg1,
   mainMemuImg2,
-}: IProp): JSX.Element => {
+  voteCount,
+}: IProp & { voteCount: number }): JSX.Element => {
   const [isSelected, setIsSelected] = useState(false);
 
   const handleCardClick = () => {
@@ -273,7 +182,7 @@ export const StoreCard = ({
             <div className="flex flex-row items-center">
               <progress
                 className="w-16 h-2"
-                value={101}
+                value={voteCount}
                 max={100}
                 style={{
                   appearance: "none",
@@ -288,11 +197,11 @@ export const StoreCard = ({
                   style={{
                     width: "100%",
                     height: "100%",
-                    backgroundColor: 101 > 100 ? "red" : "#1692fc",
+                    backgroundColor: voteCount > 100 ? "red" : "#1692fc",
                   }}
                 ></div>
               </progress>
-              <p className="font-bold text-black text-lg ml-2">{`${101}/100`}</p>
+              <p className="font-bold text-black text-lg ml-2">{`${voteCount}/100`}</p>
             </div>
           </div>
         </div>
