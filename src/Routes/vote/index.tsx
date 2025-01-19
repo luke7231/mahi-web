@@ -79,8 +79,8 @@ const VotePage = () => {
           uncontractedStoreIds: checklist.map((store) => store.id),
         },
       });
-      console.log("Vote successful:", data);
       setBottomSheetOpen(false);
+      navigate("/vote/completed");
     } catch (error) {
       console.error("Error voting:", error);
     }

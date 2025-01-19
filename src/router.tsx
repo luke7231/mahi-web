@@ -48,6 +48,7 @@ import SettlementInfoForm from "./Routes/admin/banking";
 import AdminReport from "./Routes/admin/report";
 import { isWeb } from "./Lib/user-agent-utils";
 import VotePage from "./Routes/vote";
+import VoteCompleted from "./Routes/vote/vote-completed";
 
 const Router = () => {
   const { isFirst, isLoggedIn, isAdminLoggedIn, lastPage } = useAuth();
@@ -133,6 +134,7 @@ const Router = () => {
         <Route path="/admin/support" element={<AdminSupport />} />
         <Route path="/admin/settlement" element={<SettlementInfoForm />} />
         <Route path="/admin/report" element={<AdminReport />} />
+        <Route path="/vote-completed" element={<VoteCompleted />} />
       </Routes>
     </BrowserRouter>
   );
