@@ -9,8 +9,8 @@ import { useNavigate } from "react-router-dom";
 
 // GraphQL 쿼리 정의
 const GET_UNCONTRACTED_STORES = gql`
-  query GetUncontractedStores {
-    getUncontractedStores {
+  query GetUncontractedStores($category: String!) {
+    getUncontractedStores(category: $category) {
       id
       name
       img
@@ -47,9 +47,12 @@ const VotePage = () => {
     []
   );
   const [isBottomSheetOpen, setBottomSheetOpen] = useState(false);
+  const [category, setCategory] = useState("restaurant");
 
   // GraphQL 쿼리 실행
-  const { loading, error, data } = useQuery(GET_UNCONTRACTED_STORES);
+  const { loading, error, data } = useQuery(GET_UNCONTRACTED_STORES, {
+    variables: { category },
+  });
 
   const [voteForStores] = useMutation(VOTE_FOR_STORES);
 
@@ -106,7 +109,24 @@ const VotePage = () => {
       <p className="text-md text-gray-400 font-bold mb-4 text-center">
         이 투표는 백현동 한정 진행되는 이벤트입니다!
       </p>
-
+      <div className="flex justify-center mb-4">
+        <button
+          className={`px-4 py-2 font-bold rounded-l-xl ${
+            category === "restaurant" ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
+          onClick={() => setCategory("restaurant")}
+        >
+          음식점
+        </button>
+        <button
+          className={`px-4 py-2 font-bold rounded-r-xl ${
+            category === "dessert" ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
+          onClick={() => setCategory("dessert")}
+        >
+          디저트
+        </button>
+      </div>
       {data.getUncontractedStores.map(
         (store: UncontractedStore, index: number) => (
           <div className="w-full h-full mb-6" key={store.id}>
