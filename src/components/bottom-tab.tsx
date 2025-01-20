@@ -38,6 +38,61 @@ const BottomTab = (): JSX.Element => {
             <p className="w-12 text-center text-sm font-semibold">홈</p>
           </div>
         </TransitionWrapper>
+        {localStorage.getItem("loadAddr")?.includes("분당구 백현동") ? (
+          <TransitionWrapper scale={0.8} opacity={0.5}>
+            <div
+              className={`flex flex-col items-center ${
+                location.pathname === "/vote" ? "opacity-100" : "opacity-80"
+              }`}
+              onClick={() => navigate("/vote")}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <rect
+                  x="3"
+                  y="3"
+                  width="18"
+                  height="18"
+                  rx="2"
+                  stroke="#4CAF50"
+                  strokeWidth="2"
+                />
+                <path
+                  d="M7 10l2 2 4-4"
+                  stroke="#4CAF50"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <line
+                  x1="7"
+                  y1="15"
+                  x2="17"
+                  y2="15"
+                  stroke="#4CAF50"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <line
+                  x1="7"
+                  y1="18"
+                  x2="17"
+                  y2="18"
+                  stroke="#4CAF50"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
+
+              <p className="w-12 text-center text-sm font-semibold">투표</p>
+            </div>
+          </TransitionWrapper>
+        ) : null}
 
         {/* Favorites Tab */}
         <TransitionWrapper scale={0.8} opacity={0.5}>
