@@ -50,7 +50,7 @@ const VotePage = () => {
   const [category, setCategory] = useState("restaurant");
 
   // GraphQL 쿼리 실행
-  const { loading, error, data } = useQuery(GET_UNCONTRACTED_STORES, {
+  const { loading, error, data, refetch } = useQuery(GET_UNCONTRACTED_STORES, {
     variables: { category },
   });
 
@@ -83,6 +83,7 @@ const VotePage = () => {
         },
       });
       setBottomSheetOpen(false);
+      await refetch();
       navigate("/vote-completed");
     } catch (error) {
       console.error("Error voting:", error);
@@ -97,7 +98,7 @@ const VotePage = () => {
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <div className="bg-white min-h-screen p-4">
+    <div className="bg-white min-h-screen p-4 pb-16">
       <FadeInWrapper>
         <h1 className="text-3xl text-black font-extrabold mt-4">
           <span className="text-[#1692fc]">백현동</span>에서 추천하고 싶은
@@ -107,7 +108,7 @@ const VotePage = () => {
         </h1>
       </FadeInWrapper>
       <p className="text-md text-gray-400 font-bold mb-4 text-center">
-        이 투표는 백현동 한정 진행되는 이벤트입니다!
+        특별히 음식점도 가져와봤어요!
       </p>
       <div className="flex justify-center mb-4">
         <button
@@ -145,7 +146,7 @@ const VotePage = () => {
         )
       )}
       <button
-        className="fixed bottom-4 z-50 left-1/2 transform -translate-x-1/2 bg-[#1692fc] text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-[#1177cc] transition-all duration-200 w-[calc(100%-2rem)] max-w-[90%]"
+        className="fixed bottom-4 z-50 left-1/2 transform -translate-x-1/2 bg-[#1692fc] text-white font-bold py-4 px-6 rounded-lg shadow-md hover:bg-[#1177cc] transition-all duration-200 w-[calc(100%-2rem)] max-w-[90%]"
         onClick={handleVoteClick}
       >
         투표하기
@@ -276,8 +277,8 @@ export const StoreCard = ({
             <div className="flex flex-col items-center">
               <p className="font-bold text-black text-lg">{title}</p>
               {isVoted && (
-                <span className="ml-2 text-sm text-green-500 font-semibold">
-                  투표완료
+                <span className="ml-2 text-sm text-green-500  font-semibold">
+                  투표했어요!
                 </span>
               )}
             </div>
