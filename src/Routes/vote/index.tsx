@@ -107,10 +107,10 @@ const VotePage = () => {
           매장을 투표해보세요!
         </h1>
       </FadeInWrapper>
-      <p className="text-md text-gray-400 font-bold mb-4 text-center">
+      <p className="text-md text-gray-400 font-bold mb-3 text-center">
         특별히 음식점도 가져와봤어요!
       </p>
-      <div className="flex justify-center mb-4">
+      <div className="flex justify-center mb-6">
         <button
           className={`px-4 py-2 font-bold rounded-l-xl ${
             category === "restaurant" ? "bg-blue-500 text-white" : "bg-gray-200"
