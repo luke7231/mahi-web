@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useQuery, gql, useMutation } from "@apollo/client";
 import TransitionWrapper from "../../components/common/transition-wrapper";
 import FadeInWrapper from "../../components/fade-in-wrapper";
@@ -160,6 +160,32 @@ export const StoreCard = ({
   isVoted,
 }: IProp & { voteCount: number; isVoted: boolean }): JSX.Element => {
   const [isSelected, setIsSelected] = useState(false);
+  const imgRef = useRef<HTMLImageElement | null>(null);
+  const mainMenuImg1Ref = useRef<HTMLImageElement | null>(null);
+  const mainMenuImg2Ref = useRef<HTMLImageElement | null>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const target = entry.target as HTMLImageElement;
+            target.src = target.dataset.src || "";
+            observer.unobserve(target);
+          }
+        });
+      },
+      { threshold: 0.1 } // 낮은 threshold 값으로 미리 로드
+    );
+
+    if (imgRef.current) observer.observe(imgRef.current);
+    if (mainMenuImg1Ref.current) observer.observe(mainMenuImg1Ref.current);
+    if (mainMenuImg2Ref.current) observer.observe(mainMenuImg2Ref.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   const handleCardClick = () => {
     if (!isVoted) {
@@ -199,20 +225,23 @@ export const StoreCard = ({
           <div className="absolute w-full h-[12rem]">
             <div className="flex absolute w-full h-[12rem]">
               <img
-                src={img}
+                data-src={img}
                 alt="store"
                 className="w-2/3 h-full object-cover"
+                ref={imgRef}
               />
               <div className="flex flex-col w-1/3 h-full">
                 <img
-                  src={mainMemuImg1}
+                  data-src={mainMemuImg1}
                   alt="store"
                   className="w-full h-1/2 object-cover"
+                  ref={mainMenuImg1Ref}
                 />
                 <img
-                  src={mainMemuImg2}
+                  data-src={mainMemuImg2}
                   alt="store"
                   className="w-full h-1/2 object-cover"
+                  ref={mainMenuImg2Ref}
                 />
               </div>
             </div>
