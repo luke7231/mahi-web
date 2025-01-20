@@ -219,8 +219,12 @@ export const StoreCard = ({
           </div>
 
           {/* Lower Box */}
-          <div className="absolute flex flex-row justify-between w-full bottom-5 left-0 px-4">
-            <div className="flex justify-between items-center">
+          <div
+            className={`absolute flex flex-row justify-between w-full bottom-${
+              isVoted ? 3 : 5
+            } left-0 px-4`}
+          >
+            <div className="flex flex-col items-center">
               <p className="font-bold text-black text-lg">{title}</p>
               {isVoted && (
                 <span className="ml-2 text-sm text-green-500 font-semibold">
@@ -233,10 +237,10 @@ export const StoreCard = ({
               <progress
                 className="w-16 h-2"
                 value={voteCount}
-                max={100}
+                max={50}
                 style={{
                   appearance: "none",
-                  width: "36px",
+                  width: "60px",
                   height: "12px",
                   backgroundColor: "gray",
                   borderRadius: "999px",
@@ -247,11 +251,11 @@ export const StoreCard = ({
                   style={{
                     width: "100%",
                     height: "100%",
-                    backgroundColor: voteCount > 100 ? "red" : "#1692fc",
+                    backgroundColor: voteCount > 50 ? "red" : "#1692fc",
                   }}
                 ></div>
               </progress>
-              <p className="font-bold text-black text-lg ml-2">{`${voteCount}/100`}</p>
+              <p className="font-bold text-black text-lg ml-2">{`${voteCount}/50`}</p>
             </div>
           </div>
         </div>
