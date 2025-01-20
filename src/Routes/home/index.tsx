@@ -271,6 +271,11 @@ const Home = () => {
   const handleCloseSheet = () => {
     setIsSheetOpen(false);
   };
+
+  const isBaekhyunDong = localStorage
+    .getItem("loadAddr")
+    ?.includes("분당구 백현동");
+
   return (
     <div className="w-full h-[100vh] flex flex-col bg-white">
       {/* 앱 다운로드 배너 */}
@@ -390,7 +395,60 @@ const Home = () => {
           </div>
         </div>
         <div className="h-[0.0625rem] w-full bg-[#F4F5F7]" />
-
+        {/* 투표 배너 */}
+        {isBaekhyunDong && (
+          <div className="w-full mt-4 bg-[#C2FC8E] text-black text-center py-4 flex items-center justify-center">
+            <div
+              onClick={() => navigate("/vote")}
+              className="text-lg font-semibold"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                className="inline-block mr-2 pb-1"
+              >
+                <rect
+                  x="3"
+                  y="3"
+                  width="18"
+                  height="18"
+                  rx="2"
+                  stroke="black"
+                  strokeWidth="2"
+                />
+                <path
+                  d="M7 10l2 2 4-4"
+                  stroke="black"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <line
+                  x1="7"
+                  y1="15"
+                  x2="17"
+                  y2="15"
+                  stroke="black"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <line
+                  x1="7"
+                  y1="18"
+                  x2="17"
+                  y2="18"
+                  stroke="black"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
+              백현동 매장을 투표해주세요!
+            </div>
+          </div>
+        )}
         {/* LIST */}
 
         {!isList && data && data.stores ? (
