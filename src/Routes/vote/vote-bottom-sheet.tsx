@@ -27,12 +27,12 @@ const VoteBottomSheet: React.FC<VoteBottomSheetProps> = ({
       onButtonClick={onButtonClick}
     >
       <div className="p-6 flex flex-col items-center gap-4">
-        {checklist.slice(0, 10).map((store, index) => (
+        {checklist.slice(0, 8).map((store, index) => (
           <p key={index} className="text-lg font-medium">
             {store.name}
           </p>
         ))}
-        {checklist.length > 10 && (
+        {checklist.length > 8 && (
           <p className="text-lg font-medium">...외 {checklist.length - 10}개</p>
         )}
       </div>
