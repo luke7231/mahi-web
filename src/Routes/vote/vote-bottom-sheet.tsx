@@ -19,7 +19,7 @@ const VoteBottomSheet: React.FC<VoteBottomSheetProps> = ({
   return (
     <BottomSheet
       mainText="이 매장들이 맞나요?"
-      subText="소중한 투표는 백현동 로컬을 살리는데 쓰입니다."
+      subText="저희가 열심히 모셔볼게요!"
       buttonText="네 맞습니다"
       isOpen={isOpen}
       onClose={onClose}
@@ -27,11 +27,14 @@ const VoteBottomSheet: React.FC<VoteBottomSheetProps> = ({
       onButtonClick={onButtonClick}
     >
       <div className="p-6 flex flex-col items-center gap-4">
-        {checklist.map((store, index) => (
+        {checklist.slice(0, 10).map((store, index) => (
           <p key={index} className="text-lg font-medium">
             {store.name}
           </p>
         ))}
+        {checklist.length > 10 && (
+          <p className="text-lg font-medium">...외 {checklist.length - 10}개</p>
+        )}
       </div>
     </BottomSheet>
   );
