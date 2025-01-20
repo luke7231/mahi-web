@@ -270,11 +270,9 @@ export const StoreCard = ({
 
           {/* Lower Box */}
           <div
-            className={`absolute flex flex-row justify-between w-full bottom-${
-              isVoted ? 3 : 5
-            } left-0 px-4`}
+            className={`absolute flex flex-row justify-between w-full bottom-5 left-0 px-4`}
           >
-            <div className="flex flex-col items-center">
+            <div className="flex items-center">
               <p className="font-bold text-black text-lg">{title}</p>
               {isVoted && (
                 <span className="ml-2 text-sm text-green-500  font-semibold">
