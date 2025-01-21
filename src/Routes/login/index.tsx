@@ -14,6 +14,7 @@ const PURE_LOGIN = gql`
       user {
         id
         email
+        phone
         createdAt
         updatedAt
       }
@@ -52,12 +53,26 @@ const Login: React.FC = () => {
   const [appleLogin, { data, error }] = useLazyQuery(APPLE_LOGIN, {
     onCompleted: (data) => {
       const jwt = data.appleLogin.token;
+      const user = data.appleLogin.user;
       if (jwt) {
         localStorage.setItem("jwt", jwt);
         localStorage.setItem("isApple", "1");
         authLogin();
-        // TODO: 원래 있던 곳으로 보낸다.
-        navigate("/");
+
+        // 핸드폰 번호가 없다면 인증을 받습니다.
+        if (!user?.phone) {
+          navigate("/phone-number-auth");
+          return;
+        }
+
+        const redirect = localStorage.getItem("redirect");
+
+        if (redirect) {
+          localStorage.removeItem("redirect");
+          navigate(redirect);
+        } else {
+          navigate("/"); // 리디렉션 경로가 없으면 기본 경로로 이동
+        }
       }
     },
     onError: (e) => alert(e),
@@ -67,18 +82,25 @@ const Login: React.FC = () => {
       onCompleted: (data) => {
         setIsSubmitting(false);
         const jwt = data.pureLogin.token;
+        const user = data.pureLogin.user;
         if (jwt) {
           localStorage.setItem("jwt", jwt);
           authLogin();
-          // TODO: 원래 있던 곳으로 보낸다.
-          // 로그인 성공 시 리디렉션 경로가 있으면 해당 경로로 이동
-          const redirect = localStorage.getItem("redirect");
-          if (redirect) {
-            localStorage.removeItem("redirect");
-            navigate(redirect);
-          } else {
-            navigate("/"); // 리디렉션 경로가 없으면 기본 경로로 이동
-          }
+        }
+
+        // 핸드폰 번호가 없다면 인증을 받습니다.
+        if (!user?.phone) {
+          navigate("/phone-number-auth");
+          return;
+        }
+
+        const redirect = localStorage.getItem("redirect");
+
+        if (redirect) {
+          localStorage.removeItem("redirect");
+          navigate(redirect);
+        } else {
+          navigate("/"); // 리디렉션 경로가 없으면 기본 경로로 이동
         }
       },
       onError: (e) => {

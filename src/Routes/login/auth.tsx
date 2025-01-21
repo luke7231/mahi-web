@@ -32,20 +32,27 @@ const KakaoRedirectHandler = () => {
   const [kakaoLogin, { loading, error, data }] = useLazyQuery(KAKAO_LOGIN, {
     onCompleted: (data) => {
       const jwt = data.kakaoLogin.token;
+      const user = data.kakaoLogin.user;
       if (jwt) {
         localStorage.setItem("jwt", jwt);
         localStorage.setItem("isKakao", "1");
 
         authLogin();
-        // TODO: 원래 있던 곳으로 보낸다.
-        const redirect = localStorage.getItem("redirect");
+      }
 
-        if (redirect) {
-          localStorage.removeItem("redirect");
-          navigate(redirect);
-        } else {
-          navigate("/"); // 리디렉션 경로가 없으면 기본 경로로 이동
-        }
+      // 핸드폰 번호가 없다면 인증을 받습니다.
+      if (!user?.phone) {
+        navigate("/phone-number-auth");
+        return;
+      }
+
+      const redirect = localStorage.getItem("redirect");
+
+      if (redirect) {
+        localStorage.removeItem("redirect");
+        navigate(redirect);
+      } else {
+        navigate("/"); // 리디렉션 경로가 없으면 기본 경로로 이동
       }
     },
   });

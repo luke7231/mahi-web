@@ -14,6 +14,7 @@ const PURE_SIGNUP = gql`
       user {
         id
         email
+        phone
         createdAt
         updatedAt
       }
@@ -43,7 +44,7 @@ const SignUp: React.FC = () => {
         updateUserPropertiesAfterSignup();
         localStorage.setItem("jwt", jwt);
         authLogin();
-        navigate("/");
+        navigate("/phone-number-auth");
       }
     },
     onError: (e) => {
