@@ -6,6 +6,7 @@ import VoteBottomSheet from "./vote-bottom-sheet";
 import { UncontractedStore } from "../../__generated__/graphql";
 import { useAuth } from "../../core/auth";
 import { useNavigate } from "react-router-dom";
+import { track } from "@amplitude/analytics-browser";
 
 // GraphQL 쿼리 정의
 const GET_UNCONTRACTED_STORES = gql`
@@ -83,6 +84,7 @@ const VotePage = () => {
         },
       });
       setBottomSheetOpen(false);
+      track("투표 완료");
       await refetch();
       navigate("/vote-completed");
     } catch (error) {

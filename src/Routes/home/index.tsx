@@ -399,7 +399,10 @@ const Home = () => {
         {isBaekhyunDong && (
           <div className="w-full mt-4 bg-[#C2FC8E] text-black text-center py-4 flex items-center justify-center">
             <div
-              onClick={() => navigate("/vote")}
+              onClick={() => {
+                track("투표 배너 클릭");
+                navigate("/vote");
+              }}
               className="text-lg font-semibold"
             >
               <svg

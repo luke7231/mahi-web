@@ -2,6 +2,7 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../core/auth";
 import TransitionWrapper from "./common/transition-wrapper";
+import { track } from "@amplitude/analytics-browser";
 
 const BottomTab = (): JSX.Element => {
   const location = useLocation();
@@ -44,7 +45,10 @@ const BottomTab = (): JSX.Element => {
               className={`flex flex-col items-center ${
                 location.pathname === "/vote" ? "opacity-100" : "opacity-80"
               }`}
-              onClick={() => navigate("/vote")}
+              onClick={() => {
+                track("투표 바텀탭 클릭");
+                navigate("/vote");
+              }}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
