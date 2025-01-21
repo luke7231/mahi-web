@@ -45,6 +45,8 @@ const AmplitudeContextProvider = ({
     } else if (isWeb()) {
       identifyUser.set("mahi_platform", "Web");
     }
+    const loadAddr = localStorage.getItem("loadAddr");
+    if (loadAddr) identifyUser.set("loadAddr", loadAddr);
 
     if (sellerToken) {
       identifyUser.set("isSeller", true);

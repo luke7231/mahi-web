@@ -147,13 +147,11 @@ function Location() {
       onCompleted: (data) => {
         if (data.getLocalAddressV2) {
           localStorage.setItem("loadAddr", data.getLocalAddressV2.loadAddr);
-
           // Amplitude Identify 객체를 사용하여 사용자 속성 업데이트
-          const identifyUser = new Identify()
-            .set("area1", data.getLocalAddressV2.area1)
-            .set("area2", data.getLocalAddressV2.area2)
-            .set("area3", data.getLocalAddressV2.area3)
-            .set("area4", data.getLocalAddressV2.area4);
+          const identifyUser = new Identify().set(
+            "loadAddr",
+            data.getLocalAddressV2.loadAddr
+          );
           identify(identifyUser);
         }
       },
