@@ -49,6 +49,8 @@ import AdminReport from "./Routes/admin/report";
 import { isWeb } from "./Lib/user-agent-utils";
 import VotePage from "./Routes/vote";
 import VoteCompleted from "./Routes/vote/vote-completed";
+import PhoneNumberAuthPage from "./Routes/login/phone-number-auth";
+import PhoneNumberAuthCompletedPage from "./Routes/login/phone-number-auth-completed";
 
 const Router = () => {
   const { isFirst, isLoggedIn, isAdminLoggedIn, lastPage } = useAuth();
@@ -104,6 +106,11 @@ const Router = () => {
         />
         <Route path="/auth" element={<KakaoRedirectHandler />} />
         <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/phone-number-auth" element={<PhoneNumberAuthPage />} />
+        <Route
+          path="/phone-number-auth-completed"
+          element={<PhoneNumberAuthCompletedPage />}
+        />
 
         <Route
           path="/admin/home"
