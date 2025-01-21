@@ -5,6 +5,16 @@ import TransitionWrapper from "../../components/common/transition-wrapper";
 const PhoneNumberAuthCompleted = () => {
   const navigate = useNavigate();
 
+  const onClickButton = () => {
+    const redirect = localStorage.getItem("redirect");
+    if (redirect) {
+      localStorage.removeItem("redirect");
+      navigate(redirect);
+    } else {
+      navigate("/");
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white p-4">
       {/* Success Icon with Bounce and Checkmark Animation */}
@@ -39,10 +49,10 @@ const PhoneNumberAuthCompleted = () => {
       <div className="space-y-3 w-full max-w-sm fixed bottom-8 mx-auto px-4">
         <TransitionWrapper>
           <button
-            onClick={() => navigate("/")}
+            onClick={onClickButton}
             className="w-full h-[60px] font-bold rounded-3xl transition duration-150 bg-[#1692fc] text-white"
           >
-            홈으로 가기
+            GO!
           </button>
         </TransitionWrapper>
       </div>
