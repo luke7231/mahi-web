@@ -1,5 +1,11 @@
-const FadeInWrapper = ({ children }: { children: React.ReactNode }) => {
-  return <div className="animate-fadeInUp">{children}</div>;
+const FadeInWrapper = ({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
+  return <div className={`animate-fadeInUp ${className}`}>{children}</div>;
 };
 
 export default FadeInWrapper;

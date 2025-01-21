@@ -4,6 +4,7 @@ import { useAuth } from "../../core/auth";
 import { useLocation, useNavigate } from "react-router-dom";
 import BackArrow from "../../components/common/back-arrow";
 import { isIOSApp, isWeb } from "../../Lib/user-agent-utils";
+import FadeInWrapper from "../../components/fade-in-wrapper";
 
 const WEB_URL = process.env.REACT_APP_URL;
 
@@ -145,8 +146,8 @@ const Login: React.FC = () => {
   return (
     <>
       <div className="min-h-screen flex items-center justify-center bg-[#fff] p-4">
-        <div className="w-full bg-white rounded-lg p-2">
-          <div onClick={() => navigate(-1)}>
+        <FadeInWrapper className="w-full bg-white rounded-lg p-2">
+          <div className="mb-4" onClick={() => navigate(-1)}>
             <BackArrow />
           </div>
           {/* Header */}
@@ -161,7 +162,7 @@ const Login: React.FC = () => {
 
             <button
               onClick={handleKakaoButtonClick}
-              className="w-full py-4 border border-[#fae300] bg-[#fae300] text-black text-lg font-semibold rounded-md flex items-center justify-center hover:bg-[#e8d800] transition duration-150"
+              className="w-full py-4 border border-[#fae300] bg-[#fae300] text-black text-lg font-semibold rounded-xl flex items-center justify-center hover:bg-[#e8d800] transition duration-150"
             >
               <svg
                 width="20px"
@@ -182,7 +183,7 @@ const Login: React.FC = () => {
             {isIOSApp() || isWeb() ? (
               <button
                 onClick={loginWithApple}
-                className="w-full py-3.5 bg-black text-white text-lg font-semibold rounded-md flex items-center justify-center hover:bg-gray-800 transition duration-150"
+                className="w-full py-3.5 bg-black text-white text-lg font-semibold rounded-xl flex items-center justify-center hover:bg-gray-800 transition duration-150"
               >
                 <svg
                   version="1.0"
@@ -217,7 +218,7 @@ const Login: React.FC = () => {
             ) : null}
             <div className="mt-4 text-center">
               <button
-                className="w-full py-4 border bg-[#1692fc] border-[#1692fc] text-white font-bold text-lg rounded-md "
+                className="w-full py-4 border bg-[#1692fc] border-[#1692fc] text-white font-bold text-lg rounded-xl"
                 onClick={() => setShowEmailLogin(true)}
               >
                 이메일로 로그인
@@ -299,7 +300,7 @@ const Login: React.FC = () => {
               사장님이세요?
             </div>
           </div>
-        </div>
+        </FadeInWrapper>
       </div>
     </>
   );
