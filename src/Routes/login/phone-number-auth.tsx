@@ -41,7 +41,11 @@ const PhoneNumberAuthPage = () => {
 
   const handleSendAuthNumber = async () => {
     setShowAuthInput(true);
-    await sendAuthNumber({ variables: { phoneNumber } });
+    const response = await sendAuthNumber({ variables: { phoneNumber } });
+    if (!response.data.sendAuthNumber.ok) {
+      alert(response.data.sendAuthNumber.error);
+      return;
+    }
   };
 
   const handleVerifyAuthNumber = async () => {
