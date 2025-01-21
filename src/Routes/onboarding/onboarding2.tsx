@@ -3,12 +3,23 @@ import IMG from "./bell3.png";
 import FadeInWrapper from "../../components/fade-in-wrapper";
 import { postMessage } from "../../core/message";
 import TransitionWrapper from "../../components/common/transition-wrapper";
+import NotificationBottomSheet from "./notification-bottom-sheet";
+import { useState } from "react";
 const Onboarding2 = () => {
   const navigate = useNavigate();
-  const onClickButton = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const onClickConfirm = () => {
     // TODO: 다음 앱 심사 때 넣어서 나가야함.
-    // postMessage("REQ_NOTIFICATION", "");
+    postMessage("REQ_NOTIFICATION", "");
     navigate("/welcome");
+  };
+
+  const onClickButton = () => {
+    setIsOpen(true);
+  };
+
+  const onCloseNotification = () => {
+    setIsOpen(false);
   };
 
   return (
@@ -55,6 +66,11 @@ const Onboarding2 = () => {
           </TransitionWrapper>
         </div>
       </div>
+      <NotificationBottomSheet
+        isOpen={isOpen}
+        onClose={onCloseNotification}
+        onButtonClick={onClickConfirm}
+      />
     </div>
   );
 };
