@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { track } from "@amplitude/analytics-browser";
 import { gql, useQuery } from "@apollo/client";
 import React, { useEffect } from "react";
@@ -30,7 +31,7 @@ const NiceResult = () => {
       });
     }
   }, [ok]);
-  return ok == "1" ? (
+  return ok === "1" ? (
     <PaymentCompleted amount={amount} orderId={orderId} />
   ) : (
     <PaymentFailed message={message} />

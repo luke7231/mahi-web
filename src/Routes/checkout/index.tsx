@@ -1,5 +1,5 @@
-import React, { MouseEventHandler, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useCart } from "../../core/cart";
 import Partition from "../../components/common/partition";
 import BackArrow from "../../components/common/back-arrow";
@@ -46,7 +46,7 @@ const CheckoutPage: React.FC = () => {
   const [createOrder] = useMutation(CREATE_ORDER);
 
   // 사용자 정보를 가져오는 쿼리
-  const { data, loading } = useQuery(ME_QUERY, { fetchPolicy: "no-cache" });
+  const { data } = useQuery(ME_QUERY, { fetchPolicy: "no-cache" });
 
   const userPhone = data?.me?.phone;
 
@@ -96,7 +96,7 @@ const CheckoutPage: React.FC = () => {
 
   const onClickProceed = async (time: string) => {
     const orderId = nanoid();
-    const { data } = await createOrder({
+    await createOrder({
       variables: {
         input: {
           totalQuantity: getTotalQuantity(),
