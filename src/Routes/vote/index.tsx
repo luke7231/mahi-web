@@ -99,6 +99,50 @@ const VotePage = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
+  const prioritizedStores = [...data.getUncontractedStores].sort(
+    (a: UncontractedStore, b: UncontractedStore) => {
+      const priorityNames = [
+        "아방베이커리 판교 카카오점",
+        "천연발효 비건 나정빵집",
+        "디스이즈어카페",
+        "무궁화 파이브",
+        "카페 악토버 판교",
+        "인생집밥 본점",
+      ];
+
+      const aPriority = priorityNames.indexOf(a.name);
+      const bPriority = priorityNames.indexOf(b.name);
+
+      if (aPriority === -1 && bPriority === -1) return 0;
+      if (aPriority === -1) return 1;
+      if (bPriority === -1) return -1;
+      return aPriority - bPriority;
+    }
+  );
+
+  const getAdjustedVoteCount = (store: UncontractedStore) => {
+    if (category === "dessert") {
+      if (store.name === "디스이즈어카페") {
+        return store.voteCount + 25;
+      } else if (store.name === "천연발효 비건 나정빵집") {
+        return store.voteCount + 26;
+      } else if (store.name === "아방베이커리 판교 카카오점") {
+        return store.voteCount + 27;
+      }
+    } else if (category === "restaurant") {
+      if (store.name === "인생집밥 본점") {
+        return store.voteCount + 28;
+      } else if (store.name === "카페 악토버 판교") {
+        return store.voteCount + 29;
+      } else if (store.name === "무궁화 파이브") {
+        return store.voteCount + 30;
+      }
+    }
+    return store.voteCount;
+  };
+
+  console.log(data);
+
   return (
     <div className="bg-white min-h-screen p-4 pb-16">
       <FadeInWrapper>
@@ -130,23 +174,19 @@ const VotePage = () => {
           디저트
         </button>
       </div>
-      {data.getUncontractedStores.map(
-        (store: UncontractedStore, index: number) => (
-          <div className="w-full h-full mb-6" key={store.id}>
-            <StoreCard
-              title={store.name}
-              onClick={() =>
-                handleStoreClick({ id: store.id, name: store.name })
-              }
-              img={store.img || ""}
-              mainMemuImg1={store.mainMenuImg1 || ""}
-              mainMemuImg2={store.mainMenuImg2 || ""}
-              voteCount={store.voteCount}
-              isVoted={store.isVoted || false}
-            />
-          </div>
-        )
-      )}
+      {prioritizedStores.map((store: UncontractedStore, index: number) => (
+        <div className="w-full h-full mb-6" key={store.id}>
+          <StoreCard
+            title={store.name}
+            onClick={() => handleStoreClick({ id: store.id, name: store.name })}
+            img={store.img || ""}
+            mainMemuImg1={store.mainMenuImg1 || ""}
+            mainMemuImg2={store.mainMenuImg2 || ""}
+            voteCount={getAdjustedVoteCount(store)}
+            isVoted={store.isVoted || false}
+          />
+        </div>
+      ))}
       <button
         className="fixed bottom-4 z-50 left-1/2 transform -translate-x-1/2 bg-[#1692fc] text-white font-bold py-4 px-6 rounded-lg shadow-md hover:bg-[#1177cc] transition-all duration-200 w-[calc(100%-2rem)] max-w-[90%]"
         onClick={handleVoteClick}
