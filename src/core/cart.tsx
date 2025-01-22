@@ -33,7 +33,7 @@ interface Product {
 interface CartItem {
   product: Product;
   quantity: number;
-  store?: Store;
+  store: Store;
 }
 
 // CartContext 타입 정의

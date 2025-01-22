@@ -1,4 +1,4 @@
-import React from "react";
+import React, { MouseEventHandler, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../../core/cart";
 import Partition from "../../components/common/partition";
@@ -7,8 +7,9 @@ import Header from "../../components/common/header";
 import NoCart from "../../components/checkout/no-cart";
 import { nanoid } from "nanoid";
 import { gql } from "../../__generated__";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import TransitionWrapper from "../../components/common/transition-wrapper";
+import PickUpTimeBottomSheet from "./pickup-time-bottom-sheet";
 
 const CREATE_ORDER = gql(`
 mutation CreateOrder($input: CreateOrderInput!) {
@@ -27,10 +28,28 @@ mutation CreateOrder($input: CreateOrderInput!) {
 }
 `);
 
+const ME_QUERY = gql(`
+  query Me {
+    me {
+      id
+      phone
+      email
+      createdAt
+      updatedAt
+    }
+  }
+`);
+
 const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
   const { cart, removeFromCart } = useCart(); // useCart 훅을 사용하여 카트 정보를 가져옵니다
   const [createOrder] = useMutation(CREATE_ORDER);
+
+  // 사용자 정보를 가져오는 쿼리
+  const { data, loading } = useQuery(ME_QUERY, { fetchPolicy: "no-cache" });
+
+  const userPhone = data?.me?.phone;
+
   const inputCart = cart.map((item) => {
     // typename왜 넣냐고 시비걸어서 그냥 필터링함
     return {
@@ -45,8 +64,8 @@ const CheckoutPage: React.FC = () => {
       return total + price * item.quantity;
     }, 0);
   };
-  const getTotalQuantity = () => {
-    return cart.reduce((total, item) => {
+  const getTotalQuantity = (): number => {
+    return cart.reduce((total: number, item: { quantity: number }) => {
       const q = item.quantity;
       return total + q;
     }, 0);
@@ -61,7 +80,21 @@ const CheckoutPage: React.FC = () => {
     }, 0);
   };
 
-  const onClickProceed = async () => {
+  const handlePhoneChange = () => {
+    localStorage.setItem("redirect", window.location.pathname);
+
+    navigate("/phone-number-auth");
+  };
+
+  const handleProceedClick = () => {
+    if (!userPhone) {
+      alert("연락처를 입력해주세요!");
+      return;
+    }
+    setBottomSheetOpen(true);
+  };
+
+  const onClickProceed = async (time: string) => {
     const orderId = nanoid();
     const { data } = await createOrder({
       variables: {
@@ -69,8 +102,9 @@ const CheckoutPage: React.FC = () => {
           totalQuantity: getTotalQuantity(),
           totalDiscount: getTotalDisount(),
           orderId,
-          amount: getTotalAmount(), // 이전 페이지에서 받아오기
-          productIds: cart.map((item) => item?.product?.id), // 이전 페이지에서 받아오기 or productID만 받아서 query 치기
+          amount: getTotalAmount(), // 최종 결제 금액 사용
+          productIds: cart.map((item) => item?.product?.id),
+          pickUpTime: time,
         },
       },
       onCompleted: (data) => console.log(data), // TODO: 여러번 클릭되지 않도록? 조치해야할듯 디바운스
@@ -98,6 +132,30 @@ const CheckoutPage: React.FC = () => {
     // TODO: toast ui 띄우기
     // }
   };
+  const [isBottomSheetOpen, setBottomSheetOpen] = useState(false);
+  const handlePickUpTimeConfirm = (time: string) => {
+    const currentTime = new Date();
+    const [selectedHour, selectedMinute] = time.split(":").map(Number);
+    const selectedTime = new Date();
+    selectedTime.setHours(selectedHour, selectedMinute, 0, 0);
+    const closingTime = new Date();
+    const [closingHour, closingMinute] = cart[0].store.closingHours
+      .split(":")
+      .map(Number);
+    closingTime.setHours(closingHour, closingMinute, 0, 0);
+
+    if (selectedTime <= currentTime) {
+      alert("선택한 시간이 현재 시간보다 이전입니다. 다시 선택해주세요.");
+      return;
+    }
+
+    if (selectedTime >= closingTime) {
+      alert("마감시간을 넘습니다. 다시 선택해주세요.");
+      return;
+    }
+
+    onClickProceed(time);
+  };
 
   return (
     <>
@@ -106,45 +164,49 @@ const CheckoutPage: React.FC = () => {
           <div onClick={() => navigate(-1)} className="p-5">
             <BackArrow />
           </div>
-          <div className="w-full mx-auto h-auto mt-10 bg-white">
+          <div className="w-full mx-auto h-auto bg-white">
             {/* Header Section */}
-            <div className="flex flex-col items-center text-center text-black mb-6">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="22"
-                height="22"
-                viewBox="0 0 22 22"
-                fill="none"
-              >
-                <path
-                  d="M11.25 7.58333V11.25L14 14M19.5 11.25C19.5 12.3334 19.2866 13.4062 18.872 14.4071C18.4574 15.4081 17.8497 16.3175 17.0836 17.0836C16.3175 17.8497 15.4081 18.4574 14.4071 18.872C13.4062 19.2866 12.3334 19.5 11.25 19.5C10.1666 19.5 9.0938 19.2866 8.09286 18.872C7.09193 18.4574 6.18245 17.8497 5.41637 17.0836C4.65029 16.3175 4.0426 15.4081 3.62799 14.4071C3.21339 13.4062 3 12.3334 3 11.25C3 9.06196 3.86919 6.96354 5.41637 5.41637C6.96354 3.86919 9.06196 3 11.25 3C13.438 3 15.5365 3.86919 17.0836 5.41637C18.6308 6.96354 19.5 9.06196 19.5 11.25Z"
-                  stroke="black"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-
-              <div className="mt-2 text-2xl font-semibold">
-                주문 전 마감 시간을
-                <br />
-                확인해주세요
-              </div>
+            <div className="flex ml-6 text-black mb-0">
+              <div className="mt-2 text-xl font-extrabold">마감시간</div>
             </div>
             {/* Main Content Section */}
-            <div className="p-4 flex justify-center">
-              <div className="w-full max-w-md  bg-[#f4f5f7] rounded-lg p-6">
-                <div className="text-center text-sm text-[#828282]">
-                  <span className="font-bold">{cart[0]?.store?.title}</span>{" "}
-                  마감 시간
-                </div>
-                <div className="text-center text-black text-6xl font-semibold">
+            <div className="px-4 mt-2">
+              <div className="w-full bg-[#f4f5f7] rounded-lg p-4">
+                <div className="text-black text-2xl font-semibold">
                   {cart[0]?.store?.closingHours}
                 </div>
               </div>
             </div>
-            <h2 className="text-xl font-semibold ml-6 mb-4 mt-6">
-              내가 선택한 팩
+            {/* Header Section */}
+            <div className="flex ml-6 text-black mb-0 mt-4">
+              <div className="mt-2 text-xl font-bold">*내 연락처</div>
+            </div>
+            {/* Main Content Section */}
+            <div className="px-4 mt-2">
+              <div
+                className={`flex justify-between w-full rounded-lg p-4 ${
+                  userPhone ? "bg-[#f4f5f7]" : "bg-red-100"
+                }`}
+              >
+                <div
+                  className={`text-2xl font-semibold ${
+                    userPhone ? "text-black" : "text-red-500"
+                  }`}
+                >
+                  {userPhone || "연락처가 필요합니다!"}
+                </div>
+                <button
+                  onClick={handlePhoneChange}
+                  className="ml-4 text-blue-500 underline"
+                >
+                  {userPhone ? "편집" : "추가하기"}
+                </button>
+              </div>
+            </div>
+
+            {/* 내가 선택한 팩 */}
+            <h2 className="text-xl font-bold ml-6 mb-4 mt-8">
+              내가 선택한 마감팩
             </h2>
             <Partition height="thick" color="light" />
             {cart.length !== 0
@@ -221,15 +283,18 @@ const CheckoutPage: React.FC = () => {
 
             <Partition height="thick" color="light" />
             <div className="px-5 py-4 w-full sticky bottom-0 bg-white">
+              <div className="mt-4 text-black text-2xl font-bold text-right">
+                최종 금액: {getTotalAmount().toLocaleString()}원
+              </div>
               <TransitionWrapper
                 scale={0.95}
                 opacity={0.8}
-                onClick={() => onClickProceed()}
-                className="w-full h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg border"
+                onClick={handleProceedClick}
+                className={`fixed bottom-0 mb-4 w-[calc(100%-2rem)] h-[60px] flex items-center justify-center bg-[#1562fc] rounded-lg `}
               >
                 {/* Button Content */}
-                <div className="text-center flex items-center space-x-1">
-                  <span className="text-white text-base font-semibold leading-snug">
+                <div className="flex items-center space-x-1">
+                  <span className="text-white text-md font-bold leading-snug">
                     결제하고 가지러가기
                   </span>
                 </div>
@@ -252,6 +317,11 @@ const CheckoutPage: React.FC = () => {
           </div>
         </>
       )}
+      <PickUpTimeBottomSheet
+        isOpen={isBottomSheetOpen}
+        onClose={() => setBottomSheetOpen(false)}
+        onConfirm={handlePickUpTimeConfirm}
+      />
     </>
   );
 };
