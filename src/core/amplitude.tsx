@@ -1,6 +1,14 @@
 import { useEffect, createContext } from "react";
-import { Identify, identify, init, track } from "@amplitude/analytics-browser";
+import {
+  Identify,
+  identify,
+  init,
+  track,
+  add,
+} from "@amplitude/analytics-browser";
+import * as amplitude from "@amplitude/analytics-browser";
 import { isAndroidApp, isIOSApp, isWeb } from "../Lib/user-agent-utils";
+import { sessionReplayPlugin } from "@amplitude/plugin-session-replay-browser";
 
 const AMPLITUDE_API_KEY = process.env.REACT_APP_AMPLITUDE_API_KEY;
 
@@ -17,18 +25,19 @@ const AmplitudeContextProvider = ({
 }) => {
   useEffect(() => {
     if (!AMPLITUDE_API_KEY) return;
+    const sessionReplay = sessionReplayPlugin({ sampleRate: 0.2 });
+    amplitude.add(sessionReplay);
 
     const mahiUUID = localStorage.getItem("mahi_uuid");
     const sellerToken = localStorage.getItem("sellerToken");
 
-    init(AMPLITUDE_API_KEY, mahiUUID || undefined, {
+    amplitude.init(AMPLITUDE_API_KEY, mahiUUID || undefined, {
       defaultTracking: {
         sessions: true,
         pageViews: true,
       },
     });
 
-    // 사용자 속성 설정
     const identifyUser = new Identify();
 
     const isAppDownloaded = isAndroidApp() || isIOSApp();
