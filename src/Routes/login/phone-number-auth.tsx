@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FadeInWrapper from "../../components/fade-in-wrapper";
 import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
@@ -29,9 +29,16 @@ const PhoneNumberAuthPage = () => {
   const [authNumber, setAuthNumber] = useState("");
   const [showAuthButton, setShowAuthButton] = useState(false);
   const [showAuthInput, setShowAuthInput] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [sendAuthNumber] = useMutation(SEND_AUTH_NUMBER);
   const [verifyAuthNumber] = useMutation(VERIFY_AUTH_NUMBER);
   const navigate = useNavigate();
+
+  const handleAuthNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setAuthNumber(value);
+    setIsButtonDisabled(value.length !== 6);
+  };
 
   const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -40,10 +47,12 @@ const PhoneNumberAuthPage = () => {
   };
 
   const handleSendAuthNumber = async () => {
+    setIsButtonDisabled(true);
     setShowAuthInput(true);
     const response = await sendAuthNumber({ variables: { phoneNumber } });
     if (!response.data.sendAuthNumber.ok) {
       alert(response.data.sendAuthNumber.error);
+      setIsButtonDisabled(false);
       return;
     }
   };
@@ -79,7 +88,7 @@ const PhoneNumberAuthPage = () => {
           <input
             type="tel"
             value={authNumber}
-            onChange={(e) => setAuthNumber(e.target.value)}
+            onChange={handleAuthNumberChange}
             placeholder="인증번호를 입력해주세요"
             className="border-b p-2 mb-4 w-full focus:outline-none"
             autoFocus
@@ -94,11 +103,12 @@ const PhoneNumberAuthPage = () => {
                   ? handleVerifyAuthNumber
                   : handleSendAuthNumber
               }
+              disabled={isButtonDisabled}
               className={`w-full h-[60px] flex items-center justify-center rounded-3xl font-bold ${
                 authNumber.length === 6
                   ? "bg-[#C2FC8E] text-black"
                   : "bg-blue-500  text-white"
-              }`}
+              } ${isButtonDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
             >
               {authNumber.length === 6 ? "인증번호 검증" : "인증번호 발송"}
             </button>
