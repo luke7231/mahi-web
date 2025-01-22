@@ -52,6 +52,11 @@ const AmplitudeContextProvider = ({
       identifyUser.set("isSeller", true);
     }
 
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      identifyUser.set("isRegisteredUser", true);
+    }
+
     identify(identifyUser);
   }, []);
 
