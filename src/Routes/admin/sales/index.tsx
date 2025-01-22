@@ -23,9 +23,11 @@ const GET_PRODUCTS = gql`
         id
         user {
           name
+          phone
         }
         isCanceled
         isApproved
+        pickUpTime
       }
       createdAt
       isToday
@@ -274,12 +276,26 @@ const SalesPage: React.FC = () => {
                             )}
                           </p>
                           {product.order?.user && product.order?.isApproved && (
-                            <p className="text-md px-2 pb-1">
-                              구매자:{" "}
-                              <span className="text-black font-bold">
-                                {product.order.user.name}
-                              </span>
-                            </p>
+                            <>
+                              <p className="text-md px-2 pb-1">
+                                구매자:{" "}
+                                <span className="text-black font-bold">
+                                  {product.order.user.name || "알 수 없음"}
+                                </span>
+                              </p>
+                              <p className="text-md px-2 pb-1">
+                                픽업시간:{" "}
+                                <span className="text-black font-bold">
+                                  {product.order?.pickUpTime}
+                                </span>
+                                <div className="mt-1 text-black font-semibold">
+                                  {product.order?.user?.phone?.replace(
+                                    /(\d{3})(\d{4})(\d{4})/,
+                                    "$1-$2-$3"
+                                  )}
+                                </div>
+                              </p>
+                            </>
                           )}
                         </div>
                         {/* 버튼 */}
